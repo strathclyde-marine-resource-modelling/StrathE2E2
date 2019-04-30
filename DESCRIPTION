@@ -1,0 +1,23 @@
+Package: StrathE2E2
+Type: Package
+Title: End-to-end marine food web model
+Version: 2.0.0
+Date: 2019-04-30
+Author: Mike Heath [aut],
+    Ian Thurlbeck [ctb]
+Maintainer: Mike Heath <m.heath@strath.ac.uk>
+Description: End-to-end ecosystem model of the North Sea as described in :
+    Heath, M.R. (2012). Ecosystem limits to food web fluxes and
+    fisheries yields in the North Sea simulated with an end-to-end
+    food web model. Progress in Oceanography (Special issue:
+    End-to-end modelling: Towards Comparative Analysis of Marine
+    Ecosystem Organisation) 102, 42-66.
+Depends:
+    R (>= 3.1.0),
+	deSolve,
+	methods,
+	NetIndices
+License: GPL (>= 2)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
