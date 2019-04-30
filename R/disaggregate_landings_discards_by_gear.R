@@ -27,8 +27,8 @@ disaggregate_landings_discards_by_gear <- function(fleet.model.output, annual.la
 	# will have the same number of rows but 24 more columns as : gear_group_proportions
 	# this is because DF will need to be split into quota and non quota
 
-	ngears<-12	# ZZ fixed value?
-	ngroups<-10 # this is the number of groups in gear_group_proportions	# ZZ fixed value?
+	ngears<-12
+	ngroups<-10 # this is the number of groups in gear_group_proportions
 
 	offshore_gear_group_props	<- el(fleet.model.output, "offshore_gear_group_props")
 	inshore_gear_group_props	<- el(fleet.model.output, "inshore_gear_group_props")
@@ -50,7 +50,7 @@ disaggregate_landings_discards_by_gear <- function(fleet.model.output, annual.la
 	}
 
 	#Now rename all the columns..
-	names(offshore_annual_group_gear_land_disc)<-c("year","PF_1_L","PF_2_L","PF_3_L","PF_4_L","PF_5_L","PF_6_L",	# ZZ are these named elsewhere as well?
+	names(offshore_annual_group_gear_land_disc)<-c("year","PF_1_L","PF_2_L","PF_3_L","PF_4_L","PF_5_L","PF_6_L",
                                         "PF_7_L","PF_8_L","PF_9_L","PF_10_L","PF_11_L","PF_12_L",			
 
                                         "DFQ_1_L","DFQ_2_L","DFQ_3_L","DFQ_4_L","DFQ_5_L","DFQ_6_L",

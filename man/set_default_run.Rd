@@ -4,8 +4,7 @@
 \alias{set_default_run}
 \title{return settings for a default run}
 \usage{
-set_default_run(model.name, model.variant, model.tag, model.path,
-  nyears = 20, annealing = F)
+set_default_run(model.name, model.variant, model.tag = "", nyears = 20)
 }
 \arguments{
 \item{model.name}{name of model being loaded}
@@ -14,11 +13,7 @@ set_default_run(model.name, model.variant, model.tag, model.path,
 
 \item{model.tag}{appended to output filenames}
 
-\item{model.path}{full path to model configuration files}
-
 \item{nyears}{length of model run in years}
-
-\item{annealing}{boolean stating whether annealing settings are to be returned}
 }
 \value{
 list of default model run settings

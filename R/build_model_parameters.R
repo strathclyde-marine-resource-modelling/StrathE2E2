@@ -13,7 +13,7 @@
 build_model_parameters <- function(model, fleet.model.output) {
 
 	# ZZ can you just add fitted.parms/fixed.parms/uptakes vectors to model parms vector build? i.e. just concat them?
-	# ZZ you would have to reorder the definitions to allow use of physical.parms directly (and some name changes?)
+	# ZZ you would have to reorder the definitions to allow use of physical.parms directly (and some name changes?), and there would be some unused stuff going through to C model
 	# Unpack:
 	data		<- el(model, "data")
 	fixed.parms	<- el(data, "fixed.parameters")

@@ -2,7 +2,7 @@
 % Please edit documentation in R/copy_model.R
 \name{copy_model}
 \alias{copy_model}
-\title{make a copy of the named model}
+\title{make a copy of the named model (and all it's variants)}
 \usage{
 copy_model(model.name, dest.path = "Models", overwrite = FALSE)
 }
@@ -14,5 +14,5 @@ copy_model(model.name, dest.path = "Models", overwrite = FALSE)
 \item{overwrite}{set to TRUE to enable overwrite of existing model folder}
 }
 \description{
-make a copy of the named model
+make a copy of the named model (and all it's variants)
 }
