@@ -14,12 +14,14 @@ list_models <- function(model.path="") {
 	if (model.path == "") {
 		# get path to internal model folder
 		full.path <- system.file("extdata/Models", package="StrathE2E2")
-		cat("List of models in system folder:\n\n")
+		cat("List of models in system folder")
 	}
 	else {
 		full.path <- model.path
-		cat("List of models in user folder:\n\n")
+		cat("List of models in user folder")
 	}
+
+	cat(", with helpful commands to load them:\n\n")
 
 	models <- list.files(full.path)
 
@@ -31,7 +33,9 @@ list_models <- function(model.path="") {
 			for (variant in variants) {
 				cat ("  Variant: \"", variant, "\"", sep="")
 				setup.file <- makepath(variant.path, variant, MODEL_SETUP_SCRIPT)
-				if (! file.exists(setup.file)) {
+				if (file.exists(setup.file)) {
+					cat("\tmodel <- read_model(\"", model, "\", \"", variant, "\")", sep="")
+				} else {
 					cat("  ** NOT A VALID MODEL/VARIANT !!")
 				}
 				cat("\n")
