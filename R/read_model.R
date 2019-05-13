@@ -19,6 +19,13 @@
 #
 read_model <- function(model.name, model.variant, model.tag="", user.path="", nyears=20, annealing=FALSE) {
 
+	read.only <- (user.path == "")					# read only unless user path is specified - i.e. it's not just based on write permissions!
+
+	if (read.only && annealing) {
+		cat(" Error: cannot set annealing=TRUE when loading a system model!\n")
+		stop("Read-only model")
+	}
+
 	# full path to either the system model or the user specified one:
 	model.path <- get.model.path(model.name, model.variant, user.path)
 
@@ -28,7 +35,7 @@ read_model <- function(model.name, model.variant, model.tag="", user.path="", ny
 	sourcefile(makepath(model.path, MODEL_SETUP_SCRIPT))		# NorthSea/MODEL_SETUP.R
 
 	# run slot:
-	run <- set_default_run(model.name, model.variant, model.tag, nyears)
+	run <- set_default_run(model.name, model.variant, model.tag, nyears=nyears)
 
 	# read model inputs:
 	physical.parameters	<- read_physical_parameters(model.path)
@@ -68,9 +75,10 @@ read_model <- function(model.name, model.variant, model.tag="", user.path="", ny
 	)
 
 	model <- list(
-		path	= model.path,
-		run	= run,
-		data	= data
+		read.only	= read.only,
+		path		= model.path,
+		run		= run,
+		data		= data
 	)
 
 	if (annealing) {

@@ -646,41 +646,43 @@ offshore_group_gutting_prop_habitat[,10])  # kelp distribution of gutting offal 
 
 
 
-#.........................
+		#.........................
 
-#Compile all the above elements into a single vector that will be piped into the ecology model (6 more elements than the orignal version)
+		#Compile all the above elements into a single vector that will be piped into the ecology model (6 more elements than the orignal version)
 
-fleet_vector<-c(
+		fleet_vector<-c(
 
-Fx_daily_out,
+			Fx_daily_out,
 
-quota_nonquota_parms_vector,
+			quota_nonquota_parms_vector,
 
-group_discard_out,
+			group_discard_out,
 
-group_gutting_out,
+			group_gutting_out,
 
-DFsize_SWITCH,
+			DFsize_SWITCH,
 
-DFdiscard_SWITCH,
+			DFdiscard_SWITCH,
 
-discard_map,
+			discard_map,
 
-gutting_map,
+			gutting_map,
 
-plough_daily_habitat,
+			plough_daily_habitat,
 
-inshore_bensdamage,
-offshore_bensdamage,
-inshore_bencdamage,
-offshore_bencdamage,
+			inshore_bensdamage,
+			offshore_bensdamage,
+			inshore_bencdamage,
+			offshore_bencdamage,
 
-offal_prop_live_weight,
+			offal_prop_live_weight,
 
-plough_depth_vector)
+			plough_depth_vector
+		)
 
 
-names(fleet_vector)<-c("F_inshore_pelagic","F_offshore_pelagic",
+		names(fleet_vector)<-c(
+			"F_inshore_pelagic","F_offshore_pelagic",
                        "F_inshore_demersal","F_offshore_demersal",
                        "F_inshore_migratory","F_offshore_migratory",
                        "F_inshore_filtben","F_offshore_filtben",
@@ -747,7 +749,8 @@ names(fleet_vector)<-c("F_inshore_pelagic","F_offshore_pelagic",
 
                         "offal_prop_live_weight",
 
-                        "ploughdepth_S0","ploughdepth_S1","ploughdepth_S2","ploughdepth_S3","ploughdepth_D0","ploughdepth_D1","ploughdepth_D2","ploughdepth_D3")
+                        "ploughdepth_S0","ploughdepth_S1","ploughdepth_S2","ploughdepth_S3","ploughdepth_D0","ploughdepth_D1","ploughdepth_D2","ploughdepth_D3"
+		)
 
 
 #STUFF THAT NEEDS TO BE SAVED FOR POST-PROCESSING OF THE ECOLOGY MODEL OUTPUT
@@ -802,15 +805,12 @@ names(fleet_vector)<-c("F_inshore_pelagic","F_offshore_pelagic",
 #                                        "offshore_kelp","inshore_kelp")
 
 
-	fleet_vector_names <- names(fleet_vector)				# ZZ maybe we don't need this?
-
 	fleet_model_output <- list(
 		fleet_vector					= fleet_vector,
 		offshore_gear_group_prop_effort			= offshore_gear_group_prop_effort,
 		inshore_gear_group_prop_effort			= inshore_gear_group_prop_effort,
 		offshore_gear_to_region_discard_rate_ratio	= offshore_gear_to_region_discard_rate_ratio,
-		inshore_gear_to_region_discard_rate_ratio	= inshore_gear_to_region_discard_rate_ratio,
-		fleet_vector_names				= fleet_vector_names				# ZZ maybe we don't need this?
+		inshore_gear_to_region_discard_rate_ratio	= inshore_gear_to_region_discard_rate_ratio
 	)
 
 	gear_group_props <- store_fleet_model_output(fleet_model_output, nyears)

@@ -14,9 +14,9 @@
 #
 calculate_error_function <- function(model, opt_results) {
 
-	run				<- el(model, "run")
-	oudir				<- el(run, "oudir")
-	AAA				<- el(run, "AAA")
+	run		<- el(model, "run")
+	identifier	<- el(run, "identifier")
+	resultsdir	<- el(run, "resultsdir")
 
 	# opt_results: built from copy of annualtargetdata which then overwrites 3,4,5,6 and adds 7,8
 	#
@@ -71,7 +71,7 @@ calculate_error_function <- function(model, opt_results) {
 
 	Objannual<- exp(-1*(sum(opt_results$Chi,na.rm=TRUE))/sum(opt_results[,4]))
 
-	names(Objannual)<-c("annual_obj")
+	#names(Objannual)<-c("annual_obj")
 
 	#Results<-c(prefstore,ustore,hstore,biogeostore,mortstore,reststore,Objmonthly,Objannual)
 	#Results<-c(prefstore,ustore,hstore,biogeostore,mortstore,reststore,Objannual)	ZZ don't do this now
@@ -90,14 +90,25 @@ calculate_error_function <- function(model, opt_results) {
 	}
 	Partial_chi[1+nrow(opt_results),1]<-Objannual
 
-print(Partial_chi)
+	#print(Partial_chi)
 
 	#Print the data to a csv file
 	#-----------------------------------------------------------------
-	write.table(Partial_chi,file=paste(oudir,"model_likelihood_results","-",AAA,".csv",sep=""),sep=",")				# ZZ where is this read? and why is it written here
-	write.table(opt_results,file=paste(oudir,"model_target_annualresults_plus_chi","-",AAA,".csv",sep=""),sep=",",row.names=FALSE)	# ZZ where is this read? and why is it written here
+	filename = csvname(resultsdir, "model_likelihood_results", identifier)
+	writecsv(Partial_chi, filename)
+	write.table(Partial_chi,file=paste(resultsdir,"model_likelihood_results","-",identifier,".csv",sep=""),sep=",")				# ZZ where is this read? and why is it written here
+
+	filename = csvname(resultsdir, "model_target_annualresults_plus_chi", identifier)
+	writecsv(opt_results, filename, row.names=FALSE)
+	write.table(opt_results,file=paste(resultsdir,"model_target_annualresults_plus_chi","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)	# ZZ where is this read? and why is it written here
 
 	#-------------------------------------------------------------------------------------------------------
 
-	Objannual
+	list(
+		"annual_obj"	= Objannual,
+		"partial_chi"	= Partial_chi,
+		"opt_results"	= opt_results
+	)
+	#Objannual
 }
+

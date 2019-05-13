@@ -4,20 +4,21 @@
 #' derive set of results for inshore only and write to files
 #'
 #' @param model model object
-#' @param results  model results
+#' @param output model output
+#' @param aggregates aggregated model output
 #'
 #' @importFrom utils write.table
 #'
 #' @export
 #
-derive_annual_results_inshore <- function(model, results) {
+derive_annual_results_inshore <- function(model, output, aggregates) {
 
 	# Unpack:
 	run		<- el(model, "run")
 	ndays		<- el(run, "ndays")
 	nyears		<- el(run, "nyears")
-	AAA		<- el(run, "AAA")
-	oudir		<- el(run, "oudir")
+	identifier	<- el(run, "identifier")
+	resultsdir	<- el(run, "resultsdir")
 
 	data		<- el(model, "data")
 	physical.parms	<- el(data, "physical.parameters")
@@ -87,7 +88,6 @@ derive_annual_results_inshore <- function(model, results) {
 	x_shallowprop		<- el(physical.parms, "x_shallowprop")
 	habitat_areas		<- el(physical.parms, "habitat_areas")
 
-	output		<- el(results, "output")
 
 	# extract output:
 	time			<- el(output, "time")
@@ -496,8 +496,6 @@ derive_annual_results_inshore <- function(model, results) {
 	cetanetprod_i		<- el(output, "cetanetprod_i")
 
 
-	aggregates	<- el(results, "aggregates")
-
 	# extract aggregates:
 	totalN			<- el(aggregates, "totalN")
 	totalN_o		<- el(aggregates, "totalN_o")
@@ -832,7 +830,11 @@ mass_results
 
 #Print the data to a csv file
 #-----------------------------------------------------------------
-write.table(mass_results,file=paste(oudir,"INSHORE_model_anav_biomass","-",AAA,".csv",sep=""),sep=",",row.names=FALSE)
+
+filename = csvname(resultsdir, "INSHORE_model_anav_biomass", identifier)
+writecsv(mass_results, filename, row.names=FALSE)
+write.table(mass_results,paste0(resultsdir,"/","INSHORE_model_anav_biomass","-",identifier,".csv"),sep=",",row.names=FALSE)
+
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -942,7 +944,9 @@ maxmass_results
 
 #Print the data to a csv file
 #-----------------------------------------------------------------
-write.table(maxmass_results,file=paste(oudir,"INSHORE_model_maximum_biomass","-",AAA,".csv",sep=""),sep=",",row.names=FALSE)
+filename = csvname(resultsdir, "INSHORE_model_maximum_biomass", identifier)        
+writecsv(maxmass_results, filename, row.names=FALSE)
+write.table(maxmass_results,file=paste(resultsdir,"INSHORE_model_maximum_biomass","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -1053,7 +1057,9 @@ minmass_results
 
 #Print the data to a csv file
 #-----------------------------------------------------------------
-write.table(minmass_results,file=paste(oudir,"INSHORE_model_minimum_biomass","-",AAA,".csv",sep=""),sep=",",row.names=FALSE)
+filename = csvname(resultsdir, "INSHORE_model_minimum_biomass", identifier)        
+writecsv(minmass_results, filename, row.names=FALSE)
+write.table(minmass_results,file=paste(resultsdir,"INSHORE_model_minimum_biomass","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -2121,14 +2127,15 @@ annual_flux_results[,3]<-c(
 names(annual_flux_results)<-c("Model_annual_flux","Units","Description")
 
 
-annual_flux_results
+#annual_flux_results
 
 
 #Print the data to a csv file
 #-----------------------------------------------------------------
-write.table(annual_flux_results,file=paste(oudir,"INSHORE_model_annualresults","-",AAA,".csv",sep=""),sep=",",row.names=FALSE)
+	filename = csvname(resultsdir, "INSHORE_model_annualresults", identifier)        
+	writecsv(annual_flux_results, filename, row.names=FALSE)
+	write.table(annual_flux_results,file=paste(resultsdir,"INSHORE_model_annualresults","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
-#-------------------------------------------------------------------------------------------------------
-
+	annual_flux_results
 }
 

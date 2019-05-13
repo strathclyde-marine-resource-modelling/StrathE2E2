@@ -6,14 +6,16 @@
 to produce a flow-matrix defining all of the annual integrated mass fluxes been every pair of
 prey and predator guilds in the food web, alf the geochemical flows, and all of the boundary flows}
 \usage{
-assemble_flow_matrix_from_model_annual_output(model, results)
+assemble_flow_matrix_from_model_annual_output(model, output, aggregates)
 }
 \arguments{
 \item{model}{model object}
 
-\item{results}{model results}
+\item{output}{model output}
+
+\item{aggegates}{aggregated model output}
 }
 \description{
-The code then loads the NetIndices R package which relies on the flow-matrix data as input
+The code then uses the NetIndices R package which relies on the flow-matrix data as input
 to derive a suite of network indices as outputs These are saved as a standard csv file
 }

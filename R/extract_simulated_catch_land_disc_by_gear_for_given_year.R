@@ -6,21 +6,21 @@
 #' saves to various files
 #'
 #' @param model model object
-#' @param results model results
+#' @param landings.by.gear annual catch by gear
+#' @param ytp year to plot
 #'
 #' @export
 #
-extract_simulated_catch_land_disc_by_gear_for_given_year <- function(model, results) {
+extract_simulated_catch_land_disc_by_gear_for_given_year <- function(model, landings.by.gear, ytp=-1) {
 
 	data		<- el(model, "data")
 	fleet.model	<- el(data, "fleet.model")
 	gear_labels	<- el(fleet.model, "gear_labels")
     
-	run					<- el(model, "run")
-	AAA					<- el(run, "AAA")
-	oudir					<- el(run, "oudir")
+	run		<- el(model, "run")
+	identifier	<- el(run, "identifier")
+	resultsdir	<- el(run, "resultsdir")
 
-	landings.by.gear			<- el(results, "landings.by.gear")
 	offshore_annual_group_gear_land_disc	<- el(landings.by.gear, "offshore_annual_group_gear_land_disc")
 	inshore_annual_group_gear_land_disc	<- el(landings.by.gear, "inshore_annual_group_gear_land_disc")
    
@@ -68,8 +68,14 @@ group_labels<-c(
 annual_group_gear_land_disc<-offshore_annual_group_gear_land_disc
 
 #Select a year to plot
-ytp<-nrow(annual_group_gear_land_disc)
-
+if (ytp == -1) {
+	ytp <- nrow(annual_group_gear_land_disc)
+} else {
+	if (ytp < 1 || ytp > nrow(annual_group_gear_land_disc)) {
+		cat("ytp out of range, defaulting to last year of run\n")
+		ytp <- nrow(annual_group_gear_land_disc)
+	}
+}
 
 #First need to set up matrices to hold the data for plotting
 
@@ -237,15 +243,30 @@ inshore_landmat_t <-landmat_t
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #OUTPUT THE TRANSPOSED MATRICES TO FILES FOR STORAGE
+filename = csvname(resultsdir, "OFFSHORE_catchcomposition_by_gear", identifier)
+writecsv(offshore_catchmat_t, filename)
+write.table(offshore_catchmat_t,file=paste(resultsdir,"OFFSHORE_catchcomposition_by_gear",identifier,".csv",sep=""),sep=",")
 
-write.table(offshore_catchmat_t,file=paste(oudir,"OFFSHORE_catchcomposition_by_gear",AAA,".csv",sep=""),sep=",")
-write.table(offshore_landmat_t,file=paste(oudir,"OFFSHORE_landingcomposition_by_gear",AAA,".csv",sep=""),sep=",")
-write.table(offshore_discmat_t,file=paste(oudir,"OFFSHORE_discardcomposition_by_gear",AAA,".csv",sep=""),sep=",")
+filename = csvname(resultsdir, "OFFSHORE_landingcomposition_by_gear", identifier)
+writecsv(offshore_landmat_t, filename)
+write.table(offshore_landmat_t,file=paste(resultsdir,"OFFSHORE_landingcomposition_by_gear",identifier,".csv",sep=""),sep=",")
+
+filename = csvname(resultsdir, "OFFSHORE_discardcomposition_by_gear", identifier)
+writecsv(offshore_discmat_t, filename)
+write.table(offshore_discmat_t,file=paste(resultsdir,"OFFSHORE_discardcomposition_by_gear",identifier,".csv",sep=""),sep=",")
 
 
-write.table(inshore_catchmat_t,file=paste(oudir,"INSHORE_catchcomposition_by_gear",AAA,".csv",sep=""),sep=",")
-write.table(inshore_landmat_t,file=paste(oudir,"INSHORE_landingcomposition_by_gear",AAA,".csv",sep=""),sep=",")
-write.table(inshore_discmat_t,file=paste(oudir,"INSHORE_discardcomposition_by_gear",AAA,".csv",sep=""),sep=",")
+filename = csvname(resultsdir, "INSHORE_catchcomposition_by_gear", identifier)
+writecsv(inshore_catchmat_t, filename)
+write.table(inshore_catchmat_t,file=paste(resultsdir,"INSHORE_catchcomposition_by_gear",identifier,".csv",sep=""),sep=",")
+
+filename = csvname(resultsdir, "INSHORE_landingcomposition_by_gear", identifier)
+writecsv(inshore_landmat_t, filename)
+write.table(inshore_landmat_t,file=paste(resultsdir,"INSHORE_landingcomposition_by_gear",identifier,".csv",sep=""),sep=",")
+
+filename = csvname(resultsdir, "INSHORE_discardcomposition_by_gear", identifier)
+writecsv(inshore_discmat_t, filename)
+write.table(inshore_discmat_t,file=paste(resultsdir,"INSHORE_discardcomposition_by_gear",identifier,".csv",sep=""),sep=",")
 
 #-------------------------------------------------------------------------------------------------------
 

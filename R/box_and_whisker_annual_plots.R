@@ -11,10 +11,8 @@
 #
 box_and_whisker_annual_plots <- function(model, annual.target.data, opt_results) {
 
-	run	<- el(model, "run")
-	oudir	<- el(run, "oudir")
-	AAA	<- el(run, "AAA")
-
+	run		<- el(model, "run")
+	resultsdir	<- el(run, "resultsdir")
 
 #Requires the dataframe opt_results produced by the programme which calculates the model outputs corresponding to each observed variable
 
@@ -245,9 +243,9 @@ set2plot5<-c(
    which(opt_results[,6]=="Obs_ceta_io_ratio" & opt_results[,4]==1) )
 
 
-#jpeg(paste(oudir,"annual_model_vs_data.jpg",sep=""),width=500,height=500)
-# png(paste(oudir,"annual_model_vs_data.png",sep=""),width=700,height=500)
-#pdf(paste(oudir,"annual_model_vs_data.pdf",sep=""),width=6,height=9)
+#jpeg(paste(resultsdir,"annual_model_vs_data.jpg",sep=""),width=500,height=500)
+# png(paste(resultsdir,"annual_model_vs_data.png",sep=""),width=700,height=500)
+#pdf(paste(resultsdir,"annual_model_vs_data.pdf",sep=""),width=6,height=9)
 
 par(mfrow=c(3,2))
 

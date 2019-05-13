@@ -1,12 +1,13 @@
 #
 # derive_model_target_results.R
 #
-#' derive annual target results and write to file (ZZ why?)
+#' derive annual target results and write to file
 #'
 #' returns annual target results
 #'
 #' @param model model object
-#' @param results model results
+#' @param output model output
+#' @param aggregates aggregated model output
 #' @param annualtargetdata annual target data
 #'
 #' @return target results
@@ -15,14 +16,14 @@
 #'
 #' @export
 #
-derive_model_target_results <- function(model, results, annualtargetdata) {
+derive_model_target_results <- function(model, output, aggregates, annualtargetdata) {
 
 	# Unpack:
 	run		<- el(model, "run")
 	ndays		<- el(run, "ndays")
 	nyears		<- el(run, "nyears")
-	AAA		<- el(run, "AAA")
-	oudir		<- el(run, "oudir")
+	identifier	<- el(run, "identifier")
+	resultsdir	<- el(run, "resultsdir")
 
 	data		<- el(model, "data")
 	physical.parms	<- el(data, "physical.parameters")
@@ -91,8 +92,6 @@ derive_model_target_results <- function(model, results, annualtargetdata) {
 	ref_Kxw			<- el(physical.parms, "ref_Kxw")
 	x_shallowprop		<- el(physical.parms, "x_shallowprop")
 	habitat_areas		<- el(physical.parms, "habitat_areas")
-
-	output		<- el(results, "output")
 
 	# extract output:
 	time			<- el(output, "time")
@@ -499,8 +498,6 @@ derive_model_target_results <- function(model, results, annualtargetdata) {
 	sealnetprod_i		<- el(output, "sealnetprod_i")
 	cetanetprod_o		<- el(output, "cetanetprod_o")
 	cetanetprod_i		<- el(output, "cetanetprod_i")
-
-	aggregates	<- el(results, "aggregates")
 
 	# extract aggregates:
 	totalN			<- el(aggregates, "totalN")
@@ -1228,7 +1225,9 @@ names(target_results_output)<-names(opt_results[,c(3,6,7)])
 
 #Print the data to a csv file
 #-----------------------------------------------------------------
-write.table(target_results_output,file=paste(oudir,"model_target_annualresults","-",AAA,".csv",sep=""),sep=",",row.names=FALSE)
+filename = csvname(resultsdir, "model_target_annualresults", identifier)
+writecsv(target_results_output, filename, row.names=TRUE)
+write.table(target_results_output,file=paste(resultsdir,"model_target_annualresults","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
 #-------------------------------------------------------------------------------------------------------
 

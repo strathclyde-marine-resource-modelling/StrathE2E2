@@ -4,20 +4,21 @@
 #' derive set of results for offshore only and write to files
 #'
 #' @param model model object
-#' @param results  model results
+#' @param output  model output
+#' @param aggregates  aggregated model output
 #'
 #' @importFrom utils write.table
 #'
 #' @export
 #
-derive_annual_results_offshore <- function(model, results) {
+derive_annual_results_offshore <- function(model, output, aggregates) {
 
 	# Unpack:
 	run		<- el(model, "run")
 	ndays		<- el(run, "ndays")
 	nyears		<- el(run, "nyears")
-	AAA		<- el(run, "AAA")
-	oudir		<- el(run, "oudir")
+	identifier	<- el(run, "identifier")
+	resultsdir	<- el(run, "resultsdir")
 
 	data		<- el(model, "data")
 
@@ -90,8 +91,6 @@ derive_annual_results_offshore <- function(model, results) {
 
 
 	# extract output:
-	output			<- el(results, "output")
-
 	time			<- el(output, "time")
 	detritus_so		<- el(output, "detritus_so")
 	detritus_d		<- el(output, "detritus_d")
@@ -499,8 +498,6 @@ derive_annual_results_offshore <- function(model, results) {
 
 
 	# extract aggregates:
-	aggregates		<- el(results, "aggregates")
-
 	totalN			<- el(aggregates, "totalN")
 	totalN_o		<- el(aggregates, "totalN_o")
 	totalN_i		<- el(aggregates, "totalN_i")
@@ -824,7 +821,9 @@ mass_results
 
 #Print the data to a csv file
 #-----------------------------------------------------------------
-write.table(mass_results,file=paste(oudir,"OFFSHORE_model_anav_biomass","-",AAA,".csv",sep=""),sep=",",row.names=FALSE)
+filename = csvname(resultsdir, "OFFSHORE_model_anav_biomass", identifier)
+writecsv(mass_results, filename, row.names=FALSE)
+write.table(mass_results,paste0(resultsdir,"OFFSHORE_model_anav_biomass","-",identifier,".csv"),sep=",",row.names=FALSE)
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -926,7 +925,9 @@ maxmass_results
 
 #Print the data to a csv file
 #-----------------------------------------------------------------
-write.table(maxmass_results,file=paste(oudir,"OFFSHORE_model_maximum_biomass","-",AAA,".csv",sep=""),sep=",",row.names=FALSE)
+filename = csvname(resultsdir, "OFFSHORE_model_maximum_biomass", identifier)
+writecsv(maxmass_results, filename, row.names=FALSE)
+write.table(maxmass_results,file=paste(resultsdir,"OFFSHORE_model_maximum_biomass","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -1029,7 +1030,9 @@ minmass_results
 
 #Print the data to a csv file
 #-----------------------------------------------------------------
-write.table(minmass_results,file=paste(oudir,"OFFSHORE_model_minimum_biomass","-",AAA,".csv",sep=""),sep=",",row.names=FALSE)
+filename = csvname(resultsdir, "OFFSHORE_model_minimum_biomass", identifier)
+writecsv(minmass_results, filename, row.names=FALSE)
+write.table(minmass_results,file=paste(resultsdir,"OFFSHORE_model_minimum_biomass","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -2091,15 +2094,10 @@ annual_flux_results[,3]<-c(
 
 names(annual_flux_results)<-c("Model_annual_flux","Units","Description")
 
+	filename = csvname(resultsdir, "OFFSHORE_model_annualresults", identifier)
+	writecsv(annual_flux_results, filename, row.names=FALSE)
+	write.table(annual_flux_results,file=paste(resultsdir,"OFFSHORE_model_annualresults","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
-annual_flux_results
-
-
-#Print the data to a csv file
-#-----------------------------------------------------------------
-write.table(annual_flux_results,file=paste(oudir,"OFFSHORE_model_annualresults","-",AAA,".csv",sep=""),sep=",",row.names=FALSE)
-
-#-------------------------------------------------------------------------------------------------------
-
+	annual_flux_results
 }
 

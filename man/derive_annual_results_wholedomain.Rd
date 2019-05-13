@@ -4,12 +4,14 @@
 \alias{derive_annual_results_wholedomain}
 \title{extract annual average biomass in the final year for the whole model domain}
 \usage{
-derive_annual_results_wholedomain(model, results)
+derive_annual_results_wholedomain(model, output, aggregates)
 }
 \arguments{
 \item{model}{model object}
 
-\item{results}{model results}
+\item{output}{model output}
+
+\item{aggregates}{aggregated model output}
 }
 \description{
 extract annual average biomass in the final year for the whole model domain

@@ -4,14 +4,17 @@
 \alias{set_default_run}
 \title{return settings for a default run}
 \usage{
-set_default_run(model.name, model.variant, model.tag = "", nyears = 20)
+set_default_run(model.name, model.variant, model.subdir = "",
+  model.ident = "base", nyears = 20)
 }
 \arguments{
 \item{model.name}{name of model being loaded}
 
 \item{model.variant}{which model variant being loaded}
 
-\item{model.tag}{appended to output filenames}
+\item{model.subdir}{results written to this sub-directory}
+
+\item{model.ident}{appended to output filenames, default "base"}
 
 \item{nyears}{length of model run in years}
 }
@@ -19,5 +22,5 @@ set_default_run(model.name, model.variant, model.tag = "", nyears = 20)
 list of default model run settings
 }
 \description{
-returns named list of time settings, output directories, plus optional annealing parameters if required
+returns named list of time settings, output directories
 }

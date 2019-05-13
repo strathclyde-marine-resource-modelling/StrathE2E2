@@ -9,14 +9,14 @@
 #
 box_and_whisker_monthly_plots <- function(model) {
 
-        run     <- el(model, "run")
-        oudir   <- el(run, "oudir")
-        AAA     <- el(run, "AAA")
+        run		<- el(model, "run")
+        identifier	<- el(run, "identifier")
+        resultsdir	<- el(run, "resultsdir")
 
 	model.path <- el(model, "path")
 
 	#Read in the model run monthly results output file
-	modelmonthly<- readcsv(oudir, paste("model_monthlyresults",AAA,".csv",sep=""))	# ZZ maybe read elsewhere
+	modelmonthly<- readcsv(resultsdir, paste("model_monthlyresults",identifier,".csv",sep=""))	# ZZ maybe read elsewhere
 
 
 #Make an array to hold the synthesised observational monthly data
@@ -386,9 +386,9 @@ boxplot(modplot,add=TRUE,range=0,boxwex=0.25,at=1:12+0.3,par(lty=1),yaxt="n",xax
 }
 #~~~~~~~~~~~~~~~
 
-#jpeg(paste(oudir,"monthly_model_vs_data.jpg",sep=""),width=500,height=500)
-#pdf(paste(oudir,"monthly_model_vs_data.pdf",sep=""),width=6,height=9)
-#postscript(paste(oudir,"monthly_model_vs_data.ps",sep=""),width=6,height=6,horizontal=FALSE)
+#jpeg(paste(resultsdir,"monthly_model_vs_data.jpg",sep=""),width=500,height=500)
+#pdf(paste(resultsdir,"monthly_model_vs_data.pdf",sep=""),width=6,height=9)
+#postscript(paste(resultsdir,"monthly_model_vs_data.ps",sep=""),width=6,height=6,horizontal=FALSE)
 
 
 par(mfrow=c(5,2))

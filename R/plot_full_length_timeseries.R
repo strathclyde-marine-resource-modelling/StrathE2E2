@@ -16,6 +16,8 @@ plot_full_length_timeseries <- function(results) {
 	out <- el(results, "output")
 	agg <- el(results, "aggregates")
 
+	# move all the el(out, "name") stuff up here
+
 	par(mfrow=c(4,4))
 
 	tsplot1("Total nitrogen",el(agg, "totalN"))

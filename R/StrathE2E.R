@@ -30,6 +30,8 @@
 #
 StrathE2E <- function(model) {
 
+	model.path		<- el(model, "path")
+
 	run			<- el(model, "run")
 	times			<- el(run, "times")
 
@@ -60,18 +62,14 @@ StrathE2E <- function(model) {
 			initforc	= "forcc",
 			forcings	= forcings,
 			initfunc	= "odec",
-			fcontrol	= list(method = "linear", rule = 2, ties = "ordered"),
+			fcontrol	= list(method="linear", rule=2, ties="ordered"),
 			method		= "lsoda"
 		)
 	)
 
-	
-	aggregates <- aggregate_model_output(model, output)
-	#for (i in names(aggregates)) {
-		#cat("output$", i, " <- aggregates$", i, "\n", sep="")
-	#}
-	#showall("aggregates", aggregates)
-if (FALSE) {
+
+if (CHECKRESULTS==1) {
+		aggregates	<- aggregate_model_output(model, output)
 output$totalN <- aggregates$totalN
 output$totalN_o <- aggregates$totalN_o
 output$totalN_i <- aggregates$totalN_i
@@ -206,18 +204,40 @@ output$offalct <- aggregates$offalct
 	showall("results", output)
 	stop("Halt")
 }
-	annual.landings <- extract_timeseries_annual_landings(model, output)
-	#showall("annual.landings", annual.landings)
+	# main processed output:
+	aggregates		<- aggregate_model_output(model, output)
+	total.annual.catch	<- extract_timeseries_annual_landings(model, output)
+	annual.catch.by.gear	<- disaggregate_landings_discards_by_gear(fleet.output, total.annual.catch)
+	catch.land.disc		<- extract_simulated_catch_land_disc_by_gear_for_given_year(model, annual.catch.by.gear)
 
-	landings.by.gear <- disaggregate_landings_discards_by_gear(fleet.output, annual.landings)
-	#showall("landings.by.gear", landings.by.gear)
+	# additional processed output:
+	monthly.averages	<- monthly_averages_of_final_year(model, output, aggregates)
+	annual.flux.wholedomain	<- derive_annual_results_wholedomain(model, output, aggregates)
+	annual.flux.offshore	<- derive_annual_results_offshore(model, output, aggregates)
+	annual.flux.inshore	<- derive_annual_results_inshore(model, output, aggregates)
+	network.index.results	<- assemble_flow_matrix_from_model_annual_output(model, output, aggregates)
+
+	annual.target.data	<- read_annual_target_data(model.path)
+	model.target.results	<- derive_model_target_results(model, output, aggregates, annual.target.data)
+	fit.to.target.data	<- calculate_error_function(model, model.target.results)
 
 	results <- list(
-		output		= output,
-		aggregates	= aggregates,
-		fleet.output	= fleet.output,
-		annual.landings = annual.landings,
-		landings.by.gear= landings.by.gear
+		model.parameters	= model.parameters,
+		output			= output,
+		aggregates		= aggregates,
+		fleet.output		= fleet.output,
+		total.annual.catch	= total.annual.catch,
+		annual.catch.by.gear	= annual.catch.by.gear,
+		catch.land.disc		= catch.land.disc,
+		final.year.outputs	= list(
+			monthly.averages	= monthly.averages,
+			annual.flux.wholedomain	= annual.flux.wholedomain,
+			annual.flux.offshore	= annual.flux.offshore,
+			annual.flux.inshore	= annual.flux.inshore,
+			network.index.results	= network.index.results,
+			annual.target.data	= annual.target.data,
+			fit.to.target.data	= fit.to.target.data
+		)
 	)
 
 	results

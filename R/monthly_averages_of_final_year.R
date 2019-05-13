@@ -1,21 +1,24 @@
 #
 # monthly_averages_of_final_year.R
 #
-#' Summarise the final year for nitrate ammonia and chl and write to a file
+#' Summarise the final year for nitrate ammonia and chl
 #'
 #' @param model model object
-#' @param results model results
+#' @param output model output
+#' @param aggregates aggregated model output
+#'
+#' @return monthly averages
 #'
 #' @export
 #
-monthly_averages_of_final_year <- function(model, results) {
+monthly_averages_of_final_year <- function(model, output, aggregates) {
 
 	run		<- el(model, "run")
 	data		<- el(model, "data")
 
 	nyears		<- el(run, "nyears")
-	AAA		<- el(run, "AAA")
-	oudir		<- el(run, "oudir")
+	identifier	<- el(run, "identifier")
+	resultsdir	<- el(run, "resultsdir")
 
 	physical.parms	<- el(data, "physical.parameters")
 	si_depth	<- el(physical.parms, "si_depth")
@@ -23,11 +26,9 @@ monthly_averages_of_final_year <- function(model, results) {
 	d_depth		<- el(physical.parms, "d_depth")
 	x_shallowprop	<- el(physical.parms, "x_shallowprop")
 
-	output		<- el(results, "output")
 	nitrate_d	<- el(output, "nitrate_d")
 	ammonia_d	<- el(output, "ammonia_d")
 
-	aggregates	<- el(results, "aggregates")
 	s_nitrate	<- el(aggregates, "s_nitrate")
 	s_ammonia	<- el(aggregates, "s_ammonia")
 	s_phyt		<- el(aggregates, "s_phyt")
@@ -60,7 +61,10 @@ monthly_averages_of_final_year <- function(model, results) {
 
 	names(monthlyfinal)<-c("surfnitratemMm3","deepnitratemMm3","surfammoniamMm3","deepammoniamMm3","surfchlmgm3","onmizoomMNm3","carnzoomMNm3","benthslarmMNm3","benthclarmMNm3")
 
-	write.table(monthlyfinal, file=paste(oudir,"model_monthlyresults",AAA,".csv",sep=""),sep=",",row.names=FALSE)
+	filename = csvname(resultsdir, "model_monthlyresults", identifier)
+	writecsv(monthlyfinal, filename, row.names=FALSE)
+	write.table(monthlyfinal, file=paste(resultsdir,"model_monthlyresults",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
+	monthlyfinal
 }
 

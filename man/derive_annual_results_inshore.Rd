@@ -4,12 +4,14 @@
 \alias{derive_annual_results_inshore}
 \title{derive set of results for inshore only and write to files}
 \usage{
-derive_annual_results_inshore(model, results)
+derive_annual_results_inshore(model, output, aggregates)
 }
 \arguments{
 \item{model}{model object}
 
-\item{results}{model results}
+\item{output}{model output}
+
+\item{aggregates}{aggregated model output}
 }
 \description{
 derive set of results for inshore only and write to files

@@ -2,14 +2,16 @@
 % Please edit documentation in R/derive_model_target_results.R
 \name{derive_model_target_results}
 \alias{derive_model_target_results}
-\title{derive annual target results and write to file (ZZ why?)}
+\title{derive annual target results and write to file}
 \usage{
-derive_model_target_results(model, results, annualtargetdata)
+derive_model_target_results(model, output, aggregates, annualtargetdata)
 }
 \arguments{
 \item{model}{model object}
 
-\item{results}{model results}
+\item{output}{model output}
+
+\item{aggregates}{aggregated model output}
 
 \item{annualtargetdata}{annual target data}
 }

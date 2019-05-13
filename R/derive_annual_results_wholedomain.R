@@ -4,20 +4,21 @@
 #' extract annual average biomass in the final year for the whole model domain
 #'
 #' @param model model object
-#' @param results  model results
+#' @param output  model output
+#' @param aggregates aggregated model output
 #'
 #' @importFrom utils write.table
 #'
 #' @export
 #
-derive_annual_results_wholedomain <- function(model, results) {
+derive_annual_results_wholedomain <- function(model, output, aggregates) {
 
 	# Unpack:
 	run		<- el(model, "run")
 	ndays		<- el(run, "ndays")
 	nyears		<- el(run, "nyears")
-	AAA		<- el(run, "AAA")
-	oudir		<- el(run, "oudir")
+	identifier	<- el(run, "identifier")
+	resultsdir	<- el(run, "resultsdir")
 
 	data		<- el(model, "data")
 	physical.parms	<- el(data, "physical.parameters")
@@ -86,8 +87,6 @@ derive_annual_results_wholedomain <- function(model, results) {
 	ref_Kxw			<- el(physical.parms, "ref_Kxw")
 	x_shallowprop		<- el(physical.parms, "x_shallowprop")
 	habitat_areas		<- el(physical.parms, "habitat_areas")
-
-	output		<- el(results, "output")
 
 	# extract output:
 	time			<- el(output, "time")
@@ -495,8 +494,6 @@ derive_annual_results_wholedomain <- function(model, results) {
 	cetanetprod_o		<- el(output, "cetanetprod_o")
 	cetanetprod_i		<- el(output, "cetanetprod_i")
 
-	aggregates	<- el(results, "aggregates")
-
 	# extract aggregates:
 	totalN			<- el(aggregates, "totalN")
 	totalN_o		<- el(aggregates, "totalN_o")
@@ -822,7 +819,9 @@ mass_results
 
 #Print the data to a csv file
 #-----------------------------------------------------------------
-write.table(mass_results,file=paste(oudir,"WHOLEDOMAIN_model_anav_biomass","-",AAA,".csv",sep=""),sep=",",row.names=FALSE)
+filename = csvname(resultsdir, "WHOLEDOMAIN_model_anav_biomass", identifier)
+writecsv(mass_results, filename, row.names=FALSE)
+write.table(mass_results,file=paste(resultsdir,"WHOLEDOMAIN_model_anav_biomass","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -925,7 +924,9 @@ maxmass_results
 
 #Print the data to a csv file
 #-----------------------------------------------------------------
-write.table(maxmass_results,file=paste(oudir,"WHOLEDOMAIN_model_maximum_biomass","-",AAA,".csv",sep=""),sep=",",row.names=FALSE)
+filename = csvname(resultsdir, "WHOLEDOMAIN_model_maximum_biomass", identifier)
+writecsv(maxmass_results, filename, row.names=FALSE)
+write.table(maxmass_results,file=paste(resultsdir,"WHOLEDOMAIN_model_maximum_biomass","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -1029,7 +1030,9 @@ minmass_results
 
 #Print the data to a csv file
 #-----------------------------------------------------------------
-write.table(minmass_results,file=paste(oudir,"WHOLEDOMAIN_model_minimum_biomass","-",AAA,".csv",sep=""),sep=",",row.names=FALSE)
+filename = csvname(resultsdir, "WHOLEDOMAIN_model_minimum_biomass", identifier)
+writecsv(minmass_results, filename, row.names=FALSE)
+write.table(minmass_results,file=paste(resultsdir,"WHOLEDOMAIN_model_minimum_biomass","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -1968,7 +1971,9 @@ names(annual_flux_results)<-c("Model_annual_flux","Units","Description")
 
 #Print the data to a csv file
 #-----------------------------------------------------------------
-write.table(annual_flux_results,file=paste(oudir,"WHOLEDOMAIN_model_annualresults","-",AAA,".csv",sep=""),sep=",",row.names=FALSE)
+filename = csvname(resultsdir, "WHOLEDOMAIN_model_annualresults", identifier)
+writecsv(annual_flux_results, filename, row.names=FALSE)
+write.table(annual_flux_results,file=paste(resultsdir,"WHOLEDOMAIN_model_annualresults","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
 #-------------------------------------------------------------------------------------------------------
 

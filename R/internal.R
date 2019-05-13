@@ -2,10 +2,12 @@
 # Internal functions - not for export
 #
 #' @importFrom graphics axis legend lines mtext par plot points boxplot
-#' @importFrom utils read.csv
+#' @importFrom utils read.csv write.csv
 #' @importFrom methods show
 #'
 #' @keywords internal
+#'
+#' @export showall
 #
 
 MODEL_SETUP_SCRIPT	= "MODEL_SETUP_SCRIPT.R"	# located in the Model/Version/ directory
@@ -34,10 +36,51 @@ readcsv <- function(..., header=TRUE) {
 
 	check.exists(filename)
 
-	cat(" Reading input: ", last, "\n", sep="")
+	cat(" Reading CSV file: ", last, "\n", sep="")
 	data <- read.csv(filename, header=header)
 
 	data
+}
+
+# write data to CSV file
+# the dir is created if it doesn't already exist
+# file will be overwritten if it already exists
+#
+writecsv <- function(data, filepath, row.names=TRUE) {
+
+	dir <- dirname(filepath)
+	file <- basename(filepath)
+
+	create.folder(dir)
+
+	cat(" Writing CVS file: ", filepath, "\n", sep="")
+	write.csv(data, file=filepath, row.names=row.names)
+}
+
+# create a csv filename:
+#	output/dir/file-identifier.csv
+# or:
+#	output/dir/file.csv
+# if identifier not set
+#
+csvname <- function(dir, file, identifier)
+{
+	name <- dir
+
+	# add a dir sep if missing:
+	if (! endsWith(dir, .Platform$file.sep)) {
+		name <- paste0(name, .Platform$file.sep)
+	}
+
+	name <- paste0(name, file)
+
+	if (identifier != "") {
+		# add "-ident" if set:
+		name <- paste0(name, "-", identifier)
+	}
+	name <- paste0(name, ".csv")
+
+	name
 }
 
 # wrapper around source() to produce consistent error messages
@@ -95,7 +138,7 @@ get.model.path <- function(model.name, model.variant, user.path="") {
 # build up a filename path
 #
 makepath <- function(...) {
-	paste(..., sep="/")	# this is portable Windows/Linux
+	paste(..., sep=.Platform$file.sep)
 }
 
 # check folder exists and create if not present

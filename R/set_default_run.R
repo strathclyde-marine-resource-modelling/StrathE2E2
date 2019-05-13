@@ -3,18 +3,19 @@
 #
 #' return settings for a default run
 #'
-#' returns named list of time settings, output directories, plus optional annealing parameters if required
+#' returns named list of time settings, output directories
 #'
 #' @param model.name name of model being loaded
 #' @param model.variant which model variant being loaded
-#' @param model.tag appended to output filenames
+#' @param model.subdir results written to this sub-directory
+#' @param model.ident appended to output filenames, default "base"
 #' @param nyears length of model run in years
 #'
 #' @return list of default model run settings
 #'
 #' @export
 #
-set_default_run <- function(model.name, model.variant, model.tag="", nyears=20) {
+set_default_run <- function(model.name, model.variant, model.subdir="", model.ident="base", nyears=20) {
 
 	outp_time_interval <- 1				# interval for outputting data (days)
 
@@ -27,8 +28,8 @@ set_default_run <- function(model.name, model.variant, model.tag="", nyears=20) 
 		"drtimes"	= seq(15, nyears*360-15, by=30),
 		"sprectimes"	= seq(0, nyears*360, by=1),
 		"daynum"	= seq(0, 360, by=1),
-		"AAA"		= model.tag,
-		"oudir"		= makepath(MODEL_RESULTS_DIR, model.name, model.variant)
+		"identifier"	= model.ident,
+		"resultsdir"	= makepath(MODEL_RESULTS_DIR, model.name, model.variant, model.subdir)	# results/<model>/<variant>/<subdir>	ZZ add a trailing '/'?
 	)
 
 	default_run

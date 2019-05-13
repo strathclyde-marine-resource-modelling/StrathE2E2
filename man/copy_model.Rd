@@ -4,12 +4,15 @@
 \alias{copy_model}
 \title{make a copy of the named model (and all it's variants)}
 \usage{
-copy_model(model.name, dest.path = "Models", overwrite = FALSE)
+copy_model(model.name, dest.path = "Models", user.path = "",
+  overwrite = FALSE)
 }
 \arguments{
 \item{model.name}{name of model to copy}
 
-\item{dest.path}{destination folder to write copy of model, will be created if necessary, default is "Models"}
+\item{dest.path}{destination folder to write copy of model, will be created if necessary, default is "Models" in current folder}
+
+\item{user.path}{path to users top level model folder if copying a user model}
 
 \item{overwrite}{set to TRUE to enable overwrite of existing model folder}
 }

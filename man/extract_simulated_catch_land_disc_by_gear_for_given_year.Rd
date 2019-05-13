@@ -5,12 +5,15 @@
 \alias{extract_simulated_catch_land_disc_by_gear_for_given_year}
 \title{extract simulated catch}
 \usage{
-extract_simulated_catch_land_disc_by_gear_for_given_year(model, results)
+extract_simulated_catch_land_disc_by_gear_for_given_year(model,
+  landings.by.gear, ytp = -1)
 }
 \arguments{
 \item{model}{model object}
 
-\item{results}{model results}
+\item{landings.by.gear}{annual catch by gear}
+
+\item{ytp}{year to plot}
 }
 \description{
 saves to various files

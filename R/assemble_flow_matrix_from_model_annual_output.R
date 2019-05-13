@@ -5,18 +5,19 @@
 #' to produce a flow-matrix defining all of the annual integrated mass fluxes been every pair of
 #' prey and predator guilds in the food web, alf the geochemical flows, and all of the boundary flows
 #'
-#' The code then loads the NetIndices R package which relies on the flow-matrix data as input
+#' The code then uses the NetIndices R package which relies on the flow-matrix data as input
 #' to derive a suite of network indices as outputs These are saved as a standard csv file
 #'
 #' @param model model object
-#' @param results  model results
+#' @param output model output
+#' @param aggegates aggregated model output
 #'
 #' @importFrom utils write.table
 #' @importFrom NetIndices TrophInd AscInd PathInd GenInd EffInd
 #'
 #' @export
 #
-assemble_flow_matrix_from_model_annual_output <- function(model, results) {
+assemble_flow_matrix_from_model_annual_output <- function(model, output, aggregates) {
 
 	# Unpack:
 	model.path	<- el(model, "path")
@@ -24,8 +25,8 @@ assemble_flow_matrix_from_model_annual_output <- function(model, results) {
 	run		<- el(model, "run")
 	ndays		<- el(run, "ndays")
 	nyears		<- el(run, "nyears")
-	AAA		<- el(run, "AAA")
-	oudir		<- el(run, "oudir")
+	identifier	<- el(run, "identifier")
+	resultsdir	<- el(run, "resultsdir")
 
 	data		<- el(model, "data")
 	physical.parms	<- el(data, "physical.parameters")
@@ -94,8 +95,6 @@ assemble_flow_matrix_from_model_annual_output <- function(model, results) {
 	ref_Kxw			<- el(physical.parms, "ref_Kxw")
 	x_shallowprop		<- el(physical.parms, "x_shallowprop")
 	habitat_areas		<- el(physical.parms, "habitat_areas")
-
-	output		<- el(results, "output")
 
 	# extract output:
 	time			<- el(output, "time")
@@ -503,9 +502,6 @@ assemble_flow_matrix_from_model_annual_output <- function(model, results) {
 	cetanetprod_o		<- el(output, "cetanetprod_o")
 	cetanetprod_i		<- el(output, "cetanetprod_i")
 
-
-	aggregates	<- el(results, "aggregates")
-
 	# extract aggregates:
 	totalN			<- el(aggregates, "totalN")
 	totalN_o		<- el(aggregates, "totalN_o")
@@ -656,15 +652,15 @@ assemble_flow_matrix_from_model_annual_output <- function(model, results) {
 
 #Read in the template for the flowmatrix
 
-#oudir         <- "results/final fitting runs culminating in run 31/"  # not needed if run as part of a model sequence
-#AAA           <- "test_model"                                         # not needed if run as part of a model sequence
+#resultsdir         <- "results/final fitting runs culminating in run 31/"  # not needed if run as part of a model sequence
+#identifier           <- "test_model"                                         # not needed if run as part of a model sequence
 
 	flowmatrix_template <- readcsv(model.path, PARAMETERS_DIR, foodwebflowmatrixfile)
 
 #Read in the wholedomain annual flux data file, if not alreday in memory
 #If already in memory the dataframe is called "annual_flux_results"
 #  annual_results_file  <- "WHOLEDOMAIN_model_annualresults-NEWYEAR18-AD-again-31.csv"
-#  annual_flux_results  <- read.csv(paste(oudir,annual_results_file,sep=""),header=TRUE)
+#  annual_flux_results  <- read.csv(paste(resultsdir,annual_results_file,sep=""),header=TRUE)
 
 
 #Now we need to trawl through the model output dataframe and integrate each o fthe flux terms over the final year and drop
@@ -2160,8 +2156,9 @@ flowmatrix_template[(which(colnames(flowmatrix_template)==sourcename)),(which(co
 
 
 #Save the new flow matrix to a file.
-
-write.table(flowmatrix_template,file=paste(oudir,"flow_matrix_all_fluxes",AAA,".csv",sep=""),sep=",",row.names=TRUE)
+filename = csvname(resultsdir, "flow_matrix_all_fluxes", identifier)
+writecsv(flowmatrix_template, filename, row.names=TRUE)
+write.table(flowmatrix_template,file=paste(resultsdir,"flow_matrix_all_fluxes",identifier,".csv",sep=""),sep=",",row.names=TRUE)
 
 #--------------------------------------------------------------------------------------------------------
 
@@ -2222,7 +2219,9 @@ flowmatrix_no_sp_rec[(which(colnames(flowmatrix_template)==sourcename)),(which(c
 
 #Save the new flow matrix to a file.
 
-write.table(flowmatrix_no_sp_rec,file=paste(oudir,"flow_matrix_excl_spawn_recuit",AAA,".csv",sep=""),sep=",",row.names=TRUE)
+filename = csvname(resultsdir, "flow_matrix_excl_spawn_recuit", identifier)
+writecsv(flowmatrix_no_sp_rec, filename, row.names=TRUE)
+write.table(flowmatrix_no_sp_rec,file=paste(resultsdir,"flow_matrix_excl_spawn_recuit",identifier,".csv",sep=""),sep=",",row.names=TRUE)
 
 #--------------------------------------------------------------------------------------------------------
 
@@ -2463,7 +2462,9 @@ lastfilled<-lastfilled+4
 
 #Save the new flow matrix to a file.
 
-write.table(NetworkIndexResults,file=paste(oudir,"Network_indices_output",AAA,".csv",sep=""),sep=",",row.names=TRUE)
+filename = csvname(resultsdir, "Network_indices_output", identifier)
+writecsv(NetworkIndexResults, filename, row.names=TRUE)
+write.table(NetworkIndexResults,file=paste(resultsdir,"Network_indices_output",identifier,".csv",sep=""),sep=",",row.names=TRUE)
 
 	NetworkIndexResults
 }

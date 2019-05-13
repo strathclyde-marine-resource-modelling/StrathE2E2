@@ -2,15 +2,20 @@
 % Please edit documentation in R/monthly_averages_of_final_year.R
 \name{monthly_averages_of_final_year}
 \alias{monthly_averages_of_final_year}
-\title{Summarise the final year for nitrate ammonia and chl and write to a file}
+\title{Summarise the final year for nitrate ammonia and chl}
 \usage{
-monthly_averages_of_final_year(model, results)
+monthly_averages_of_final_year(model, output, aggregates)
 }
 \arguments{
 \item{model}{model object}
 
-\item{results}{model results}
+\item{output}{model output}
+
+\item{aggregates}{aggregated model output}
+}
+\value{
+monthly averages
 }
 \description{
-Summarise the final year for nitrate ammonia and chl and write to a file
+Summarise the final year for nitrate ammonia and chl
 }
