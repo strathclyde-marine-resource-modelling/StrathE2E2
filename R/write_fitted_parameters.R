@@ -214,14 +214,11 @@ write_fitted_parameters <- function(model.path, parhistory) {
 
 	filename = csvname(parameterpath, "fitted_parameters_preference_matrix", identifier)
 	writecsv(preference_matrix_input_NEW, filename, row.names=TRUE)
-	write.table(preference_matrix_input_NEW,file=paste(parameterpath,"fitted_parameters_preference_matrix","-",identifier,".csv",sep=""),sep=",",row.names=TRUE)	# ZZ look at where these get written - also use "identifier"
 
 	filename = csvname(parameterpath, "fitted_parameters_uptake_and_mortality_rates", identifier)
 	writecsv(uptake_mort_input_NEW, filename, row.names=FALSE)
-	write.table(uptake_mort_input_NEW,file=paste(parameterpath,"fitted_parameters_uptake_and_mortality_rates","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
 	filename = csvname(parameterpath, "fitted_parameters_microbiology_rates", identifier)
 	writecsv(microbiology_input_NEW, filename, row.names=FALSE)
-	write.table(microbiology_input_NEW,file=paste(parameterpath,"fitted_parameters_microbiology_rates","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 }
 

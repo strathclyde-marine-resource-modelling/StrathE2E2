@@ -4,21 +4,21 @@
 \alias{read_model}
 \title{read designated model}
 \usage{
-read_model(model.name, model.variant, model.tag = "", user.path = "",
-  nyears = 20, annealing = FALSE)
+read_model(model.name, model.variant, model.subdir = "",
+  model.ident = "base", user.path = "", nyears = 20)
 }
 \arguments{
 \item{model.name}{name of model to read}
 
 \item{model.variant}{read the designated model variant (no default)}
 
-\item{model.tag}{appended to output files (e.g. OFFSHORE_model_annualresults-TAG.csv instead of just OFFSHORE_model_annualresults.csv)}
+\item{model.subdir}{store results in this sub directory of the main results folder}
+
+\item{model.ident}{appended to output files (e.g. OFFSHORE_model_annualresults-TAG.csv instead of just OFFSHORE_model_annualresults.csv)}
 
 \item{user.path}{path to users top level model folder}
 
 \item{nyears}{number of years that model will run}
-
-\item{annealing}{boolean stating whether annealing settings are to be returned}
 }
 \value{
 model object

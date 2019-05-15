@@ -24,6 +24,10 @@ check.exists <- function(filename) {
 	}
 }
 
+isdefined <- function(var, val) {
+	exists(var) && (get(var) == val)
+}
+
 # read CSV data from the path units
 # by default first line of file is treated as a header line
 #	readcsv(MODELPATH, VERSION, "fitted_parameters.csv")

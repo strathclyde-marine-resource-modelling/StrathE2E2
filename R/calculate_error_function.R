@@ -96,18 +96,16 @@ calculate_error_function <- function(model, opt_results) {
 	#-----------------------------------------------------------------
 	filename = csvname(resultsdir, "model_likelihood_results", identifier)
 	writecsv(Partial_chi, filename)
-	write.table(Partial_chi,file=paste(resultsdir,"model_likelihood_results","-",identifier,".csv",sep=""),sep=",")				# ZZ where is this read? and why is it written here
 
 	filename = csvname(resultsdir, "model_target_annualresults_plus_chi", identifier)
 	writecsv(opt_results, filename, row.names=FALSE)
-	write.table(opt_results,file=paste(resultsdir,"model_target_annualresults_plus_chi","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)	# ZZ where is this read? and why is it written here
 
 	#-------------------------------------------------------------------------------------------------------
 
 	list(
-		"annual_obj"	= Objannual,
-		"partial_chi"	= Partial_chi,
-		"opt_results"	= opt_results
+		annual_obj	= Objannual,
+		partial_chi	= Partial_chi,
+		opt_results	= opt_results
 	)
 	#Objannual
 }

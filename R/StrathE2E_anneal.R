@@ -361,10 +361,12 @@ StrathE2E_anneal <- function(model) {
 		#--------------------------------
 
 		proposalhistory<-rbind(proposalhistory,proposalstore)
-		parhistory<-rbind(parhistory,datastore)
+		filename <- csvname(resultsdir, "annealing_par-proposalhistory", identifier)
+                writecsv(proposalhistory, filename, row.names=FALSE)
 
-		write.table(proposalhistory,file=paste(oudir,"annealing_par-proposalhistory-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
-		write.table(parhistory,file=paste(oudir,"annealing_par-acceptedhistory-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
+                parhistory<-rbind(parhistory,datastore)
+                filename <- csvname(resultsdir, "annealing_par-acceptedhistory", identifier)
+                writecsv(parhistory, filename, row.names=FALSE)
 
 		#-------------------------------------------------------------------
 
@@ -406,6 +408,6 @@ StrathE2E_anneal <- function(model) {
 	#Compile the basemodel results into a dataframe and save
 	basemodel_output<-data.frame("proposed"=BASE_proposalstore_annual_obj)
 	basemodel_output$accepted<-BASE_acceptedstore_annual_obj
-	# ZZ TODO write.table(basemodel_output,file=paste(oudir,"annealing_basemodel_history-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
+	# ZZ TODO writetable(basemodel_output,file=paste(oudir,"annealing_basemodel_history-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 }
 

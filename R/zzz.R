@@ -1,3 +1,6 @@
+#
+# A little trickery to quieten warnings from R CMD check
+#
 .onLoad <- function(libname = find.package("StrathE2E2"), pkgname = "StrathE2E2") {
 
 	# CRAN Note avoidance

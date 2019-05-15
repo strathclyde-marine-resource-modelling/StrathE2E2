@@ -127,7 +127,6 @@ read_fitted_parameters <- function(model.path) {
 		PREF_bird_ceta		= preference_matrix_input$ceta[which(rownames(preference_matrix_input)=="bird")],
 		PREF_seal_ceta		= preference_matrix_input$ceta[which(rownames(preference_matrix_input)=="seal")],
 		PREF_disc_ceta		= preference_matrix_input$ceta[which(rownames(preference_matrix_input)=="discards")],
-		## PREF_corp_ceta	= preference_matrix_input$ceta[which(rownames(preference_matrix_input)=="corpses")],
 
 		# uptake_mort_input: 18+19+17+16 = 70 pars
 		# u_store: 18 pars

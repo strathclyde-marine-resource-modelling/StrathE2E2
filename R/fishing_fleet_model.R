@@ -28,6 +28,7 @@ fishing_fleet_model <- function(model) {
 	gear_ploughing_rate		<- el(fleet.model, "gear_ploughing_rate")
 	gear_habitat_activity		<- el(fleet.model, "gear_habitat_activity")
 	HRscale_vector			<- el(fleet.model, "HRscale_vector")
+	HRscale_vector_muliplier	<- el(fleet.model, "HRscale_vector_multiplier")
 	gear_mult			<- el(fleet.model, "gear_mult")
 	quota_nonquota_parms_vector	<- el(fleet.model, "quota_nonquota_parms_vector")
 	DFsize_SWITCH			<- el(fleet.model, "DFsize_SWITCH")
@@ -46,30 +47,7 @@ fishing_fleet_model <- function(model) {
 	xstart				<- initial.state
 	out				<- 0
 
-
-	#FLEET_MODEL <- function(
-	#		gear_activity,
-        #               gear_group_rel_power,
-        #               gear_group_discard,
-        #               gear_group_gutting,
-        #               gear_ploughing_rate,
-        #               gear_habitat_activity,
-        #               HRscale_vector,
-        #               gear_mult,
-        #               quota_nonquota_parms_vector,
-        #               DFsize_SWITCH,
-        #               DFdiscard_SWITCH,
-        #               plough_depth_vector,
-        #               BSmort_gear,
-	#		BCmort_gear,
-        #               offal_prop_live_weight,
-        #               habitat_areas,
-        #               Last_January,
-        #               RESETS
-	#		xstart
-	#		out) 
-
-
+	HRscale_vector			<- HRscale_vector*HRscale_vector_muliplier
 
 ## ------- Fishing fleet parameters -------- ##
 

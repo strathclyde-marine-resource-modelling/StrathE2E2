@@ -8,23 +8,18 @@
 #'
 #' @param model.name name of model to read
 #' @param model.variant read the designated model variant (no default)
-#' @param model.tag appended to output files (e.g. OFFSHORE_model_annualresults-TAG.csv instead of just OFFSHORE_model_annualresults.csv)
+#' @param model.subdir store results in this sub directory of the main results folder
+#' @param model.ident appended to output files (e.g. OFFSHORE_model_annualresults-TAG.csv instead of just OFFSHORE_model_annualresults.csv)
 #' @param user.path path to users top level model folder
 #' @param nyears number of years that model will run
-#' @param annealing boolean stating whether annealing settings are to be returned
 #'
 #' @return model object
 #'
 #' @export
 #
-read_model <- function(model.name, model.variant, model.tag="", user.path="", nyears=20, annealing=FALSE) {
+read_model <- function(model.name, model.variant, model.subdir="", model.ident="base", user.path="", nyears=20) {
 
 	read.only <- (user.path == "")					# read only unless user path is specified - i.e. it's not just based on write permissions!
-
-	if (read.only && annealing) {
-		cat(" Error: cannot set annealing=TRUE when loading a system model!\n")
-		stop("Read-only model")
-	}
 
 	# full path to either the system model or the user specified one:
 	model.path <- get.model.path(model.name, model.variant, user.path)
@@ -35,7 +30,7 @@ read_model <- function(model.name, model.variant, model.tag="", user.path="", ny
 	sourcefile(makepath(model.path, MODEL_SETUP_SCRIPT))		# NorthSea/MODEL_SETUP.R
 
 	# run slot:
-	run <- set_default_run(model.name, model.variant, model.tag, nyears=nyears)
+	run <- set_default_run(model.name, model.variant, model.subdir, model.ident, nyears=20)
 
 	# read model inputs:
 	physical.parameters	<- read_physical_parameters(model.path)
@@ -80,17 +75,6 @@ read_model <- function(model.name, model.variant, model.tag="", user.path="", ny
 		run		= run,
 		data		= data
 	)
-
-	if (annealing) {
-		# annealing settings requested:
-		model$anneal <- read_annealing_parameters(model.path)
-
-		model$anneal$identifier		<- "StrathE2E-testbed"	# ZZ needs parameterising?
-		model$anneal$n_iter		<- 1			# ZZ 10
-		model$anneal$temperature	<- 0.00005		# parameter of the annealing scheme - sets the probability of accepting a retrograde step
-		model$anneal$cooling		<- 0.975		# rate at which the annualing scheme focusses in on a fit.
-		model$anneal$annual.target.data	<- read_annual_target_data(model.path)
-	}
 
 	model
 }

@@ -12,7 +12,6 @@
 #' @param output model output
 #' @param aggegates aggregated model output
 #'
-#' @importFrom utils write.table
 #' @importFrom NetIndices TrophInd AscInd PathInd GenInd EffInd
 #'
 #' @export
@@ -2155,10 +2154,10 @@ flowmatrix_template[(which(colnames(flowmatrix_template)==sourcename)),(which(co
 
 
 
+flow_matrix_all_fluxes <- flowmatrix_template
 #Save the new flow matrix to a file.
 filename = csvname(resultsdir, "flow_matrix_all_fluxes", identifier)
 writecsv(flowmatrix_template, filename, row.names=TRUE)
-write.table(flowmatrix_template,file=paste(resultsdir,"flow_matrix_all_fluxes",identifier,".csv",sep=""),sep=",",row.names=TRUE)
 
 #--------------------------------------------------------------------------------------------------------
 
@@ -2219,9 +2218,8 @@ flowmatrix_no_sp_rec[(which(colnames(flowmatrix_template)==sourcename)),(which(c
 
 #Save the new flow matrix to a file.
 
-filename = csvname(resultsdir, "flow_matrix_excl_spawn_recuit", identifier)
+filename = csvname(resultsdir, "flow_matrix_excl_spawn_recruit", identifier)
 writecsv(flowmatrix_no_sp_rec, filename, row.names=TRUE)
-write.table(flowmatrix_no_sp_rec,file=paste(resultsdir,"flow_matrix_excl_spawn_recuit",identifier,".csv",sep=""),sep=",",row.names=TRUE)
 
 #--------------------------------------------------------------------------------------------------------
 
@@ -2464,8 +2462,11 @@ lastfilled<-lastfilled+4
 
 filename = csvname(resultsdir, "Network_indices_output", identifier)
 writecsv(NetworkIndexResults, filename, row.names=TRUE)
-write.table(NetworkIndexResults,file=paste(resultsdir,"Network_indices_output",identifier,".csv",sep=""),sep=",",row.names=TRUE)
 
-	NetworkIndexResults
+	list(
+		flow_matrix_all_fluxes		= flow_matrix_all_fluxes,
+		flow_matrix_excl_spawn_recruit	= flowmatrix_no_sp_rec,
+		NetworkIndexResults		= NetworkIndexResults
+	)
 }
 

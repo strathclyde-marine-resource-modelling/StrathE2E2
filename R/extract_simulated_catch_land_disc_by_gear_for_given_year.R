@@ -245,28 +245,22 @@ inshore_landmat_t <-landmat_t
 #OUTPUT THE TRANSPOSED MATRICES TO FILES FOR STORAGE
 filename = csvname(resultsdir, "OFFSHORE_catchcomposition_by_gear", identifier)
 writecsv(offshore_catchmat_t, filename)
-write.table(offshore_catchmat_t,file=paste(resultsdir,"OFFSHORE_catchcomposition_by_gear",identifier,".csv",sep=""),sep=",")
 
 filename = csvname(resultsdir, "OFFSHORE_landingcomposition_by_gear", identifier)
 writecsv(offshore_landmat_t, filename)
-write.table(offshore_landmat_t,file=paste(resultsdir,"OFFSHORE_landingcomposition_by_gear",identifier,".csv",sep=""),sep=",")
 
 filename = csvname(resultsdir, "OFFSHORE_discardcomposition_by_gear", identifier)
 writecsv(offshore_discmat_t, filename)
-write.table(offshore_discmat_t,file=paste(resultsdir,"OFFSHORE_discardcomposition_by_gear",identifier,".csv",sep=""),sep=",")
 
 
 filename = csvname(resultsdir, "INSHORE_catchcomposition_by_gear", identifier)
 writecsv(inshore_catchmat_t, filename)
-write.table(inshore_catchmat_t,file=paste(resultsdir,"INSHORE_catchcomposition_by_gear",identifier,".csv",sep=""),sep=",")
 
 filename = csvname(resultsdir, "INSHORE_landingcomposition_by_gear", identifier)
 writecsv(inshore_landmat_t, filename)
-write.table(inshore_landmat_t,file=paste(resultsdir,"INSHORE_landingcomposition_by_gear",identifier,".csv",sep=""),sep=",")
 
 filename = csvname(resultsdir, "INSHORE_discardcomposition_by_gear", identifier)
 writecsv(inshore_discmat_t, filename)
-write.table(inshore_discmat_t,file=paste(resultsdir,"INSHORE_discardcomposition_by_gear",identifier,".csv",sep=""),sep=",")
 
 #-------------------------------------------------------------------------------------------------------
 

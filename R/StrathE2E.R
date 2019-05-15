@@ -68,7 +68,7 @@ StrathE2E <- function(model) {
 	)
 
 
-if (CHECKRESULTS==1) {
+if (isdefined("CHECKRESULTS", TRUE)) {
 		aggregates	<- aggregate_model_output(model, output)
 output$totalN <- aggregates$totalN
 output$totalN_o <- aggregates$totalN_o
@@ -205,21 +205,21 @@ output$offalct <- aggregates$offalct
 	stop("Halt")
 }
 	# main processed output:
-	aggregates		<- aggregate_model_output(model, output)
-	total.annual.catch	<- extract_timeseries_annual_landings(model, output)
-	annual.catch.by.gear	<- disaggregate_landings_discards_by_gear(fleet.output, total.annual.catch)
-	catch.land.disc		<- extract_simulated_catch_land_disc_by_gear_for_given_year(model, annual.catch.by.gear)
+	aggregates			<- aggregate_model_output(model, output)
+	total.annual.catch		<- extract_timeseries_annual_landings(model, output)
+	annual.catch.by.gear		<- disaggregate_landings_discards_by_gear(fleet.output, total.annual.catch)
+	catch.land.disc			<- extract_simulated_catch_land_disc_by_gear_for_given_year(model, annual.catch.by.gear)
 
 	# additional processed output:
-	monthly.averages	<- monthly_averages_of_final_year(model, output, aggregates)
-	annual.flux.wholedomain	<- derive_annual_results_wholedomain(model, output, aggregates)
-	annual.flux.offshore	<- derive_annual_results_offshore(model, output, aggregates)
-	annual.flux.inshore	<- derive_annual_results_inshore(model, output, aggregates)
-	network.index.results	<- assemble_flow_matrix_from_model_annual_output(model, output, aggregates)
+	monthly.averages		<- monthly_averages_of_final_year(model, output, aggregates)
+	annual.results.wholedomain	<- derive_annual_results_wholedomain(model, output, aggregates)
+	annual.results.offshore		<- derive_annual_results_offshore(model, output, aggregates)
+	annual.results.inshore		<- derive_annual_results_inshore(model, output, aggregates)
+	flow.matrices			<- assemble_flow_matrix_from_model_annual_output(model, output, aggregates)
 
-	annual.target.data	<- read_annual_target_data(model.path)
-	model.target.results	<- derive_model_target_results(model, output, aggregates, annual.target.data)
-	fit.to.target.data	<- calculate_error_function(model, model.target.results)
+	annual.target.data		<- read_annual_target_data(model.path)
+	model.target.results		<- derive_model_target_results(model, output, aggregates, annual.target.data)
+	fit.to.target.data		<- calculate_error_function(model, model.target.results)
 
 	results <- list(
 		model.parameters	= model.parameters,
@@ -228,15 +228,43 @@ output$offalct <- aggregates$offalct
 		fleet.output		= fleet.output,
 		total.annual.catch	= total.annual.catch,
 		annual.catch.by.gear	= annual.catch.by.gear,
-		catch.land.disc		= catch.land.disc,
 		final.year.outputs	= list(
-			monthly.averages	= monthly.averages,
-			annual.flux.wholedomain	= annual.flux.wholedomain,
-			annual.flux.offshore	= annual.flux.offshore,
-			annual.flux.inshore	= annual.flux.inshore,
-			network.index.results	= network.index.results,
-			annual.target.data	= annual.target.data,
-			fit.to.target.data	= fit.to.target.data
+			# catch/landings/discards:
+			inshore_catchmat		= el(catch.land.disc, "inshore_catchmat"),
+			inshore_discmat			= el(catch.land.disc, "inshore_discmat"),
+			inshore_landmat			= el(catch.land.disc, "inshore_landmat"),
+			offshore_catchmat		= el(catch.land.disc, "offshore_catchmat"),
+			offshore_landmat		= el(catch.land.disc, "offshore_landmat"),
+			offshore_discmat		= el(catch.land.disc, "offshore_discmat"),
+
+			monthly.averages		= monthly.averages,
+
+			mass_results_inshore		= el(annual.results.inshore, "mass_results"),
+			maxmass_results_inshore		= el(annual.results.inshore, "maxmass_results"),
+			minmass_results_inshore		= el(annual.results.inshore, "minmass_results"),
+			annual_flux_results_inshore	= el(annual.results.inshore, "annual_flux_results"),
+
+			mass_results_offshore		= el(annual.results.offshore, "mass_results"),
+			maxmass_results_offshore	= el(annual.results.offshore, "maxmass_results"),
+			minmass_results_offshore	= el(annual.results.offshore, "minmass_results"),
+			annual_flux_results_offshore	= el(annual.results.offshore, "annual_flux_results"),
+
+			mass_results_wholedomain	= el(annual.results.wholedomain, "mass_results"),
+			maxmass_results_wholedomain	= el(annual.results.wholedomain, "maxmass_results"),
+			minmass_results_wholedomain	= el(annual.results.wholedomain, "minmass_results"),
+			annual_flux_results_wholedomain	= el(annual.results.wholedomain, "annual_flux_results"),
+
+			# Network fluxes:
+			flow_matrix_all_fluxes		= el(flow.matrices, "flow_matrix_all_fluxes"),
+			flow_matrix_excl_spawn_recruit	= el(flow.matrices, "flow_matrix_excl_spawn_recruit"),
+			NetworkIndexResults		= el(flow.matrices, "NetworkIndexResults"),
+
+			annual.target.data		= annual.target.data,
+
+			# error function/likelihoods:
+			annual_obj			= el(fit.to.target.data, "annual_obj"),
+			partial_chi			= el(fit.to.target.data, "partial_chi"),
+			opt_results			= el(fit.to.target.data, "opt_results")
 		)
 	)
 

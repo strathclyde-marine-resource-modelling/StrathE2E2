@@ -1,17 +1,17 @@
 #
-# read_annealing_parameters.R
+# read_SD_control_ecology.R
 #
 #' return list of annealing paramters
 #'
 #' @param model.path model path
 #'
-#' @return list of annealing parameters
+#' @return list of annealing parameters for fitting ecology model
 #'
 #' @export
 #
-read_annealing_parameters <- function(model.path) {
+read_SD_control_ecology.R <- function(model.path) {
 
-	annealing_control_data <- readcsv(model.path, "Annealing/annealing.csv")	# ZZ should be filevar
+	annealing_control_data <- readcsv(model.path, SD_CONTROL_DIR, "annealing_SD_ecology.csv")	# ZZ should be set in MODEL_SETUP_SCRIPT.R?
 
 	#Set the axis min and max for the display plot
 	axmin		<- annealing_control_data[1,1]

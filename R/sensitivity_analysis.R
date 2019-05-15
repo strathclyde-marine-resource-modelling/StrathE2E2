@@ -87,7 +87,7 @@ outf_label<-"_VERSION11-12_OAT(FFEset3)"  # Identification label incorporated in
 
 #This an internal label  - don't edit this
     AAA<-outf_label
-
+identifier <- AAA
 
 
 # CONFIGURATION OF THE SENSITIVITY ANALYSIS
@@ -497,8 +497,11 @@ for (kkk in 1:n_iter){
 			#-------------------
 
 
-			write.table(results_df_out,file=paste(oudir,"OAT_results",outf_label,".csv",sep=""),sep=",",row.names=FALSE)
-			write.table(OAT_parmvalues,file=paste(oudir,"OAT_parameter_values",outf_label,".csv",sep=""),sep=",",row.names=FALSE)
+			filename <- csvname(resultsdir, "OAT_results", identifier)
+			writecsv(results_df_out, filename, row.names=FALSE)
+
+			filename <- csvname(resultsdir, "OAT_parameter_values", identifier)
+			writecsv(OAT_parmvalues, filename, row.names=FALSE)
 
 		}  # end inner Runs jjjj loop
 	}  # end mid levels qqqq loop

@@ -408,6 +408,7 @@ activity_distribution_vector<-c(activity_distribution_vector,as.numeric(gear_hab
 		gear_ploughing_rate		= gear_ploughing_rate,
 		gear_habitat_activity		= gear_habitat_activity,
 		HRscale_vector			= HRscale_vector,
+		HRscale_vector_multiplier	= HRscale_vector_multiplier,
 		offal_prop_live_weight		= offal_prop_live_weight,
 		gear_mult			= gear_mult,
 		quota_nonquota_parms_vector	= quota_nonquota_parms_vector,

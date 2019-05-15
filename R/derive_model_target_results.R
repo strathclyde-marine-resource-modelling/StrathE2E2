@@ -12,8 +12,6 @@
 #'
 #' @return target results
 #'
-#' @importFrom utils write.table
-#'
 #' @export
 #
 derive_model_target_results <- function(model, output, aggregates, annualtargetdata) {
@@ -1226,8 +1224,7 @@ names(target_results_output)<-names(opt_results[,c(3,6,7)])
 #Print the data to a csv file
 #-----------------------------------------------------------------
 filename = csvname(resultsdir, "model_target_annualresults", identifier)
-writecsv(target_results_output, filename, row.names=TRUE)
-write.table(target_results_output,file=paste(resultsdir,"model_target_annualresults","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
+writecsv(target_results_output, filename, row.names=FALSE)
 
 #-------------------------------------------------------------------------------------------------------
 

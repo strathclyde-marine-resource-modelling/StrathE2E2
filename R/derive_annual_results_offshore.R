@@ -7,8 +7,6 @@
 #' @param output  model output
 #' @param aggregates  aggregated model output
 #'
-#' @importFrom utils write.table
-#'
 #' @export
 #
 derive_annual_results_offshore <- function(model, output, aggregates) {
@@ -823,7 +821,6 @@ mass_results
 #-----------------------------------------------------------------
 filename = csvname(resultsdir, "OFFSHORE_model_anav_biomass", identifier)
 writecsv(mass_results, filename, row.names=FALSE)
-write.table(mass_results,paste0(resultsdir,"OFFSHORE_model_anav_biomass","-",identifier,".csv"),sep=",",row.names=FALSE)
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -927,7 +924,6 @@ maxmass_results
 #-----------------------------------------------------------------
 filename = csvname(resultsdir, "OFFSHORE_model_maximum_biomass", identifier)
 writecsv(maxmass_results, filename, row.names=FALSE)
-write.table(maxmass_results,file=paste(resultsdir,"OFFSHORE_model_maximum_biomass","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -1032,7 +1028,6 @@ minmass_results
 #-----------------------------------------------------------------
 filename = csvname(resultsdir, "OFFSHORE_model_minimum_biomass", identifier)
 writecsv(minmass_results, filename, row.names=FALSE)
-write.table(minmass_results,file=paste(resultsdir,"OFFSHORE_model_minimum_biomass","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -2096,8 +2091,12 @@ names(annual_flux_results)<-c("Model_annual_flux","Units","Description")
 
 	filename = csvname(resultsdir, "OFFSHORE_model_annualresults", identifier)
 	writecsv(annual_flux_results, filename, row.names=FALSE)
-	write.table(annual_flux_results,file=paste(resultsdir,"OFFSHORE_model_annualresults","-",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
-	annual_flux_results
+	list(
+		mass_results		= mass_results,
+		maxmass_results		= maxmass_results,
+		minmass_results		= minmass_results,
+		annual_flux_results	= annual_flux_results
+	)
 }
 

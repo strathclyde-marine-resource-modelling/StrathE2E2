@@ -63,7 +63,6 @@ monthly_averages_of_final_year <- function(model, output, aggregates) {
 
 	filename = csvname(resultsdir, "model_monthlyresults", identifier)
 	writecsv(monthlyfinal, filename, row.names=FALSE)
-	write.table(monthlyfinal, file=paste(resultsdir,"model_monthlyresults",identifier,".csv",sep=""),sep=",",row.names=FALSE)
 
 	monthlyfinal
 }
