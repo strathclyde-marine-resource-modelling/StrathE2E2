@@ -16,17 +16,17 @@ rebuild_model_data <- function(model) {
 	run <- model$run
 
 	# Unpack:
-	data			<- el(model, "data")
+	data			<- elt(model, "data")
 
-	state.vars		<- el(data, "state.vars")
-	physical.parms		<- el(data, "physical.parms")
-	bio.events		<- el(data, "bio.events")
-	fixed.parms		<- el(data, "fixed.parms")
-	physics			<- el(data, "physics")
-	boundconc		<- el(data, "boundconc")
-	fishing.parms		<- el(data, "fishing.parms")
-	rate.multipliers	<- el(data, "rate.multipliers")
-	fitted.parms		<- el(data, "fitted.parms")
+	state.vars		<- elt(data, "state.vars")
+	physical.parms		<- elt(data, "physical.parms")
+	bio.events		<- elt(data, "bio.events")
+	fixed.parms		<- elt(data, "fixed.parms")
+	physics			<- elt(data, "physics")
+	boundconc		<- elt(data, "boundconc")
+	fishing.parms		<- elt(data, "fishing.parms")
+	rate.multipliers	<- elt(data, "rate.multipliers")
+	fitted.parms		<- elt(data, "fitted.parms")
 
 	# rebuild data for model:
 	#initial.state	<- build_initial_state(state.vars, physical.parms)

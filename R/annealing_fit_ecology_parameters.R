@@ -68,24 +68,23 @@
 
 annealing_fit_ecology_parameters <- function(model) {
 
-	model.path			<- el(model, "path")
-	data				<- el(model, "data")
-	fitter.parameters		<- el(data, "fitted.parameters")
-	fleet.model			<- el(data, "fleet.model")
-	HRscale_vector_multiplier	<- el(fleet.model, "HRscale_vector_multiplier")
+	model.path			<- elt(model, "path")
+	data				<- elt(model, "data")
+	fitted.parameters		<- elt(data, "fitted.parameters")
+	fleet.model			<- elt(data, "fleet.model")
+	HRscale_vector_multiplier	<- elt(fleet.model, "HRscale_vector_multiplier")
 
-	run				<- el(model, "run")
-        resultsdir			<- el(run, "resultsdir")
+	run				<- elt(model, "run")
+        resultsdir			<- elt(run, "resultsdir")
+	nyears				<- elt(run, "nyears")			# Number of years to run each simulation
+	identifier			<- elt(run, "TESTING_RUN_NEWTRIAL")
 
 	print(date())
 
 	# LOCK THE BIRD SEAL AND CETACEAN UPTAKE PARAMETERES OR NOT.....
-	toppredlock <- 0		# 0 = LOCKED; 1 = ALLOW TO BE FITTED
-
-	nyears <- 40		#Number of years to run each simulation
+	toppredlock <- TRUE
 
 	# Set the annealing parameters:
-	identifier	<- "TESTING_RUN_NEWTRIAL"
 	n_iter		<- 1000		# Maximum number of iterations of the parameter randomisation process
 	temperature	<- 0.00005	# values 0.00005 to 5. Higher values make the annealing process accept more bad jumps in th early stages 
 	cooling		<- 0.975	# values < 1. Suggest do not change this
@@ -99,13 +98,13 @@ annealing_fit_ecology_parameters <- function(model) {
 	# this is simply the read_fitted_parameters
 	#source("library/ecology/load_fitted_parameter_values_into_datastore_format_CLEAN_tp_kelp.R")
 
-	datastore <- model$data$fitted.parameters
-	datastore <- read_fitted_parameters(model.path)         # ZZ lets try it as a list
-        datastore$annual_obj <- 1e-60                           # ZZ does this have to be part of datastore? - it makes it part of the history record, so it's convenient
+	#datastore <- read_fitted_parameters(model.path)         # ZZ lets try it as a list
+	datastore <- fitted.parameters
+        datastore$annual_obj <- 1e-60
 
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	parhistory	<- as.data.frame(datastore)
+	parhistory	<- as.data.frame(datastore)		# these are all data frames
 	proposalhistory	<- parhistory
 	proposalstore	<- proposalhistory
 
@@ -127,31 +126,19 @@ annealing_fit_ecology_parameters <- function(model) {
 		#At the start of each cycle need to run the fleet model setup 
 		#source("library/PREPARE_THE_FISHING_FLEET_MODEL_tp_KELP.R")
 
-
 		#source("library/RUN_THE_FISHING_FLEET_MODEL_tp_KELP.R")
 		#_________________________________________________________________
 		#Jiggle the parameter values and load them into the vector which is passed to the model function
 
-		perturbed <- perturb_parameters(datastore, toppredlock)
+		perturbed <- perturb_parameters(datastore, SD_control, toppredlock)
 
-        	#if(toppredlock==0){
-			# LOCKED - some params are not perturbed
-			#source("library/ecology/annealing_set_parameter_values_and_make_parms_vector_SD_fromfile_REVISED-V4_tp_kelp_T.R")
-        	#}
-        	#if(toppredlock==1){
-			#source("library/ecology/annealing_set_parameter_values_and_make_parms_vector_SD_fromfile_REVISED-V4_tp_kelp.R")
-        	#}
-		#_________________________________________________________________
-		#	source("library/RUN_THE_ECOLOGY_MODEL_tp_KELP.R")
-		#source("library/RUN_THE_ECOLOGY_MODEL_tp_KELP-VERSION11.R")
+
 		results <- StrathE2E(model)
+showall("results", results)
+stop("the end")
 
-		#_________________________________________________________________
-		#Derive the set of annual summary results to compare with target data from the final year of the run and write to a file
-		#source("library/tools/derive_model_target_results_MERP_2SURF_V10_extra3_tp_kelp.R")
-		#_________________________________________________________________
-		#source("library/tools/calculate_error_function_MERP_2SURF_V10_CLEAN_tp_kelp.R")
-		#_________________________________________________________________
+		err <- elt(results, "final.year.outputs", "annual_obj")
+		datastore$annual_obj <- err
 
 		for(ijk in 1:ncol(proposalstore)){	# ZZ can this be done without a loop?
 			#proposalstore[1,ijk]<-Results[ijk]
@@ -161,13 +148,13 @@ annealing_fit_ecology_parameters <- function(model) {
 		temperature<-temperature*cooling
 
 		if (kkk==1){
-			lastbest<-datastore$annual_obj		# ZZ not a data.frame now [nrow(datastore)]
+			lastbest <- err
 		}
 
 		#-------------------------------------------------------------------
 		#Now the Metropolis algorithm.....
 
-		lik_ratio<-exp(((log(Results["annual_obj"])) - log(lastbest))/temperature)
+		lik_ratio<-exp(((log(err)) - log(lastbest))/temperature)
 
 		rand<-runif(1,0,1)
 
@@ -177,15 +164,14 @@ annealing_fit_ecology_parameters <- function(model) {
 
 		if(lik_ratio>rand){
 			n_acceptances<-n_acceptances+1
-			for(ijk in 1:ncol(datastore)){
-				datastore[1,ijk]<-Results[ijk]
-			}
+			#for(ijk in 1:ncol(datastore)){
+				#datastore[1,ijk]<-Results[ijk]
+			#}
+			datastore <- perturbed
 
-			lastbest<-Results["annual_obj"]
+			lastbest <- err
 
-			new_accepted<-" Accepted: YES"
-
-
+			new_accepted <- " Accepted: YES"
 		}
 
 		#--------------------------------
@@ -201,7 +187,7 @@ annealing_fit_ecology_parameters <- function(model) {
 		#-------------------------------------------------------------------
 
 		#print(paste("Itn:",kkk+1," ",lastbest,"   ",new_accepted,sep=""))
-		print(paste("Itn: ",kkk+1," ","Proposal: ",Results["annual_obj"],"   ",new_accepted,sep=""))
+		print(paste("Itn: ",kkk+1," ","Proposal: ", err,"   ",new_accepted,sep=""))
 
 		#-------------------------------------------------------------------
 
@@ -209,13 +195,15 @@ annealing_fit_ecology_parameters <- function(model) {
 		par(mfrow=c(1,1))
 
 		#Plot the basemodel results 
+		axmin <- elt(SD_control, "axmin")
+		axmax <- elt(SD_control, "axmax")
 		plot(seq(1,nrow(proposalhistory)),proposalhistory$annual_obj,ylim=c(axmin,axmax),xlim=c(1,kkk+1),xlab="Iterations",ylab="Likelihood",type="l",col="grey")
 		points(seq(1,nrow(parhistory)),parhistory$annual_obj,type="l",col="black",lwd=3)
 	}
 
 	#At the conclusion of the whole process, extract the final row of the parhistory into the format of model fitted parameter files and save to disc
 
-	source(paste("library/tools/extract_from_datastore_format_back_into_fitted_parameter_files_tp_kelp.R",sep=""))
+	source(paste("library/tools/extract_from_datastore_format_back_into_fitted_parameter_files_tp_kelp.R",sep=""))	# ZZ needs sorting
 
 }
 

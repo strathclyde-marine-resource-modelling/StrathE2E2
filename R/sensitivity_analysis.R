@@ -69,7 +69,7 @@ sensitivity_analysis <- function(model) {
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	model.path      <- el(model, "path")
+	model.path      <- elt(model, "path")
 
 
 #The output time series of proposed and accepted parameters and likelihoods will be named...

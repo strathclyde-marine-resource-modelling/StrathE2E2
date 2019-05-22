@@ -13,29 +13,29 @@
 #
 monthly_averages_of_final_year <- function(model, output, aggregates) {
 
-	run		<- el(model, "run")
-	data		<- el(model, "data")
+	run		<- elt(model, "run")
+	data		<- elt(model, "data")
 
-	nyears		<- el(run, "nyears")
-	identifier	<- el(run, "identifier")
-	resultsdir	<- el(run, "resultsdir")
+	nyears		<- elt(run, "nyears")
+	identifier	<- elt(run, "identifier")
+	resultsdir	<- elt(run, "resultsdir")
 
-	physical.parms	<- el(data, "physical.parameters")
-	si_depth	<- el(physical.parms, "si_depth")
-	so_depth	<- el(physical.parms, "so_depth")
-	d_depth		<- el(physical.parms, "d_depth")
-	x_shallowprop	<- el(physical.parms, "x_shallowprop")
+	physical.parms	<- elt(data, "physical.parameters")
+	si_depth	<- elt(physical.parms, "si_depth")
+	so_depth	<- elt(physical.parms, "so_depth")
+	d_depth		<- elt(physical.parms, "d_depth")
+	x_shallowprop	<- elt(physical.parms, "x_shallowprop")
 
-	nitrate_d	<- el(output, "nitrate_d")
-	ammonia_d	<- el(output, "ammonia_d")
+	nitrate_d	<- elt(output, "nitrate_d")
+	ammonia_d	<- elt(output, "ammonia_d")
 
-	s_nitrate	<- el(aggregates, "s_nitrate")
-	s_ammonia	<- el(aggregates, "s_ammonia")
-	s_phyt		<- el(aggregates, "s_phyt")
-	herb		<- el(aggregates, "herb")
-	carn		<- el(aggregates, "carn")
-	benthslar	<- el(aggregates, "benthslar")
-	benthclar	<- el(aggregates, "benthclar")
+	s_nitrate	<- elt(aggregates, "s_nitrate")
+	s_ammonia	<- elt(aggregates, "s_ammonia")
+	s_phyt		<- elt(aggregates, "s_phyt")
+	herb		<- elt(aggregates, "herb")
+	carn		<- elt(aggregates, "carn")
+	benthslar	<- elt(aggregates, "benthslar")
+	benthclar	<- elt(aggregates, "benthclar")
 
 	xvolume_si<-si_depth*x_shallowprop
 	xvolume_so<-so_depth*(1-x_shallowprop)

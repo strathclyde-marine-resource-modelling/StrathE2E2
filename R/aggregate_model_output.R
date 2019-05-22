@@ -14,29 +14,29 @@
 aggregate_model_output <- function(model, output) {
 
 	# Unpack:
-	data		<- el(model, "data")
-	physical.parms	<- el(data, "physical.parameters")
+	data		<- elt(model, "data")
+	physical.parms	<- elt(data, "physical.parameters")
 
-	x_poros_s1	<- el(physical.parms, "x_poros_s1")
-	x_poros_s2	<- el(physical.parms, "x_poros_s2")
-	x_poros_s3	<- el(physical.parms, "x_poros_s3")
-	x_poros_d1	<- el(physical.parms, "x_poros_d1")
-	x_poros_d2	<- el(physical.parms, "x_poros_d2")
-	x_poros_d3	<- el(physical.parms, "x_poros_d3")
+	x_poros_s1	<- elt(physical.parms, "x_poros_s1")
+	x_poros_s2	<- elt(physical.parms, "x_poros_s2")
+	x_poros_s3	<- elt(physical.parms, "x_poros_s3")
+	x_poros_d1	<- elt(physical.parms, "x_poros_d1")
+	x_poros_d2	<- elt(physical.parms, "x_poros_d2")
+	x_poros_d3	<- elt(physical.parms, "x_poros_d3")
 
-	x_area_s1	<- el(physical.parms, "x_area_s1")
-	x_area_s2	<- el(physical.parms, "x_area_s2")
-	x_area_s3	<- el(physical.parms, "x_area_s3")
-	x_area_d1	<- el(physical.parms, "x_area_d1")
-	x_area_d2	<- el(physical.parms, "x_area_d2")
-	x_area_d3	<- el(physical.parms, "x_area_d3")
+	x_area_s1	<- elt(physical.parms, "x_area_s1")
+	x_area_s2	<- elt(physical.parms, "x_area_s2")
+	x_area_s3	<- elt(physical.parms, "x_area_s3")
+	x_area_d1	<- elt(physical.parms, "x_area_d1")
+	x_area_d2	<- elt(physical.parms, "x_area_d2")
+	x_area_d3	<- elt(physical.parms, "x_area_d3")
 
-	x_depth_s1	<- el(physical.parms, "x_depth_s1")
-	x_depth_s2	<- el(physical.parms, "x_depth_s2")
-	x_depth_s3	<- el(physical.parms, "x_depth_s3")
-	x_depth_d1	<- el(physical.parms, "x_depth_d1")
-	x_depth_d2	<- el(physical.parms, "x_depth_d2")
-	x_depth_d3	<- el(physical.parms, "x_depth_d3")
+	x_depth_s1	<- elt(physical.parms, "x_depth_s1")
+	x_depth_s2	<- elt(physical.parms, "x_depth_s2")
+	x_depth_s3	<- elt(physical.parms, "x_depth_s3")
+	x_depth_d1	<- elt(physical.parms, "x_depth_d1")
+	x_depth_d2	<- elt(physical.parms, "x_depth_d2")
+	x_depth_d3	<- elt(physical.parms, "x_depth_d3")
 
 	out		<- output
 
@@ -44,235 +44,235 @@ aggregate_model_output <- function(model, output) {
 
 	#Create a column for the total nitrogen mass in the system
 	aggregates$totalN <-
-		el(out, "detritus_so")+
-		el(out, "detritus_d")+
-		el(out, "x_detritus_s1")+
-		el(out, "x_detritus_s2")+
-		el(out, "x_detritus_s3")+
-		el(out, "x_detritus_d1")+
-		el(out, "x_detritus_d2")+
-		el(out, "x_detritus_d3")+
-		el(out, "xR_detritus_s1")+
-		el(out, "xR_detritus_s2")+
-		el(out, "xR_detritus_s3")+
-		el(out, "xR_detritus_d1")+
-		el(out, "xR_detritus_d2")+
-		el(out, "xR_detritus_d3")+
-		el(out, "discard_o")+
-		el(out, "corpse_s0")+
-		el(out, "corpse_s1")+
-		el(out, "corpse_s2")+
-		el(out, "corpse_s3")+
-		el(out, "corpse_d0")+
-		el(out, "corpse_d1")+
-		el(out, "corpse_d2")+
-		el(out, "corpse_d3")+
-		el(out, "ammonia_so")+
-		el(out, "ammonia_d")+
-		el(out, "x_ammonia_s1")+
-		el(out, "x_ammonia_s2")+
-		el(out, "x_ammonia_s3")+
-		el(out, "x_ammonia_d1")+
-		el(out, "x_ammonia_d2")+
-		el(out, "x_ammonia_d3")+
-		el(out, "nitrate_so")+
-		el(out, "nitrate_d")+
-		el(out, "x_nitrate_s1")+
-		el(out, "x_nitrate_s2")+
-		el(out, "x_nitrate_s3")+
-		el(out, "x_nitrate_d1")+
-		el(out, "x_nitrate_d2")+
-		el(out, "x_nitrate_d3")+
-		el(out, "kelpN")+
-		el(out, "kelpdebris")+
-		el(out, "phyt_so")+
-		el(out, "phyt_d")+
-		el(out, "herb_o")+
-		el(out, "herb_i")+
-		el(out, "carn_o")+
-		el(out, "carn_i")+
-		el(out, "benthslar_o")+
-		el(out, "benthclar_o")+
-		el(out, "benths_o")+
-		el(out, "benthc_o")+
-		el(out, "fishplar_o")+
-		el(out, "fishplar_i")+
-		el(out, "fishp_o")+
-		el(out, "fishp_i")+
-		el(out, "fishdlar_o")+
-		el(out, "fishdlar_i")+
-		el(out, "fishd_o")+
-		el(out, "fishd_i")+
-		el(out, "fishm_o")+
-		el(out, "fishm_i")+
-		el(out, "bird_o")+
-		el(out, "bird_i")+
-		el(out, "seal_o")+
-		el(out, "seal_i")+
-		el(out, "ceta_o")+
-		el(out, "ceta_i")+
-		el(out, "detritus_si")+
-		el(out, "ammonia_si")+
-		el(out, "nitrate_si")+
-		el(out, "phyt_si")+
-		el(out, "benthslar_i")+
-		el(out, "benthclar_i")+
-		el(out, "benths_i")+
-		el(out, "benthc_i")+
-		el(out, "discard_i")
+		elt(out, "detritus_so")+
+		elt(out, "detritus_d")+
+		elt(out, "x_detritus_s1")+
+		elt(out, "x_detritus_s2")+
+		elt(out, "x_detritus_s3")+
+		elt(out, "x_detritus_d1")+
+		elt(out, "x_detritus_d2")+
+		elt(out, "x_detritus_d3")+
+		elt(out, "xR_detritus_s1")+
+		elt(out, "xR_detritus_s2")+
+		elt(out, "xR_detritus_s3")+
+		elt(out, "xR_detritus_d1")+
+		elt(out, "xR_detritus_d2")+
+		elt(out, "xR_detritus_d3")+
+		elt(out, "discard_o")+
+		elt(out, "corpse_s0")+
+		elt(out, "corpse_s1")+
+		elt(out, "corpse_s2")+
+		elt(out, "corpse_s3")+
+		elt(out, "corpse_d0")+
+		elt(out, "corpse_d1")+
+		elt(out, "corpse_d2")+
+		elt(out, "corpse_d3")+
+		elt(out, "ammonia_so")+
+		elt(out, "ammonia_d")+
+		elt(out, "x_ammonia_s1")+
+		elt(out, "x_ammonia_s2")+
+		elt(out, "x_ammonia_s3")+
+		elt(out, "x_ammonia_d1")+
+		elt(out, "x_ammonia_d2")+
+		elt(out, "x_ammonia_d3")+
+		elt(out, "nitrate_so")+
+		elt(out, "nitrate_d")+
+		elt(out, "x_nitrate_s1")+
+		elt(out, "x_nitrate_s2")+
+		elt(out, "x_nitrate_s3")+
+		elt(out, "x_nitrate_d1")+
+		elt(out, "x_nitrate_d2")+
+		elt(out, "x_nitrate_d3")+
+		elt(out, "kelpN")+
+		elt(out, "kelpdebris")+
+		elt(out, "phyt_so")+
+		elt(out, "phyt_d")+
+		elt(out, "herb_o")+
+		elt(out, "herb_i")+
+		elt(out, "carn_o")+
+		elt(out, "carn_i")+
+		elt(out, "benthslar_o")+
+		elt(out, "benthclar_o")+
+		elt(out, "benths_o")+
+		elt(out, "benthc_o")+
+		elt(out, "fishplar_o")+
+		elt(out, "fishplar_i")+
+		elt(out, "fishp_o")+
+		elt(out, "fishp_i")+
+		elt(out, "fishdlar_o")+
+		elt(out, "fishdlar_i")+
+		elt(out, "fishd_o")+
+		elt(out, "fishd_i")+
+		elt(out, "fishm_o")+
+		elt(out, "fishm_i")+
+		elt(out, "bird_o")+
+		elt(out, "bird_i")+
+		elt(out, "seal_o")+
+		elt(out, "seal_i")+
+		elt(out, "ceta_o")+
+		elt(out, "ceta_i")+
+		elt(out, "detritus_si")+
+		elt(out, "ammonia_si")+
+		elt(out, "nitrate_si")+
+		elt(out, "phyt_si")+
+		elt(out, "benthslar_i")+
+		elt(out, "benthclar_i")+
+		elt(out, "benths_i")+
+		elt(out, "benthc_i")+
+		elt(out, "discard_i")
 
 	aggregates$totalN_o <-
-		el(out, "detritus_so")+
-		el(out, "detritus_d")+
-		el(out, "x_detritus_d1")+
-		el(out, "x_detritus_d2")+
-		el(out, "x_detritus_d3")+
-		el(out, "xR_detritus_d1")+
-		el(out, "xR_detritus_d2")+
-		el(out, "xR_detritus_d3")+
-		el(out, "discard_o")+
-		el(out, "corpse_d0")+
-		el(out, "corpse_d1")+
-		el(out, "corpse_d2")+
-		el(out, "corpse_d3")+
-		el(out, "ammonia_so")+
-		el(out, "ammonia_d")+
-		el(out, "x_ammonia_d1")+
-		el(out, "x_ammonia_d2")+
-		el(out, "x_ammonia_d3")+
-		el(out, "nitrate_so")+
-		el(out, "nitrate_d")+
-		el(out, "x_nitrate_d1")+
-		el(out, "x_nitrate_d2")+
-		el(out, "x_nitrate_d3")+
-		el(out, "phyt_so")+
-		el(out, "phyt_d")+
-		el(out, "herb_o")+
-		el(out, "carn_o")+
-		el(out, "benthslar_o")+
-		el(out, "benthclar_o")+
-		el(out, "benths_o")+
-		el(out, "benthc_o")+
-		el(out, "fishplar_o")+
-		el(out, "fishp_o")+
-		el(out, "fishdlar_o")+
-		el(out, "fishd_o")+
-		el(out, "fishm_o")+
-		el(out, "bird_o")+
-		el(out, "seal_o")+
-		el(out, "ceta_o")
+		elt(out, "detritus_so")+
+		elt(out, "detritus_d")+
+		elt(out, "x_detritus_d1")+
+		elt(out, "x_detritus_d2")+
+		elt(out, "x_detritus_d3")+
+		elt(out, "xR_detritus_d1")+
+		elt(out, "xR_detritus_d2")+
+		elt(out, "xR_detritus_d3")+
+		elt(out, "discard_o")+
+		elt(out, "corpse_d0")+
+		elt(out, "corpse_d1")+
+		elt(out, "corpse_d2")+
+		elt(out, "corpse_d3")+
+		elt(out, "ammonia_so")+
+		elt(out, "ammonia_d")+
+		elt(out, "x_ammonia_d1")+
+		elt(out, "x_ammonia_d2")+
+		elt(out, "x_ammonia_d3")+
+		elt(out, "nitrate_so")+
+		elt(out, "nitrate_d")+
+		elt(out, "x_nitrate_d1")+
+		elt(out, "x_nitrate_d2")+
+		elt(out, "x_nitrate_d3")+
+		elt(out, "phyt_so")+
+		elt(out, "phyt_d")+
+		elt(out, "herb_o")+
+		elt(out, "carn_o")+
+		elt(out, "benthslar_o")+
+		elt(out, "benthclar_o")+
+		elt(out, "benths_o")+
+		elt(out, "benthc_o")+
+		elt(out, "fishplar_o")+
+		elt(out, "fishp_o")+
+		elt(out, "fishdlar_o")+
+		elt(out, "fishd_o")+
+		elt(out, "fishm_o")+
+		elt(out, "bird_o")+
+		elt(out, "seal_o")+
+		elt(out, "ceta_o")
 
 
 	aggregates$totalN_i <-
-		el(out, "x_detritus_s1")+
-		el(out, "x_detritus_s2")+
-		el(out, "x_detritus_s3")+
-		el(out, "xR_detritus_s1")+
-		el(out, "xR_detritus_s2")+
-		el(out, "xR_detritus_s3")+
-		el(out, "corpse_s0")+
-		el(out, "corpse_s1")+
-		el(out, "corpse_s2")+
-		el(out, "corpse_s3")+
-		el(out, "x_ammonia_s1")+
-		el(out, "x_ammonia_s2")+
-		el(out, "x_ammonia_s3")+
-		el(out, "x_nitrate_s1")+
-		el(out, "x_nitrate_s2")+
-		el(out, "x_nitrate_s3")+
-		el(out, "herb_i")+
-		el(out, "carn_i")+
-		el(out, "fishplar_i")+
-		el(out, "fishp_i")+
-		el(out, "fishdlar_i")+
-		el(out, "fishd_i")+
-		el(out, "fishm_i")+
-		el(out, "bird_i")+
-		el(out, "seal_i")+
-		el(out, "ceta_i")+
-		el(out, "detritus_si")+
-		el(out, "ammonia_si")+
-		el(out, "nitrate_si")+
-		el(out, "kelpN")+
-		el(out, "kelpdebris")+
-		el(out, "phyt_si")+
-		el(out, "benthslar_i")+
-		el(out, "benthclar_i")+
-		el(out, "benths_i")+
-		el(out, "benthc_i")+
-		el(out, "discard_i")
+		elt(out, "x_detritus_s1")+
+		elt(out, "x_detritus_s2")+
+		elt(out, "x_detritus_s3")+
+		elt(out, "xR_detritus_s1")+
+		elt(out, "xR_detritus_s2")+
+		elt(out, "xR_detritus_s3")+
+		elt(out, "corpse_s0")+
+		elt(out, "corpse_s1")+
+		elt(out, "corpse_s2")+
+		elt(out, "corpse_s3")+
+		elt(out, "x_ammonia_s1")+
+		elt(out, "x_ammonia_s2")+
+		elt(out, "x_ammonia_s3")+
+		elt(out, "x_nitrate_s1")+
+		elt(out, "x_nitrate_s2")+
+		elt(out, "x_nitrate_s3")+
+		elt(out, "herb_i")+
+		elt(out, "carn_i")+
+		elt(out, "fishplar_i")+
+		elt(out, "fishp_i")+
+		elt(out, "fishdlar_i")+
+		elt(out, "fishd_i")+
+		elt(out, "fishm_i")+
+		elt(out, "bird_i")+
+		elt(out, "seal_i")+
+		elt(out, "ceta_i")+
+		elt(out, "detritus_si")+
+		elt(out, "ammonia_si")+
+		elt(out, "nitrate_si")+
+		elt(out, "kelpN")+
+		elt(out, "kelpdebris")+
+		elt(out, "phyt_si")+
+		elt(out, "benthslar_i")+
+		elt(out, "benthclar_i")+
+		elt(out, "benths_i")+
+		elt(out, "benthc_i")+
+		elt(out, "discard_i")
 
 
 	#Create columns to aggregate across sediment caregories
 
 	aggregates$x_detritus <-
-		el(out, "x_detritus_s1")+
-		el(out, "x_detritus_s2")+
-		el(out, "x_detritus_s3")+
-		el(out, "x_detritus_d1")+
-		el(out, "x_detritus_d2")+
-		el(out, "x_detritus_d3")+
-		el(out, "xR_detritus_s1")+
-		el(out, "xR_detritus_s2")+
-		el(out, "xR_detritus_s3")+
-		el(out, "xR_detritus_d1")+
-		el(out, "xR_detritus_d2")+
-		el(out, "xR_detritus_d3")
+		elt(out, "x_detritus_s1")+
+		elt(out, "x_detritus_s2")+
+		elt(out, "x_detritus_s3")+
+		elt(out, "x_detritus_d1")+
+		elt(out, "x_detritus_d2")+
+		elt(out, "x_detritus_d3")+
+		elt(out, "xR_detritus_s1")+
+		elt(out, "xR_detritus_s2")+
+		elt(out, "xR_detritus_s3")+
+		elt(out, "xR_detritus_d1")+
+		elt(out, "xR_detritus_d2")+
+		elt(out, "xR_detritus_d3")
 
-	aggregates$x_detritus_o<-el(out, "x_detritus_d1")+ el(out, "x_detritus_d2")+ el(out, "x_detritus_d3")+
-		el(out, "xR_detritus_d1")+ el(out, "xR_detritus_d2")+ el(out, "xR_detritus_d3")
+	aggregates$x_detritus_o<-elt(out, "x_detritus_d1")+ elt(out, "x_detritus_d2")+ elt(out, "x_detritus_d3")+
+		elt(out, "xR_detritus_d1")+ elt(out, "xR_detritus_d2")+ elt(out, "xR_detritus_d3")
 
-	aggregates$x_detritus_i<-el(out, "x_detritus_s1")+ el(out, "x_detritus_s2")+ el(out, "x_detritus_s3")+
-		el(out, "xR_detritus_s1")+ el(out, "xR_detritus_s2")+ el(out, "xR_detritus_s3")
+	aggregates$x_detritus_i<-elt(out, "x_detritus_s1")+ elt(out, "x_detritus_s2")+ elt(out, "x_detritus_s3")+
+		elt(out, "xR_detritus_s1")+ elt(out, "xR_detritus_s2")+ elt(out, "xR_detritus_s3")
 
 
-	aggregates$corpse<-el(out, "corpse_s0")+el(out, "corpse_s1")+ el(out, "corpse_s2")+ el(out, "corpse_s3")+el(out, "corpse_d0")+ el(out, "corpse_d1")+ el(out, "corpse_d2")+ el(out, "corpse_d3")
-	aggregates$corpse_o<-el(out, "corpse_d0")+el(out, "corpse_d1")+ el(out, "corpse_d2")+ el(out, "corpse_d3")
-	aggregates$corpse_i<-el(out, "corpse_s0")+el(out, "corpse_s1")+ el(out, "corpse_s2")+ el(out, "corpse_s3")
+	aggregates$corpse<-elt(out, "corpse_s0")+elt(out, "corpse_s1")+ elt(out, "corpse_s2")+ elt(out, "corpse_s3")+elt(out, "corpse_d0")+ elt(out, "corpse_d1")+ elt(out, "corpse_d2")+ elt(out, "corpse_d3")
+	aggregates$corpse_o<-elt(out, "corpse_d0")+elt(out, "corpse_d1")+ elt(out, "corpse_d2")+ elt(out, "corpse_d3")
+	aggregates$corpse_i<-elt(out, "corpse_s0")+elt(out, "corpse_s1")+ elt(out, "corpse_s2")+ elt(out, "corpse_s3")
 
-	aggregates$x_ammonia<-el(out, "x_ammonia_s1")+ el(out, "x_ammonia_s2")+ el(out, "x_ammonia_s3")+ el(out, "x_ammonia_d1")+ el(out, "x_ammonia_d2")+ el(out, "x_ammonia_d3")
-	aggregates$x_ammonia_o<-el(out, "x_ammonia_d1")+ el(out, "x_ammonia_d2")+ el(out, "x_ammonia_d3")
-	aggregates$x_ammonia_i<-el(out, "x_ammonia_s1")+ el(out, "x_ammonia_s2")+ el(out, "x_ammonia_s3")
+	aggregates$x_ammonia<-elt(out, "x_ammonia_s1")+ elt(out, "x_ammonia_s2")+ elt(out, "x_ammonia_s3")+ elt(out, "x_ammonia_d1")+ elt(out, "x_ammonia_d2")+ elt(out, "x_ammonia_d3")
+	aggregates$x_ammonia_o<-elt(out, "x_ammonia_d1")+ elt(out, "x_ammonia_d2")+ elt(out, "x_ammonia_d3")
+	aggregates$x_ammonia_i<-elt(out, "x_ammonia_s1")+ elt(out, "x_ammonia_s2")+ elt(out, "x_ammonia_s3")
 
-	aggregates$x_nitrate<-el(out, "x_nitrate_s1")+ el(out, "x_nitrate_s2")+ el(out, "x_nitrate_s3")+ el(out, "x_nitrate_d1")+ el(out, "x_nitrate_d2")+ el(out, "x_nitrate_d3")
-	aggregates$x_nitrate_o<-el(out, "x_nitrate_d1")+ el(out, "x_nitrate_d2")+ el(out, "x_nitrate_d3")
-	aggregates$x_nitrate_i<-el(out, "x_nitrate_s1")+ el(out, "x_nitrate_s2")+ el(out, "x_nitrate_s3")
+	aggregates$x_nitrate<-elt(out, "x_nitrate_s1")+ elt(out, "x_nitrate_s2")+ elt(out, "x_nitrate_s3")+ elt(out, "x_nitrate_d1")+ elt(out, "x_nitrate_d2")+ elt(out, "x_nitrate_d3")
+	aggregates$x_nitrate_o<-elt(out, "x_nitrate_d1")+ elt(out, "x_nitrate_d2")+ elt(out, "x_nitrate_d3")
+	aggregates$x_nitrate_i<-elt(out, "x_nitrate_s1")+ elt(out, "x_nitrate_s2")+ elt(out, "x_nitrate_s3")
 
 	#Create state variable aggregates across inshore and offshore
 
-	aggregates$s_detritus<-el(out, "detritus_so")+el(out, "detritus_si")
-	aggregates$s_ammonia<-el(out, "ammonia_so")+el(out, "ammonia_si")
-	aggregates$s_nitrate<-el(out, "nitrate_so")+el(out, "nitrate_si")
-	aggregates$s_phyt<-el(out, "phyt_so")+el(out, "phyt_si")
-	aggregates$benthslar<-el(out, "benthslar_o")+el(out, "benthslar_i")
-	aggregates$benthclar<-el(out, "benthclar_o")+el(out, "benthclar_i")
-	aggregates$benths<-el(out, "benths_o")+el(out, "benths_i")
-	aggregates$benthc<-el(out, "benthc_o")+el(out, "benthc_i")
-	aggregates$discard<-el(out, "discard_o")+el(out, "discard_i")
+	aggregates$s_detritus<-elt(out, "detritus_so")+elt(out, "detritus_si")
+	aggregates$s_ammonia<-elt(out, "ammonia_so")+elt(out, "ammonia_si")
+	aggregates$s_nitrate<-elt(out, "nitrate_so")+elt(out, "nitrate_si")
+	aggregates$s_phyt<-elt(out, "phyt_so")+elt(out, "phyt_si")
+	aggregates$benthslar<-elt(out, "benthslar_o")+elt(out, "benthslar_i")
+	aggregates$benthclar<-elt(out, "benthclar_o")+elt(out, "benthclar_i")
+	aggregates$benths<-elt(out, "benths_o")+elt(out, "benths_i")
+	aggregates$benthc<-elt(out, "benthc_o")+elt(out, "benthc_i")
+	aggregates$discard<-elt(out, "discard_o")+elt(out, "discard_i")
 
-	aggregates$herb<-el(out, "herb_o")+el(out, "herb_i")
+	aggregates$herb<-elt(out, "herb_o")+elt(out, "herb_i")
 
-	aggregates$carn<-el(out, "carn_o")+el(out, "carn_i")
+	aggregates$carn<-elt(out, "carn_o")+elt(out, "carn_i")
 
-	aggregates$fishp<-el(out, "fishp_o")+el(out, "fishp_i")
-	aggregates$fishd<-el(out, "fishd_o")+el(out, "fishd_i")
-	aggregates$fishm<-el(out, "fishm_o")+el(out, "fishm_i")
-	aggregates$bird<-el(out, "bird_o")+el(out, "bird_i")
+	aggregates$fishp<-elt(out, "fishp_o")+elt(out, "fishp_i")
+	aggregates$fishd<-elt(out, "fishd_o")+elt(out, "fishd_i")
+	aggregates$fishm<-elt(out, "fishm_o")+elt(out, "fishm_i")
+	aggregates$bird<-elt(out, "bird_o")+elt(out, "bird_i")
 
-	aggregates$seal<-el(out, "seal_o")+el(out, "seal_i")
-	aggregates$ceta<-el(out, "ceta_o")+el(out, "ceta_i")
+	aggregates$seal<-elt(out, "seal_o")+elt(out, "seal_i")
+	aggregates$ceta<-elt(out, "ceta_o")+elt(out, "ceta_i")
 
-	aggregates$fishplar<-el(out, "fishplar_o")+el(out, "fishplar_i")
-	aggregates$fishdlar<-el(out, "fishdlar_o")+el(out, "fishdlar_i")
+	aggregates$fishplar<-elt(out, "fishplar_o")+elt(out, "fishplar_i")
+	aggregates$fishdlar<-elt(out, "fishdlar_o")+elt(out, "fishdlar_i")
 
 	#Create aggregates for flux terms which are ouput as separate for o and i
 
-	aggregates$PNP			<- el(out, "PNP_o")+ el(out, "PNP_i")
+	aggregates$PNP			<- elt(out, "PNP_o")+ elt(out, "PNP_i")
 
 	aggregates$netpprod <- out$netpprod_o + out$netpprod_i
 
 
-	aggregates$fluxwcamm_phyt <- out$fluxwcamm_phyt_o  +  out$fluxwcamm_phyt_i	# ZZ el() these
+	aggregates$fluxwcamm_phyt <- out$fluxwcamm_phyt_o  +  out$fluxwcamm_phyt_i	# ZZ elt() these
 
 	aggregates$fluxwcnit_phyt <- out$fluxwcnit_phyt_o  +  out$fluxwcnit_phyt_i
 
@@ -309,11 +309,11 @@ aggregate_model_output <- function(model, output) {
 	aggregates$sealnetprod <- out$sealnetprod_o + out$sealnetprod_i
 	aggregates$cetanetprod <- out$cetanetprod_o + out$cetanetprod_i
 
-	aggregates$wcdenitrif		<- el(out, "wcdenitrif_o")+ el(out, "wcdenitrif_i")
-	aggregates$seddenitrif		<- el(out, "seddenitrif_o")+ el(out, "seddenitrif_i")
-	aggregates$fluxsedboundary	<- el(out, "fluxsedboundary_o")+ el(out, "fluxsedboundary_i")
-	aggregates$DIN_NET_flux_o_i	<- el(out, "DINflux_o_i") - el(out, "DINflux_i_o")
-	aggregates$PART_NET_flux_o_i	<- el(out, "PARTflux_o_i") - el(out, "PARTflux_i_o")
+	aggregates$wcdenitrif		<- elt(out, "wcdenitrif_o")+ elt(out, "wcdenitrif_i")
+	aggregates$seddenitrif		<- elt(out, "seddenitrif_o")+ elt(out, "seddenitrif_i")
+	aggregates$fluxsedboundary	<- elt(out, "fluxsedboundary_o")+ elt(out, "fluxsedboundary_i")
+	aggregates$DIN_NET_flux_o_i	<- elt(out, "DINflux_o_i") - elt(out, "DINflux_i_o")
+	aggregates$PART_NET_flux_o_i	<- elt(out, "PARTflux_o_i") - elt(out, "PARTflux_i_o")
 
 	aggregates$NET_activemigpelfish_o_i  <- out$activemigpelfish_o_i - out$activemigpelfish_i_o
 	aggregates$NET_activemigmigfish_o_i  <- out$activemigmigfish_o_i - out$activemigmigfish_i_o
@@ -333,22 +333,22 @@ aggregate_model_output <- function(model, output) {
 
 	#Create columns for whole domain live landed weights 
 
-	aggregates$landp<-el(out, "landp_o")+el(out, "landp_i")
+	aggregates$landp<-elt(out, "landp_o")+elt(out, "landp_i")
 
-	aggregates$landd<-el(out, "landd_quota_o")+el(out, "landd_nonquota_o")+el(out, "landd_quota_i")+el(out, "landd_nonquota_i")
-	aggregates$landd_o<-el(out, "landd_quota_o")+el(out, "landd_nonquota_o")
-	aggregates$landd_i<-el(out, "landd_quota_i")+el(out, "landd_nonquota_i")
+	aggregates$landd<-elt(out, "landd_quota_o")+elt(out, "landd_nonquota_o")+elt(out, "landd_quota_i")+elt(out, "landd_nonquota_i")
+	aggregates$landd_o<-elt(out, "landd_quota_o")+elt(out, "landd_nonquota_o")
+	aggregates$landd_i<-elt(out, "landd_quota_i")+elt(out, "landd_nonquota_i")
 
-	aggregates$landd_quota<-el(out, "landd_quota_o")+el(out, "landd_quota_i")
-	aggregates$landd_nonquota<-el(out, "landd_nonquota_o")+el(out, "landd_nonquota_i")
+	aggregates$landd_quota<-elt(out, "landd_quota_o")+elt(out, "landd_quota_i")
+	aggregates$landd_nonquota<-elt(out, "landd_nonquota_o")+elt(out, "landd_nonquota_i")
 
-	aggregates$landm<-el(out, "landm_o")+el(out, "landm_i")
+	aggregates$landm<-elt(out, "landm_o")+elt(out, "landm_i")
 
-	aggregates$landsb<-el(out, "landsb_o")+el(out, "landsb_i")
+	aggregates$landsb<-elt(out, "landsb_o")+elt(out, "landsb_i")
 
-	aggregates$landcb<-el(out, "landcb_o")+el(out, "landcb_i")
+	aggregates$landcb<-elt(out, "landcb_o")+elt(out, "landcb_i")
 
-	aggregates$landcz<-el(out, "landcz_o")+el(out, "landcz_i")
+	aggregates$landcz<-elt(out, "landcz_o")+elt(out, "landcz_i")
 
 	aggregates$landbd<-out$landbd_o+out$landbd_i
 

@@ -13,7 +13,7 @@
 #
 read_biological_event_timings <- function(model.path) {
 
-	events <- readcsv(model.path, PARAMETERS_DIR, eventtimingparameterfile)
+	events <- get.model.file(model.path, PARAMETERS_DIR, file=BIOLOGICAL_EVENTS)
 
 	events
 }

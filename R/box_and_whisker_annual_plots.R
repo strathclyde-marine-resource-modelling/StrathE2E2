@@ -11,8 +11,8 @@
 #
 box_and_whisker_annual_plots <- function(model, annual.target.data, opt_results) {
 
-	run		<- el(model, "run")
-	resultsdir	<- el(run, "resultsdir")
+	run		<- elt(model, "run")
+	resultsdir	<- elt(run, "resultsdir")
 
 #Requires the dataframe opt_results produced by the programme which calculates the model outputs corresponding to each observed variable
 

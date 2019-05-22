@@ -10,13 +10,38 @@
 #' @export showall
 #
 
-MODEL_SETUP_SCRIPT	= "MODEL_SETUP_SCRIPT.R"	# located in the Model/Version/ directory
-MODEL_RESULTS_DIR	= "results"			# located in the current directory
+MODEL_SETUP			<- "MODEL_SETUP.csv"	# located in the Model/Version/ directory
+MODEL_RESULTS_DIR		<- "results"		# located in the current directory
 
-PARAMETERS_DIR		= "Parameters"			# sub-directories of the Model/Version/ directory
-DRIVING_DATA_DIR	= "Driving_data"
-TARGET_DATA_DIR		= "Target_data"
-SD_CONTROL_DIR		= "Parameters/Parameter_SD_control"
+PARAMETERS_DIR			<- "Parameters"		# sub-directories of the Model/Version/ directory
+DRIVING_DATA_DIR		<- "Driving_data"
+TARGET_DATA_DIR			<- "Target_data"
+SD_CONTROL_DIR			<- "Parameters/Parameter_SD_control"
+
+PHYSICAL_PARAMETERS		<- "physical_parameters"				# look for csv file containing these string patterns
+PHYSICS_DRIVERS			<- "physics_drivers"
+CHEMISTRY_DRIVERS		<- "boundary_data"
+INITIAL_STATE			<- "model_endstate"
+BIOLOGICAL_EVENTS		<- "biological_event_timing_parameters"
+FIXED_PARAMETERS_CONSUMER	<- "fixed_parameters_for_consumer_groups"
+FIXED_PARAMETERS_MISCELLANEOUS	<- "fixed_parameters_miscellaneous"
+FITTED_PARAMETERS_PREFERENCE	<- "fitted_parameters_preference_matrix"
+FITTED_PARAMETERS_UPTAKE_MORT	<- "fitted_parameters_uptake_and_mortality_rates"
+FITTED_PARAMETERS_MICROBIOLOGY	<- "fitted_parameters_microbiology"
+FISHING_FLEET_PARAMETERS	<- "fishing_fleet_parameters"
+FISHING_ACTIVITY_PARAMETERS	<- "fishing_activity_parameters"
+FISHING_POWER_PARAMETERS	<- "fishing_power_parameters"
+FISHING_DISCARD_PARAMETERS	<- "fishing_discard_parameters"
+FISHING_PROCESSING_PARAMETERS	<- "fishing_processing"
+FISHING_DISTRIBUTION_PARAMETERS	<- "fishing_distribution"
+FISHING_ACTIVITY_SCALING_VALUES	<- "fishing_activity_scaling_values"
+HARVEST_RATIO_SCALING_VALUES	<- "harvest_ratio_scaling_values"
+ANNUAL_TARGET_DATA		<- "annual_target_data"
+MONTHLY_TARGET_DATA		<- "monthly_target_data"
+FOOD_WEB_FLOW_MATRIX		<- "food_web_flow_matrix"
+
+pkg.env				<- new.env()
+pkg.env$SETUPFILES		<- character()
 
 check.exists <- function(filename) {
 	if (! file.exists(filename)) {
@@ -28,20 +53,58 @@ isdefined <- function(var, val) {
 	exists(var) && (get(var) == val)
 }
 
+# reads the setup csv which specifies the names for all the model input and output files
+#
+read.model.setup <- function(model.path) {
+	setup <- readcsv(model.path, MODEL_SETUP, header=FALSE)	# raw DF
+	pkg.env$SETUPFILES <- as.character(levels(setup$V1))		# character vector
+}
+
+# want to read fixed parms, or fitted, or whatever,
+# how to access the pattern 
+# FITTED_PARAMETERS <- "fitted_parameters"
+# ditto
+# in read_fitted_pars() will have call
+# fitted.pars.file <- get.model.file(FITTED_PARAMETERS)
+# pars <- readcsv(fitted.pars.file)
+#
+get.model.file <- function(..., file, header=TRUE) {
+
+	matches <- grep(file, pkg.env$SETUPFILES, value=TRUE)
+
+	if (length(matches) != 1) {
+		if (length(matches) == 0) {
+			# no match!
+			cat("Error: could not find model file using pattern '", file.pattern, "' !\n", sep="")
+		} else if (length(matches) > 1) {
+			# more than 1 match!
+			cat("Error: matched more than one model file using pattern '", file.pattern, "' !\n", sep="")
+			for (m in matches) {
+				cat(" matched:", m, "\n")
+			}
+		}
+		stop("Cannot find requested model filename!")
+	}
+
+	# found it:
+	readcsv(..., matches[[1]], header=header)
+}
+
 # read CSV data from the path units
 # by default first line of file is treated as a header line
-#	readcsv(MODELPATH, VERSION, "fitted_parameters.csv")
+#	readcsv(MODELPATH, PARAMETERS_DIR, "fitted_parameters.csv")
 #
 readcsv <- function(..., header=TRUE) {
 
-	units <- list(...)
-	last <- units[[length(units)]]
-	filename <- makepath(...)
+	#units <- list(...)
+	#last <- units[[length(units)]]
+	filepath <- makepath(...)
 
-	check.exists(filename)
+	check.exists(filepath)
 
-	cat(" Reading CSV file: ", last, "\n", sep="")
-	data <- read.csv(filename, header=header)
+	file <- basename(filepath)
+	cat(" Reading CSV file: ", file, "\n", sep="")
+	data <- read.csv(filepath, header=header)
 
 	data
 }
@@ -149,24 +212,14 @@ makepath <- function(...) {
 #
 create.folder <- function(folder) {
 	if (! dir.exists(folder)) {
-		cat("Creating folder '", folder, "'\n", sep="")
+		cat(" Creating folder : ", folder, "\n", sep="")
 		if (!dir.create(folder, recursive=TRUE, showWarnings=FALSE)) {
 			stop("Error: could not create folder '", folder, "'\n", sep="")
 		}
 	}
 }
 
-# check element exists in list/data.frame and return it if present
-# if the element does not exist then print out a warning and a call trace UNLESS the default value is
-# set in which case return that
-# In R if you access a non existant list element:
-#	el <- list$notpresent
-# then el will be NULL and you get no warning (this could just be a typo)
-#	x <- el(list, "notpresent")		print warning and trace
-#	x <- el(list, "notpresent", 0.0)	uses default to return 0.0
-# 
-# 
-el <- function(data, element, default="NOTSET") {
+el.ZZ <- function(data, element, default="NOTSET") {
 	if (element %in% names(data)) {
 		ret <- data[[element]]
 	} else if (default != "NOTSET") {
@@ -186,15 +239,68 @@ el <- function(data, element, default="NOTSET") {
 	ret
 }
 
-# print out entire R object
-# relies on max.print being set to a big number:
-#	options(max.print=999999)
-#
-showall <- function(title, v) {
-	cat(title, ":\n")
-	show(v)
+# given a set of list/data.frame element names, extract the value if present
+# if the element does not exist then print out a warning and a call trace UNLESS the default value is
+# set in which case return that
+# In R if you access a non existant list element:
+#	x <- list$notpresent
+# then x will be NULL and you get no warning (this could just be a typo)
+#	x <- elt(list, "notpresent")			looks for list$notpresent, print warning and trace
+#	x <- elt(list, "notpresent", default=0.0)	looks for list$notpresent, uses default to return 0.0
+#	x <- elt(list, "exists1", "exists2")		looks for list$exists1$exists2 and returns it
+# 
+elt <- function(data, ..., default="NOTSET") {
+	elements <- list(...)
+	ret <- data
+	for (element in elements) {
+		if (element %in% names(ret)) {
+			ret <- ret[[element]]
+		} else if (default != "NOTSET") {
+			ret <- default
+			break
+		} else {
+			cat("Error: unknown list/data.frame element '", element, "'\n", sep="")
+			cat("Element list: ", paste(elements, collapse="$"), "\n")
+			cat("Trace:")
+			# print call list:
+			calls <- sys.calls()
+			for (c in 1:length(calls)) {
+				cat("\t", c, ": ", sep="")
+				print(calls[[c]])
+			}
+			ret <- NULL
+			break
+		}
+	}
+
+	ret
 }
 
+# print out entire R object
+#
+showall <- function(title, v) {
+	# save current settings:
+	max <- options("max.print")
+	dig <- options("digits")
+
+	# print everything to high precision:
+	options(digits=20)
+	options(max.print=999999)
+	cat(title, ":\n")
+	show(v)
+
+	# restore original settings:
+	options(max.print=max$max.print)
+	options(digits=dig$digits)
+}
+
+# print out elements of a dataframe or list suitable for printing:
+#
+genshowall <- function(v, prefix="") {
+	for (i in names(v)) {
+		cat("showall(\"", i, "\", ", prefix, i, ")\n", sep="")
+	}
+}
 
 fyplot1 <- function(tspmain,axtitle,tspvar1) {
 	par(mar=c(3,3.8,2.5,0.4))

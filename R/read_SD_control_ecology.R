@@ -9,7 +9,7 @@
 #'
 #' @export
 #
-read_SD_control_ecology.R <- function(model.path) {
+read_SD_control_ecology <- function(model.path) {
 
 	annealing_control_data <- readcsv(model.path, SD_CONTROL_DIR, "annealing_SD_ecology.csv")	# ZZ should be set in MODEL_SETUP_SCRIPT.R?
 

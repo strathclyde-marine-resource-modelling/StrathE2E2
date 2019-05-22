@@ -9,11 +9,11 @@
 #
 box_and_whisker_monthly_plots <- function(model) {
 
-        run		<- el(model, "run")
-        identifier	<- el(run, "identifier")
-        resultsdir	<- el(run, "resultsdir")
+        run		<- elt(model, "run")
+        identifier	<- elt(run, "identifier")
+        resultsdir	<- elt(run, "resultsdir")
 
-	model.path <- el(model, "path")
+	model.path <- elt(model, "path")
 
 	#Read in the model run monthly results output file
 	modelmonthly<- readcsv(resultsdir, paste("model_monthlyresults",identifier,".csv",sep=""))	# ZZ maybe read elsewhere

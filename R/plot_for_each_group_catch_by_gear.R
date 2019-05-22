@@ -12,17 +12,17 @@
 #
 plot_for_each_group_catch_by_gear <- function(model, catch.land.disc) {
 
-	data			<- el(model, "data")
-	fleet.model		<- el(data, "fleet.model")
-	gear_codes		<- el(fleet.model, "gear_codes")
+	data			<- elt(model, "data")
+	fleet.model		<- elt(data, "fleet.model")
+	gear_codes		<- elt(fleet.model, "gear_codes")
 	
-	offshore_catchmat	<- el(catch.land.disc, "offshore_catchmat")
-	offshore_discmat	<- el(catch.land.disc, "offshore_discmat")
-	offshore_landmat	<- el(catch.land.disc, "offshore_landmat")
+	offshore_catchmat	<- elt(catch.land.disc, "offshore_catchmat")
+	offshore_discmat	<- elt(catch.land.disc, "offshore_discmat")
+	offshore_landmat	<- elt(catch.land.disc, "offshore_landmat")
 
-	inshore_catchmat	<- el(catch.land.disc, "inshore_catchmat")
-	inshore_discmat		<- el(catch.land.disc, "inshore_discmat")
-	inshore_landmat		<- el(catch.land.disc, "inshore_landmat")
+	inshore_catchmat	<- elt(catch.land.disc, "inshore_catchmat")
+	inshore_discmat		<- elt(catch.land.disc, "inshore_discmat")
+	inshore_landmat		<- elt(catch.land.disc, "inshore_landmat")
 
 	ngroups <- 10
 

@@ -1,4 +1,4 @@
-#
+
 # StrathE2E.R
 #
 #' run the StrathE2E model
@@ -30,15 +30,15 @@
 #
 StrathE2E <- function(model) {
 
-	model.path		<- el(model, "path")
+	model.path		<- elt(model, "path")
 
-	run			<- el(model, "run")
-	times			<- el(run, "times")
+	run			<- elt(model, "run")
+	times			<- elt(run, "times")
 
-	data			<- el(model, "data")
-	initial.state		<- el(data, "initial.state")
-	fitted.parameters	<- el(data, "fitted.parameters")
-	forcings		<- el(data, "forcings")
+	data			<- elt(model, "data")
+	initial.state		<- elt(data, "initial.state")
+	fitted.parameters	<- elt(data, "fitted.parameters")
+	forcings		<- elt(data, "forcings")
 
 	fleet.output		<- fishing_fleet_model(model)
 
@@ -46,15 +46,9 @@ StrathE2E <- function(model) {
 
 	model.parameters	<- build_model_parameters(model, fleet.output)
 
-	#showall("initial.state", initial.state)
-	#showall("times", times)
-	#showall("model parms", model.parameters)
-	#showall("forcings", forcings)
-	#stop("Halt")
-
 	output <- as.data.frame(
 		ode(
-			y		= unlist(initial.state),		# flatten to vector, names used for output if present
+			y		= unlist(initial.state),		# flatten list to vector, names used for output if present
 			times		= times,
 			func		= "derivsc",
 			parms		= model.parameters,
@@ -67,143 +61,6 @@ StrathE2E <- function(model) {
 		)
 	)
 
-
-if (isdefined("CHECKRESULTS", TRUE)) {
-		aggregates	<- aggregate_model_output(model, output)
-output$totalN <- aggregates$totalN
-output$totalN_o <- aggregates$totalN_o
-output$totalN_i <- aggregates$totalN_i
-output$x_detritus <- aggregates$x_detritus
-output$x_detritus_o <- aggregates$x_detritus_o
-output$x_detritus_i <- aggregates$x_detritus_i
-output$corpse <- aggregates$corpse
-output$corpse_o <- aggregates$corpse_o
-output$corpse_i <- aggregates$corpse_i
-output$x_ammonia <- aggregates$x_ammonia
-output$x_ammonia_o <- aggregates$x_ammonia_o
-output$x_ammonia_i <- aggregates$x_ammonia_i
-output$x_nitrate <- aggregates$x_nitrate
-output$x_nitrate_o <- aggregates$x_nitrate_o
-output$x_nitrate_i <- aggregates$x_nitrate_i
-output$s_detritus <- aggregates$s_detritus
-output$s_ammonia <- aggregates$s_ammonia
-output$s_nitrate <- aggregates$s_nitrate
-output$s_phyt <- aggregates$s_phyt
-output$benthslar <- aggregates$benthslar
-output$benthclar <- aggregates$benthclar
-output$benths <- aggregates$benths
-output$benthc <- aggregates$benthc
-output$discard <- aggregates$discard
-output$herb <- aggregates$herb
-output$carn <- aggregates$carn
-output$fishp <- aggregates$fishp
-output$fishd <- aggregates$fishd
-output$fishm <- aggregates$fishm
-output$bird <- aggregates$bird
-output$seal <- aggregates$seal
-output$ceta <- aggregates$ceta
-output$fishplar <- aggregates$fishplar
-output$fishdlar <- aggregates$fishdlar
-output$PNP <- aggregates$PNP
-output$netpprod <- aggregates$netpprod
-output$fluxwcamm_phyt <- aggregates$fluxwcamm_phyt
-output$fluxwcnit_phyt <- aggregates$fluxwcnit_phyt
-output$phytgrossprod <- aggregates$phytgrossprod
-output$herbgrossprod <- aggregates$herbgrossprod
-output$carngrossprod <- aggregates$carngrossprod
-output$pfishlargrossprod <- aggregates$pfishlargrossprod
-output$dfishlargrossprod <- aggregates$dfishlargrossprod
-output$pfishgrossprod <- aggregates$pfishgrossprod
-output$mfishgrossprod <- aggregates$mfishgrossprod
-output$dfishgrossprod <- aggregates$dfishgrossprod
-output$benthslargrossprod <- aggregates$benthslargrossprod
-output$benthclargrossprod <- aggregates$benthclargrossprod
-output$benthsgrossprod <- aggregates$benthsgrossprod
-output$benthcgrossprod <- aggregates$benthcgrossprod
-output$birdgrossprod <- aggregates$birdgrossprod
-output$sealgrossprod <- aggregates$sealgrossprod
-output$cetagrossprod <- aggregates$cetagrossprod
-output$herbnetprod <- aggregates$herbnetprod
-output$carnnetprod <- aggregates$carnnetprod
-output$pfishlarnetprod <- aggregates$pfishlarnetprod
-output$dfishlarnetprod <- aggregates$dfishlarnetprod
-output$pfishnetprod <- aggregates$pfishnetprod
-output$mfishnetprod <- aggregates$mfishnetprod
-output$dfishnetprod <- aggregates$dfishnetprod
-output$benthslarnetprod <- aggregates$benthslarnetprod
-output$benthclarnetprod <- aggregates$benthclarnetprod
-output$benthsnetprod <- aggregates$benthsnetprod
-output$benthcnetprod <- aggregates$benthcnetprod
-output$birdnetprod <- aggregates$birdnetprod
-output$sealnetprod <- aggregates$sealnetprod
-output$cetanetprod <- aggregates$cetanetprod
-output$wcdenitrif <- aggregates$wcdenitrif
-output$seddenitrif <- aggregates$seddenitrif
-output$fluxsedboundary <- aggregates$fluxsedboundary
-output$DIN_NET_flux_o_i <- aggregates$DIN_NET_flux_o_i
-output$PART_NET_flux_o_i <- aggregates$PART_NET_flux_o_i
-output$NET_activemigpelfish_o_i <- aggregates$NET_activemigpelfish_o_i
-output$NET_activemigmigfish_o_i <- aggregates$NET_activemigmigfish_o_i
-output$NET_activemigdemfish_o_i <- aggregates$NET_activemigdemfish_o_i
-output$NET_activemigbird_o_i <- aggregates$NET_activemigbird_o_i
-output$NET_activemigseal_o_i <- aggregates$NET_activemigseal_o_i
-output$NET_activemigceta_o_i <- aggregates$NET_activemigceta_o_i
-output$NET_mfish_ext_o <- aggregates$NET_mfish_ext_o
-output$fluxDINinflow <- aggregates$fluxDINinflow
-output$fluxDINoutflow <- aggregates$fluxDINoutflow
-output$fluxPARTinflow <- aggregates$fluxPARTinflow
-output$fluxPARToutflow <- aggregates$fluxPARToutflow
-output$atmosDINinput <- aggregates$atmosDINinput
-output$rivDINinflow <- aggregates$rivDINinflow
-output$landp <- aggregates$landp
-output$landd <- aggregates$landd
-output$landd_o <- aggregates$landd_o
-output$landd_i <- aggregates$landd_i
-output$landd_quota <- aggregates$landd_quota
-output$landd_nonquota <- aggregates$landd_nonquota
-output$landm <- aggregates$landm
-output$landsb <- aggregates$landsb
-output$landcb <- aggregates$landcb
-output$landcz <- aggregates$landcz
-output$landbd <- aggregates$landbd
-output$landsl <- aggregates$landsl
-output$landct <- aggregates$landct
-output$discpel <- aggregates$discpel
-output$discdem <- aggregates$discdem
-output$discdem_o <- aggregates$discdem_o
-output$discdem_i <- aggregates$discdem_i
-output$discdem_quota <- aggregates$discdem_quota
-output$discdem_nonquota <- aggregates$discdem_nonquota
-output$discmig <- aggregates$discmig
-output$discsb <- aggregates$discsb
-output$disccb <- aggregates$disccb
-output$disccz <- aggregates$disccz
-output$discbd <- aggregates$discbd
-output$discsl <- aggregates$discsl
-output$discct <- aggregates$discct
-output$offalpel <- aggregates$offalpel
-output$offaldem <- aggregates$offaldem
-output$offaldem_o <- aggregates$offaldem_o
-output$offaldem_i <- aggregates$offaldem_i
-output$offaldem_quota <- aggregates$offaldem_quota
-output$offaldem_nonquota <- aggregates$offaldem_nonquota
-output$offalmig <- aggregates$offalmig
-output$offalsb <- aggregates$offalsb
-output$offalcb <- aggregates$offalcb
-output$offalcz <- aggregates$offalcz
-output$offalbd <- aggregates$offalbd
-output$offalsl <- aggregates$offalsl
-output$offalct <- aggregates$offalct
-#output$x_poros <- aggregates$x_poros
-#output$x_depth <- aggregates$x_depth
-#output$x_poros_o <- aggregates$x_poros_o
-#output$x_poros_i <- aggregates$x_poros_i
-#output$x_depth_o <- aggregates$x_depth_o
-#output$x_depth_i <- aggregates$x_depth_i
-
-	showall("results", output)
-	stop("Halt")
-}
 	# main processed output:
 	aggregates			<- aggregate_model_output(model, output)
 	total.annual.catch		<- extract_timeseries_annual_landings(model, output)
@@ -227,44 +84,44 @@ output$offalct <- aggregates$offalct
 		aggregates		= aggregates,
 		fleet.output		= fleet.output,
 		total.annual.catch	= total.annual.catch,
-		annual.catch.by.gear	= annual.catch.by.gear,
+		annual.catch.by.gear	= annual.catch.by.gear,	# ZZ mix n match var_names and var.names?
 		final.year.outputs	= list(
 			# catch/landings/discards:
-			inshore_catchmat		= el(catch.land.disc, "inshore_catchmat"),
-			inshore_discmat			= el(catch.land.disc, "inshore_discmat"),
-			inshore_landmat			= el(catch.land.disc, "inshore_landmat"),
-			offshore_catchmat		= el(catch.land.disc, "offshore_catchmat"),
-			offshore_landmat		= el(catch.land.disc, "offshore_landmat"),
-			offshore_discmat		= el(catch.land.disc, "offshore_discmat"),
+			inshore_catchmat		= elt(catch.land.disc, "inshore_catchmat"),
+			inshore_discmat			= elt(catch.land.disc, "inshore_discmat"),
+			inshore_landmat			= elt(catch.land.disc, "inshore_landmat"),
+			offshore_catchmat		= elt(catch.land.disc, "offshore_catchmat"),
+			offshore_landmat		= elt(catch.land.disc, "offshore_landmat"),
+			offshore_discmat		= elt(catch.land.disc, "offshore_discmat"),
 
 			monthly.averages		= monthly.averages,
 
-			mass_results_inshore		= el(annual.results.inshore, "mass_results"),
-			maxmass_results_inshore		= el(annual.results.inshore, "maxmass_results"),
-			minmass_results_inshore		= el(annual.results.inshore, "minmass_results"),
-			annual_flux_results_inshore	= el(annual.results.inshore, "annual_flux_results"),
+			mass_results_inshore		= elt(annual.results.inshore, "mass_results"),
+			maxmass_results_inshore		= elt(annual.results.inshore, "maxmass_results"),
+			minmass_results_inshore		= elt(annual.results.inshore, "minmass_results"),
+			annual_flux_results_inshore	= elt(annual.results.inshore, "annual_flux_results"),
 
-			mass_results_offshore		= el(annual.results.offshore, "mass_results"),
-			maxmass_results_offshore	= el(annual.results.offshore, "maxmass_results"),
-			minmass_results_offshore	= el(annual.results.offshore, "minmass_results"),
-			annual_flux_results_offshore	= el(annual.results.offshore, "annual_flux_results"),
+			mass_results_offshore		= elt(annual.results.offshore, "mass_results"),
+			maxmass_results_offshore	= elt(annual.results.offshore, "maxmass_results"),
+			minmass_results_offshore	= elt(annual.results.offshore, "minmass_results"),
+			annual_flux_results_offshore	= elt(annual.results.offshore, "annual_flux_results"),
 
-			mass_results_wholedomain	= el(annual.results.wholedomain, "mass_results"),
-			maxmass_results_wholedomain	= el(annual.results.wholedomain, "maxmass_results"),
-			minmass_results_wholedomain	= el(annual.results.wholedomain, "minmass_results"),
-			annual_flux_results_wholedomain	= el(annual.results.wholedomain, "annual_flux_results"),
+			mass_results_wholedomain	= elt(annual.results.wholedomain, "mass_results"),
+			maxmass_results_wholedomain	= elt(annual.results.wholedomain, "maxmass_results"),
+			minmass_results_wholedomain	= elt(annual.results.wholedomain, "minmass_results"),
+			annual_flux_results_wholedomain	= elt(annual.results.wholedomain, "annual_flux_results"),
 
 			# Network fluxes:
-			flow_matrix_all_fluxes		= el(flow.matrices, "flow_matrix_all_fluxes"),
-			flow_matrix_excl_spawn_recruit	= el(flow.matrices, "flow_matrix_excl_spawn_recruit"),
-			NetworkIndexResults		= el(flow.matrices, "NetworkIndexResults"),
+			flow_matrix_all_fluxes		= elt(flow.matrices, "flow_matrix_all_fluxes"),
+			flow_matrix_excl_spawn_recruit	= elt(flow.matrices, "flow_matrix_excl_spawn_recruit"),
+			NetworkIndexResults		= elt(flow.matrices, "NetworkIndexResults"),
 
 			annual.target.data		= annual.target.data,
 
 			# error function/likelihoods:
-			annual_obj			= el(fit.to.target.data, "annual_obj"),
-			partial_chi			= el(fit.to.target.data, "partial_chi"),
-			opt_results			= el(fit.to.target.data, "opt_results")
+			annual_obj			= elt(fit.to.target.data, "annual_obj"),
+			partial_chi			= elt(fit.to.target.data, "partial_chi"),
+			opt_results			= elt(fit.to.target.data, "opt_results")
 		)
 	)
 

@@ -21,15 +21,15 @@ set_default_run <- function(model.name, model.variant, model.subdir="", model.id
 
 	default_run <- list(
 		# main model settings:
-		"nyears"	= nyears,
-		"ndays"		= nyears*360 + 1,
-		"drndays"	= nyears*12,
-		"times"		= seq(0, nyears*360, by=outp_time_interval),
-		"drtimes"	= seq(15, nyears*360-15, by=30),
-		"sprectimes"	= seq(0, nyears*360, by=1),
-		"daynum"	= seq(0, 360, by=1),
-		"identifier"	= model.ident,
-		"resultsdir"	= makepath(MODEL_RESULTS_DIR, model.name, model.variant, model.subdir)	# results/<model>/<variant>/<subdir>	ZZ add a trailing '/'?
+		nyears		= nyears,
+		ndays		= nyears*360 + 1,
+		drndays		= nyears*12,
+		times		= seq(0, nyears*360, by=outp_time_interval),
+		drtimes		= seq(15, nyears*360-15, by=30),
+		sprectimes	= seq(0, nyears*360, by=1),
+		daynum		= seq(0, 360, by=1),
+		identifier	= model.ident,								# used as additional suffix when outputting csv files
+		resultsdir	= makepath(MODEL_RESULTS_DIR, model.name, model.variant, model.subdir)	# results/<model>/<variant>/<subdir>
 	)
 
 	default_run

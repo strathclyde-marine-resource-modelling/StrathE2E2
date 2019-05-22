@@ -18,9 +18,9 @@
 #
 read_fitted_parameters <- function(model.path) {
 
-	preference_matrix_input	<- readcsv(model.path, PARAMETERS_DIR, fittedparameterfile_preferences)
-	uptake_mort_input	<- readcsv(model.path, PARAMETERS_DIR, fittedparameterfile_uptake_mort)
-	microbiology_input	<- readcsv(model.path, PARAMETERS_DIR, fittedparameterfile_microbiology)
+	preference_matrix_input	<- get.model.file(model.path, PARAMETERS_DIR, file=FITTED_PARAMETERS_PREFERENCE)
+	uptake_mort_input	<- get.model.file(model.path, PARAMETERS_DIR, file=FITTED_PARAMETERS_UPTAKE_MORT)
+	microbiology_input	<- get.model.file(model.path, PARAMETERS_DIR, file=FITTED_PARAMETERS_MICROBIOLOGY)
 
 	# rownames(preference_matrix_input)
 	#  [1] "ammonia"   "nitrate"   "suspdet"   "seddet"    "corpses"   "discards" 
@@ -29,12 +29,13 @@ read_fitted_parameters <- function(model.path) {
 	# [19] "bird"      "seal"    "ceta"  
 
 	# make a linear list of prefs from the matrices:
+	# ZZ preference_matrix_input["phyt", "nitrate"] should work
 	fitted.parameters <- list(
 		# PREFS: 79 pars
 		PREF_NIT_kelp		= preference_matrix_input$kelp[which(rownames(preference_matrix_input)=="nitrate")],
 		PREF_AMM_kelp		= preference_matrix_input$kelp[which(rownames(preference_matrix_input)=="ammonia")],
 
-		PREF_NIT_phyt		= preference_matrix_input$phyt[which(rownames(preference_matrix_input)=="nitrate")],	# ZZ preference_matrix_input["phyt", "nitrate"] should work
+		PREF_NIT_phyt		= preference_matrix_input$phyt[which(rownames(preference_matrix_input)=="nitrate")],
 		PREF_AMM_phyt		= preference_matrix_input$phyt[which(rownames(preference_matrix_input)=="ammonia")],
 
 		PREF_phyt_herb		= preference_matrix_input$omnivzoo[which(rownames(preference_matrix_input)=="phyt")],
@@ -192,10 +193,10 @@ read_fitted_parameters <- function(model.path) {
 		xdsens			= microbiology_input$Value[14],
 
 		#Proportion of discards sinking to become seabed corpses per day - temperature independent
-		xdisc_corp		= microbiology_input$Value[15],		# ZZ 15/16 swapped - does order matter ?
+		xdisc_corp		= microbiology_input$Value[15],
 
 		#Proportion of corpse mass converted to detritus per day at the reference temperature
-		xxcorp_det		= microbiology_input$Value[16],
+		xxcorp_det		= microbiology_input$Value[16],		# ZZ orginally xcorp_det - should I revert?
 
 		xkelpdebris_det		= microbiology_input$Value[17],
 
@@ -250,7 +251,6 @@ read_fitted_parameters <- function(model.path) {
 		#Maximum proportions of the stock biomass which is accessible to the fisheries
 		#Units proportions
 		xmax_exploitable_f_KP	= uptake_mort_input$max_exploitable_f[which(uptake_mort_input$consumer=="kelp")],
-
 		xmax_exploitable_f_PF	= uptake_mort_input$max_exploitable_f[which(uptake_mort_input$consumer=="fishp")],
 		xmax_exploitable_f_DF	= uptake_mort_input$max_exploitable_f[which(uptake_mort_input$consumer=="fishd")],
 		xmax_exploitable_f_MF	= uptake_mort_input$max_exploitable_f[which(uptake_mort_input$consumer=="fishm")],
@@ -258,7 +258,6 @@ read_fitted_parameters <- function(model.path) {
 		xmax_exploitable_f_CB	= uptake_mort_input$max_exploitable_f[which(uptake_mort_input$consumer=="benthc")],
 		xmax_exploitable_f_CZ	= uptake_mort_input$max_exploitable_f[which(uptake_mort_input$consumer=="carnzoo")],
 		xmax_exploitable_f_BD	= uptake_mort_input$max_exploitable_f[which(uptake_mort_input$consumer=="bird")],
-
 		xmax_exploitable_f_SL	= uptake_mort_input$max_exploitable_f[which(uptake_mort_input$consumer=="seal")],
 		xmax_exploitable_f_CT	= uptake_mort_input$max_exploitable_f[which(uptake_mort_input$consumer=="ceta")]
 	)

@@ -13,7 +13,7 @@
 #
 read_chemistry_drivers <- function(model.path) {
 
-	chemistry <- readcsv(model.path, DRIVING_DATA_DIR, chemistrydrivingfile)
+	chemistry <- get.model.file(model.path, DRIVING_DATA_DIR, file=CHEMISTRY_DRIVERS)
 
 	names(chemistry) <- c("month",
 		"so_nitrate","so_ammonia","so_phyt","so_detritus",

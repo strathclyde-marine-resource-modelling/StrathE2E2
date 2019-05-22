@@ -13,7 +13,7 @@
 #
 read_physics_drivers <- function(model.path) {
 
-	physics <- readcsv(model.path, DRIVING_DATA_DIR, physicsdrivingfile)
+	physics <- get.model.file(model.path, DRIVING_DATA_DIR, file=PHYSICS_DRIVERS)
 
 	names(physics) <- c(
 		"month","sslight","so_logespm","si_logespm","so_temp","d_temp","si_temp","rivervol",

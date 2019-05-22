@@ -30,11 +30,11 @@ disaggregate_landings_discards_by_gear <- function(fleet.model.output, annual.la
 	ngears<-12
 	ngroups<-10 # this is the number of groups in gear_group_proportions
 
-	offshore_gear_group_props	<- el(fleet.model.output, "offshore_gear_group_props")
-	inshore_gear_group_props	<- el(fleet.model.output, "inshore_gear_group_props")
+	offshore_gear_group_props	<- elt(fleet.model.output, "offshore_gear_group_props")
+	inshore_gear_group_props	<- elt(fleet.model.output, "inshore_gear_group_props")
 
-	offshore_annual_group_land_disc	<- el(annual.landings, "offshore_annual_group_land_disc")
-	inshore_annual_group_land_disc	<- el(annual.landings, "inshore_annual_group_land_disc")
+	offshore_annual_group_land_disc	<- elt(annual.landings, "offshore_annual_group_land_disc")
+	inshore_annual_group_land_disc	<- elt(annual.landings, "inshore_annual_group_land_disc")
 
 	#First we need to unpack the gear_group_proportions list saved from the fleet model...
 	offshore_gear_group_proportions <- data.frame(offshore_gear_group_props)

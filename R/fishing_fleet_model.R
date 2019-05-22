@@ -14,33 +14,33 @@
 fishing_fleet_model <- function(model) {
 
 	# Unpack:
-	run				<- el(model, "run")
-	nyears				<- el(run, "nyears")
+	run				<- elt(model, "run")
+	nyears				<- elt(run, "nyears")
 
-	data				<- el(model, "data")
-	initial.state			<- el(data, "initial.state")
+	data				<- elt(model, "data")
+	initial.state			<- elt(data, "initial.state")
 
-        fleet.model			<- el(data, "fleet.model")
-	gear_activity			<- el(fleet.model, "gear_activity")
-	gear_group_rel_power		<- el(fleet.model, "gear_group_rel_power")
-	gear_group_discard		<- el(fleet.model, "gear_group_discard")
-	gear_group_gutting		<- el(fleet.model, "gear_group_gutting")
-	gear_ploughing_rate		<- el(fleet.model, "gear_ploughing_rate")
-	gear_habitat_activity		<- el(fleet.model, "gear_habitat_activity")
-	HRscale_vector			<- el(fleet.model, "HRscale_vector")
-	HRscale_vector_muliplier	<- el(fleet.model, "HRscale_vector_multiplier")
-	gear_mult			<- el(fleet.model, "gear_mult")
-	quota_nonquota_parms_vector	<- el(fleet.model, "quota_nonquota_parms_vector")
-	DFsize_SWITCH			<- el(fleet.model, "DFsize_SWITCH")
-	DFdiscard_SWITCH		<- el(fleet.model, "DFdiscard_SWITCH")
-	plough_depth_vector		<- el(fleet.model, "plough_depth_vector")
-	BSmort_gear			<- el(fleet.model, "BSmort_gear")
-	BCmort_gear			<- el(fleet.model, "BCmort_gear")
+        fleet.model			<- elt(data, "fleet.model")
+	gear_activity			<- elt(fleet.model, "gear_activity")
+	gear_group_rel_power		<- elt(fleet.model, "gear_group_rel_power")
+	gear_group_discard		<- elt(fleet.model, "gear_group_discard")
+	gear_group_gutting		<- elt(fleet.model, "gear_group_gutting")
+	gear_ploughing_rate		<- elt(fleet.model, "gear_ploughing_rate")
+	gear_habitat_activity		<- elt(fleet.model, "gear_habitat_activity")
+	HRscale_vector			<- elt(fleet.model, "HRscale_vector")
+	HRscale_vector_muliplier	<- elt(fleet.model, "HRscale_vector_multiplier")
+	gear_mult			<- elt(fleet.model, "gear_mult")
+	quota_nonquota_parms_vector	<- elt(fleet.model, "quota_nonquota_parms_vector")
+	DFsize_SWITCH			<- elt(fleet.model, "DFsize_SWITCH")
+	DFdiscard_SWITCH		<- elt(fleet.model, "DFdiscard_SWITCH")
+	plough_depth_vector		<- elt(fleet.model, "plough_depth_vector")
+	BSmort_gear			<- elt(fleet.model, "BSmort_gear")
+	BCmort_gear			<- elt(fleet.model, "BCmort_gear")
 
-	offal_prop_live_weight		<- el(fleet.model, "offal_prop_live_weight")	# ZZ where this from?
+	offal_prop_live_weight		<- elt(fleet.model, "offal_prop_live_weight")	# ZZ where this from?
 
-        physical.parameters		<- el(data, "physical.parameters")
-	habitat_areas			<- el(physical.parameters, "habitat_areas")
+        physical.parameters		<- elt(data, "physical.parameters")
+	habitat_areas			<- elt(physical.parameters, "habitat_areas")
 
 	Last_January			<- 0
 	RESETS				<- 0

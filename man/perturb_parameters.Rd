@@ -4,12 +4,14 @@
 \alias{perturb_parameters}
 \title{perturb parameters a bit}
 \usage{
-perturb_parameters(datastore, annealing.parms = list())
+perturb_parameters(datastore, annealing.parms, toppredlock = FALSE)
 }
 \arguments{
 \item{datastore}{parameters to be perturbed}
 
-\item{annealing.parms}{annealing paramters}
+\item{annealing.parms}{annealing parameters}
+
+\item{toppredlock}{set to TRUE to lock the bird seal and cetacean uptake parameters}
 }
 \value{
 perturbed parameter vector

@@ -16,7 +16,7 @@
 
 read_physical_parameters <- function(model.path) {
 
-	PCdata <- readcsv(model.path, PARAMETERS_DIR, physicalconfigfile)
+	PCdata <- get.model.file(model.path, PARAMETERS_DIR, file=PHYSICAL_PARAMETERS)
 
 	#Set water column layer thicknesses (metres), benthic boundary layer thickness,
 	so_depth	<- PCdata[1,1]		# offshore surface layer thickness

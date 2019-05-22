@@ -11,8 +11,8 @@
 #
 read_fixed_parameters <- function(model.path) {
 
-	HWPdata_A <- readcsv(model.path, PARAMETERS_DIR, fixedparameterfile_miscellaneous)
-	HWPdata_B <- readcsv(model.path, PARAMETERS_DIR, fixedparameterfile_consumers)
+	HWPdata_A <- get.model.file(model.path, PARAMETERS_DIR, file=FIXED_PARAMETERS_MISCELLANEOUS)
+	HWPdata_B <- get.model.file(model.path, PARAMETERS_DIR, file=FIXED_PARAMETERS_CONSUMER)
 
 	#Various values are hard-wired here...
 	#These are:

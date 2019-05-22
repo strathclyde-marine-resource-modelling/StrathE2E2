@@ -8,8 +8,8 @@
 #'
 #' @param model.name name of model to read
 #' @param model.variant read the designated model variant (no default)
-#' @param model.subdir store results in this sub directory of the main results folder
 #' @param model.ident appended to output files (e.g. OFFSHORE_model_annualresults-TAG.csv instead of just OFFSHORE_model_annualresults.csv)
+#' @param model.subdir store results in this sub directory of the main results folder
 #' @param user.path path to users top level model folder
 #' @param nyears number of years that model will run
 #'
@@ -17,20 +17,20 @@
 #'
 #' @export
 #
-read_model <- function(model.name, model.variant, model.subdir="", model.ident="base", user.path="", nyears=20) {
+read_model <- function(model.name, model.variant, model.ident="base", model.subdir="", user.path="", nyears=20) {
 
 	read.only <- (user.path == "")					# read only unless user path is specified - i.e. it's not just based on write permissions!
 
 	# full path to either the system model or the user specified one:
 	model.path <- get.model.path(model.name, model.variant, user.path)
 
-	cat(" Loading model: ", model.path, "\n", sep="")
+	cat(" Loading model   : ", model.path, "\n", sep="")
 
-	# source the setup file containing all the file paths:
-	sourcefile(makepath(model.path, MODEL_SETUP_SCRIPT))		# NorthSea/MODEL_SETUP.R
+	# read the setup file containing all the filenames:
+	read.model.setup(model.path)				# Models/Model/Variant/MODEL_SETUP.csv
 
 	# run slot:
-	run <- set_default_run(model.name, model.variant, model.subdir, model.ident, nyears=20)
+	run <- set_default_run(model.name, model.variant, model.subdir, model.ident, nyears)
 
 	# read model inputs:
 	physical.parameters	<- read_physical_parameters(model.path)
@@ -65,7 +65,7 @@ read_model <- function(model.name, model.variant, model.subdir="", model.ident="
 		initial.state		= initial.state,
 		drivers			= drivers,
 		forcings		= forcings,
-		fleet.model		= fleet.model,		## maybe somewhere else ZZ
+		fleet.model		= fleet.model,
 		uptakes			= uptakes
 	)
 

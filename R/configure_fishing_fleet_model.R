@@ -14,12 +14,12 @@
 configure_fishing_fleet_model <- function(model.path, physical.parms) {
 
 	# Unpack:
-	x_depth_s1 <- el(physical.parms, "x_depth_s1")
-	x_depth_s2 <- el(physical.parms, "x_depth_s2")
-	x_depth_s3 <- el(physical.parms, "x_depth_s3")
-	x_depth_d1 <- el(physical.parms, "x_depth_d1")
-	x_depth_d2 <- el(physical.parms, "x_depth_d2")
-	x_depth_d3 <- el(physical.parms, "x_depth_d3")
+	x_depth_s1 <- elt(physical.parms, "x_depth_s1")
+	x_depth_s2 <- elt(physical.parms, "x_depth_s2")
+	x_depth_s3 <- elt(physical.parms, "x_depth_s3")
+	x_depth_d1 <- elt(physical.parms, "x_depth_d1")
+	x_depth_d2 <- elt(physical.parms, "x_depth_d2")
+	x_depth_d3 <- elt(physical.parms, "x_depth_d3")
 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Subroutine to configure the fishing fleet model
@@ -28,19 +28,16 @@ configure_fishing_fleet_model <- function(model.path, physical.parms) {
 
 	#THIS VERSION ALSO DEALS WITH THE BYCATCH OF BIRDS AND MAMMALS
 
-	FGAdata	<- readcsv(model.path, PARAMETERS_DIR, fishingactivityfile)
-	FGDdata	<- readcsv(model.path, PARAMETERS_DIR, fishingdiscardfile)
-	FGGdata	<- readcsv(model.path, PARAMETERS_DIR, fishingguttingfile)
-	FGOdata	<- readcsv(model.path, PARAMETERS_DIR, fishingparametersfile)
-	FGPdata	<- readcsv(model.path, PARAMETERS_DIR, fishingpowerfile)
-	FGSdata	<- readcsv(model.path, PARAMETERS_DIR, fishingdistributionfile)
+	FGAdata	<- get.model.file(model.path, PARAMETERS_DIR, file=FISHING_ACTIVITY_PARAMETERS)
+	FGPdata	<- get.model.file(model.path, PARAMETERS_DIR, file=FISHING_POWER_PARAMETERS)
+	FGDdata	<- get.model.file(model.path, PARAMETERS_DIR, file=FISHING_DISCARD_PARAMETERS)
+	FGSdata	<- get.model.file(model.path, PARAMETERS_DIR, file=FISHING_DISTRIBUTION_PARAMETERS)
+	FGOdata	<- get.model.file(model.path, PARAMETERS_DIR, file=FISHING_FLEET_PARAMETERS)
+	FGGdata	<- get.model.file(model.path, PARAMETERS_DIR, file=FISHING_PROCESSING_PARAMETERS)
+	FGMdata <- get.model.file(model.path, PARAMETERS_DIR, file=FISHING_ACTIVITY_SCALING_VALUES)
+	FGHdata <- get.model.file(model.path, PARAMETERS_DIR, file=HARVEST_RATIO_SCALING_VALUES)
 
-	# Read in the activity scaling values to configure the run
-	FGMdata <- readcsv(model.path, PARAMETERS_DIR, gearmultfile)
         gear_mult       <- as.vector(FGMdata[,3])
-
-	# Read in the harvest rate multiplier values
-	FGHdata <- readcsv(model.path, PARAMETERS_DIR, HRmultfile)
 	HRscale_vector_multiplier<-as.vector(FGHdata[,2])
 
 

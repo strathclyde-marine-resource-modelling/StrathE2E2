@@ -14,8 +14,10 @@
 #
 extract_timeseries_annual_landings <- function(model, out) {
 
-	run	<- el(model, "run")
-	nyears	<- el(run, "nyears")
+	run		<- elt(model, "run")
+	nyears		<- elt(run, "nyears")
+	identifier	<- elt(run, "identifier")
+	resultsdir	<- elt(run, "resultsdir")
 
 	#Print some of the full time series data to a csv file
 	#-----------------------------------------------------------------
@@ -100,12 +102,16 @@ extract_timeseries_annual_landings <- function(model, out) {
 		inshore_annual_group_land_disc$KPdisc[ik] <- out$disckp_i[ (1+(ik*360)) ] - out$disckp_i[ (1+(ik-1)*360) ]
 	}
 
-	landings <- list(
+	filename = csvname(resultsdir, "model_inshore_annual_landings_discards", identifier)
+	writecsv(inshore_annual_group_land_disc, filename, row.names=FALSE)
+
+	filename = csvname(resultsdir, "model_offshore_annual_landings_discards", identifier)
+	writecsv(offshore_annual_group_land_disc, filename, row.names=FALSE)
+
+	list(
 		offshore_annual_group_land_disc	= offshore_annual_group_land_disc,
 		inshore_annual_group_land_disc = inshore_annual_group_land_disc
 	)
-
-	landings
 }
 
 

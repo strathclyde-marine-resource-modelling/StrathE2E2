@@ -16,18 +16,18 @@
 read_initial_state <- function(model.path, physical.parms) {
 
 	# Unpack:
-	x_xR_detritus_s1	<- el(physical.parms, "x_xR_detritus_s1")
-	x_xR_detritus_s2	<- el(physical.parms, "x_xR_detritus_s2")
-	x_xR_detritus_s3	<- el(physical.parms, "x_xR_detritus_s3")
-	x_xR_detritus_d1	<- el(physical.parms, "x_xR_detritus_d1")
-	x_xR_detritus_d2	<- el(physical.parms, "x_xR_detritus_d2")
-	x_xR_detritus_d3	<- el(physical.parms, "x_xR_detritus_d3")
-	x_poros_s1		<- el(physical.parms, "x_poros_s1")
-	x_poros_s2		<- el(physical.parms, "x_poros_s2")
-	x_poros_s3		<- el(physical.parms, "x_poros_s3")
-	x_poros_d1		<- el(physical.parms, "x_poros_d1")
-	x_poros_d2		<- el(physical.parms, "x_poros_d2")
-	x_poros_d3		<- el(physical.parms, "x_poros_d3")
+	x_xR_detritus_s1	<- elt(physical.parms, "x_xR_detritus_s1")
+	x_xR_detritus_s2	<- elt(physical.parms, "x_xR_detritus_s2")
+	x_xR_detritus_s3	<- elt(physical.parms, "x_xR_detritus_s3")
+	x_xR_detritus_d1	<- elt(physical.parms, "x_xR_detritus_d1")
+	x_xR_detritus_d2	<- elt(physical.parms, "x_xR_detritus_d2")
+	x_xR_detritus_d3	<- elt(physical.parms, "x_xR_detritus_d3")
+	x_poros_s1		<- elt(physical.parms, "x_poros_s1")
+	x_poros_s2		<- elt(physical.parms, "x_poros_s2")
+	x_poros_s3		<- elt(physical.parms, "x_poros_s3")
+	x_poros_d1		<- elt(physical.parms, "x_poros_d1")
+	x_poros_d2		<- elt(physical.parms, "x_poros_d2")
+	x_poros_d3		<- elt(physical.parms, "x_poros_d3")
 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Subroutine to load and set the initial values of the state variable sin the model.
@@ -36,7 +36,7 @@ read_initial_state <- function(model.path, physical.parms) {
 
 	#The file of initial state values is read from the directory /parameters
 
-	IRdata <- readcsv(model.path, PARAMETERS_DIR, initialstatefile, header=FALSE)	# no header!
+	IRdata <- get.model.file(model.path, PARAMETERS_DIR, file=INITIAL_STATE, header=FALSE)		# no header!
 
 	# Check whether the saved values of xR_detritus match the values from the configuration and if not inject them into the data
 

@@ -4,17 +4,17 @@
 \alias{read_model}
 \title{read designated model}
 \usage{
-read_model(model.name, model.variant, model.subdir = "",
-  model.ident = "base", user.path = "", nyears = 20)
+read_model(model.name, model.variant, model.ident = "base",
+  model.subdir = "", user.path = "", nyears = 20)
 }
 \arguments{
 \item{model.name}{name of model to read}
 
 \item{model.variant}{read the designated model variant (no default)}
 
-\item{model.subdir}{store results in this sub directory of the main results folder}
-
 \item{model.ident}{appended to output files (e.g. OFFSHORE_model_annualresults-TAG.csv instead of just OFFSHORE_model_annualresults.csv)}
+
+\item{model.subdir}{store results in this sub directory of the main results folder}
 
 \item{user.path}{path to users top level model folder}
 

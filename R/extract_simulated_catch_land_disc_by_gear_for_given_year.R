@@ -13,17 +13,21 @@
 #
 extract_simulated_catch_land_disc_by_gear_for_given_year <- function(model, landings.by.gear, ytp=-1) {
 
-	data		<- el(model, "data")
-	fleet.model	<- el(data, "fleet.model")
-	gear_labels	<- el(fleet.model, "gear_labels")
+	data		<- elt(model, "data")
+	fleet.model	<- elt(data, "fleet.model")
+	gear_labels	<- elt(fleet.model, "gear_labels")
     
-	run		<- el(model, "run")
-	identifier	<- el(run, "identifier")
-	resultsdir	<- el(run, "resultsdir")
+	run		<- elt(model, "run")
+	identifier	<- elt(run, "identifier")
+	resultsdir	<- elt(run, "resultsdir")
 
-	offshore_annual_group_gear_land_disc	<- el(landings.by.gear, "offshore_annual_group_gear_land_disc")
-	inshore_annual_group_gear_land_disc	<- el(landings.by.gear, "inshore_annual_group_gear_land_disc")
+	offshore_annual_group_gear_land_disc	<- elt(landings.by.gear, "offshore_annual_group_gear_land_disc")
+	inshore_annual_group_gear_land_disc	<- elt(landings.by.gear, "inshore_annual_group_gear_land_disc")
    
+#showall("offshore_annual_group_gear_land_disc", offshore_annual_group_gear_land_disc)
+#showall("inshore_annual_group_gear_land_disc", inshore_annual_group_gear_land_disc)
+#stop("ss")
+
 #Extracts a year of modelled landingfs and disccards disaggregated by gears
 
 #Expects imnput dataframe  annual_group_gear_land_disc
@@ -76,6 +80,7 @@ if (ytp == -1) {
 		ytp <- nrow(annual_group_gear_land_disc)
 	}
 }
+cat("ytp=",ytp,"\n")
 
 #First need to set up matrices to hold the data for plotting
 
