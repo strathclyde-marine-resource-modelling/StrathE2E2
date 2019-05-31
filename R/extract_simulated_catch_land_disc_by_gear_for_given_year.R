@@ -17,9 +17,9 @@ extract_simulated_catch_land_disc_by_gear_for_given_year <- function(model, land
 	fleet.model	<- elt(data, "fleet.model")
 	gear_labels	<- elt(fleet.model, "gear_labels")
     
-	run		<- elt(model, "run")
-	identifier	<- elt(run, "identifier")
-	resultsdir	<- elt(run, "resultsdir")
+	setup		<- elt(model, "setup")
+	identifier	<- elt(setup, "model.ident")
+	resultsdir	<- elt(setup, "resultsdir")
 
 	offshore_annual_group_gear_land_disc	<- elt(landings.by.gear, "offshore_annual_group_gear_land_disc")
 	inshore_annual_group_gear_land_disc	<- elt(landings.by.gear, "inshore_annual_group_gear_land_disc")
@@ -80,7 +80,6 @@ if (ytp == -1) {
 		ytp <- nrow(annual_group_gear_land_disc)
 	}
 }
-cat("ytp=",ytp,"\n")
 
 #First need to set up matrices to hold the data for plotting
 

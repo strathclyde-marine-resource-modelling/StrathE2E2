@@ -338,6 +338,10 @@ calculate_uptakes <- function(fitted.parms) {
 		bdapar_ceta		= bda_par_ceta
 	)
 
+	#showall("u_ceta", u_ceta)
+	#showall("PREF_herb_ceta", PREF_herb_ceta)
+	#showall("uherb_ceta", uptakes[["uherb_ceta"]])
+
 	uptakes
 }
 

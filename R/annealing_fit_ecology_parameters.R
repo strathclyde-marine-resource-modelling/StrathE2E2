@@ -68,16 +68,16 @@
 
 annealing_fit_ecology_parameters <- function(model) {
 
-	model.path			<- elt(model, "path")
+	setup				<- elt(model, "setup")
 	data				<- elt(model, "data")
-	fitted.parameters		<- elt(data, "fitted.parameters")
-	fleet.model			<- elt(data, "fleet.model")
-	HRscale_vector_multiplier	<- elt(fleet.model, "HRscale_vector_multiplier")
 
-	run				<- elt(model, "run")
-        resultsdir			<- elt(run, "resultsdir")
-	nyears				<- elt(run, "nyears")			# Number of years to run each simulation
-	identifier			<- elt(run, "TESTING_RUN_NEWTRIAL")
+	fitted.parameters		<- elt(data, "fitted.parameters")
+	HRscale_vector_multiplier	<- elt(data, "fleet.model", "HRscale_vector_multiplier")
+
+	nyears				<- elt(setup, "nyears")			# Number of years to run each simulation
+	model.path			<- elt(setup, "model.path")
+        resultsdir			<- elt(setup, "resultsdir")
+	identifier			<- elt(setup, "model.ident")
 
 	print(date())
 
@@ -95,13 +95,10 @@ annealing_fit_ecology_parameters <- function(model) {
 		print("**************************************************************************")
 	}
 
-	# this is simply the read_fitted_parameters
-	#source("library/ecology/load_fitted_parameter_values_into_datastore_format_CLEAN_tp_kelp.R")
-
-	#datastore <- read_fitted_parameters(model.path)         # ZZ lets try it as a list
-	datastore <- fitted.parameters
-        datastore$annual_obj <- 1e-60
-
+	datastore <- c(
+		fitted.parameters,
+        	annual_obj = 1e-60
+	)
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	parhistory	<- as.data.frame(datastore)		# these are all data frames
@@ -121,27 +118,19 @@ annealing_fit_ecology_parameters <- function(model) {
 		#FIRST RUN THROUGH THE MODEL WITH THE CALIBRATION PERIOD HARVEST RATES.....
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-		SD_control <- read_SD_control_ecology(model.path)	# read every loop so control is available during a run
+		annealing.parms <- read_SD_control_ecology(model.path)	# read every loop so control is available during a run
+                if (kkk==1) annealing.parms[] <- 0.0
 
-		#At the start of each cycle need to run the fleet model setup 
-		#source("library/PREPARE_THE_FISHING_FLEET_MODEL_tp_KELP.R")
-
-		#source("library/RUN_THE_FISHING_FLEET_MODEL_tp_KELP.R")
-		#_________________________________________________________________
-		#Jiggle the parameter values and load them into the vector which is passed to the model function
-
-		perturbed <- perturb_parameters(datastore, SD_control, toppredlock)
-
+		# Jiggle the parameter values and load them into the vector which is passed to the model function
+		perturbed <- perturb_parameters(datastore, annealing.parms, toppredlock)
+		model$data$fitted.parameters <- perturbed				# perturbed parameters built into model.parameters for run
 
 		results <- StrathE2E(model)
-showall("results", results)
-stop("the end")
 
 		err <- elt(results, "final.year.outputs", "annual_obj")
-		datastore$annual_obj <- err
+		perturbed$annual_obj <- err
 
 		for(ijk in 1:ncol(proposalstore)){	# ZZ can this be done without a loop?
-			#proposalstore[1,ijk]<-Results[ijk]
 			proposalstore[1,ijk]<-perturbed[ijk]
 		}
 
@@ -164,9 +153,6 @@ stop("the end")
 
 		if(lik_ratio>rand){
 			n_acceptances<-n_acceptances+1
-			#for(ijk in 1:ncol(datastore)){
-				#datastore[1,ijk]<-Results[ijk]
-			#}
 			datastore <- perturbed
 
 			lastbest <- err
@@ -195,15 +181,16 @@ stop("the end")
 		par(mfrow=c(1,1))
 
 		#Plot the basemodel results 
-		axmin <- elt(SD_control, "axmin")
-		axmax <- elt(SD_control, "axmax")
+		axmin <- elt(annealing.parms, "axmin")
+		axmax <- elt(annealing.parms, "axmax")
 		plot(seq(1,nrow(proposalhistory)),proposalhistory$annual_obj,ylim=c(axmin,axmax),xlim=c(1,kkk+1),xlab="Iterations",ylab="Likelihood",type="l",col="grey")
 		points(seq(1,nrow(parhistory)),parhistory$annual_obj,type="l",col="black",lwd=3)
+		if (kkk==10) stop("kkk==2")
 	}
 
 	#At the conclusion of the whole process, extract the final row of the parhistory into the format of model fitted parameter files and save to disc
 
-	source(paste("library/tools/extract_from_datastore_format_back_into_fitted_parameter_files_tp_kelp.R",sep=""))	# ZZ needs sorting
+	#source(paste("library/tools/extract_from_datastore_format_back_into_fitted_parameter_files_tp_kelp.R",sep=""))	# ZZ needs sorting
 
 }
 

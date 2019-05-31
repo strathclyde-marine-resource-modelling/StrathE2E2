@@ -186,7 +186,6 @@ p_to_tweak<-c(seq(1,4,by=1),seq(28,56,by=1),                         # physical 
 Nruns<-length(p_to_tweak)+1
 
 #Set up a vector of parms locations which are constrained to lie within 0 and 1
-# ZZ don't like this parameter numbering...can we not use names?
 p_zero_one<-c(83:123,  # discard and gutting rates
               286:293, # swept area ratios
               294:297, # benthois damage rates
@@ -216,7 +215,6 @@ p_zero_one<-c(83:123,  # discard and gutting rates
 
 
 #Set up a vector of parms locations where the parameter is expected to be negative
-# ZZ don't like this parameter numbering...can we not use names?
 p_negative<-c(517,519)   # msens,  nsens
 
 

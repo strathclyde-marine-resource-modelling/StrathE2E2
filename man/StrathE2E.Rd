@@ -27,5 +27,5 @@ results <- StrathE2E(NorthSea)
 plot_full_length_timeseries(results)
 }
 \seealso{
-\code{\link{list_models}}, \code{\link{read_model}}, \code{\link{copy_model}}, \code{\link{rebuild_model}}
+\code{\link{list_models}}, \code{\link{read_model}}, \code{\link{copy_model}}
 }

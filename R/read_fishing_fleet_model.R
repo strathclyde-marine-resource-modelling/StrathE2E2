@@ -1,25 +1,15 @@
 #
-# configure_fishing_fleet_model.R
+# read_fishing_fleet_model.R
 #
-#' configure fishing fleet model
-#' reads model setup from various configuration files and configures the model
+#' read fishing fleet model configuration
 #'
 #' @param model.path path to users model folder, otherwise read package model
-#' @param physical.parms physical model parameters
 #'
 #' @return model object
 #'
 #' @export
 #
-configure_fishing_fleet_model <- function(model.path, physical.parms) {
-
-	# Unpack:
-	x_depth_s1 <- elt(physical.parms, "x_depth_s1")
-	x_depth_s2 <- elt(physical.parms, "x_depth_s2")
-	x_depth_s3 <- elt(physical.parms, "x_depth_s3")
-	x_depth_d1 <- elt(physical.parms, "x_depth_d1")
-	x_depth_d2 <- elt(physical.parms, "x_depth_d2")
-	x_depth_d3 <- elt(physical.parms, "x_depth_d3")
+read_fishing_fleet_model <- function(model.path) {
 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Subroutine to configure the fishing fleet model
@@ -28,40 +18,17 @@ configure_fishing_fleet_model <- function(model.path, physical.parms) {
 
 	#THIS VERSION ALSO DEALS WITH THE BYCATCH OF BIRDS AND MAMMALS
 
-	FGAdata	<- get.model.file(model.path, PARAMETERS_DIR, file=FISHING_ACTIVITY_PARAMETERS)
-	FGPdata	<- get.model.file(model.path, PARAMETERS_DIR, file=FISHING_POWER_PARAMETERS)
-	FGDdata	<- get.model.file(model.path, PARAMETERS_DIR, file=FISHING_DISCARD_PARAMETERS)
-	FGSdata	<- get.model.file(model.path, PARAMETERS_DIR, file=FISHING_DISTRIBUTION_PARAMETERS)
-	FGOdata	<- get.model.file(model.path, PARAMETERS_DIR, file=FISHING_FLEET_PARAMETERS)
-	FGGdata	<- get.model.file(model.path, PARAMETERS_DIR, file=FISHING_PROCESSING_PARAMETERS)
-	FGMdata <- get.model.file(model.path, PARAMETERS_DIR, file=FISHING_ACTIVITY_SCALING_VALUES)
-	FGHdata <- get.model.file(model.path, PARAMETERS_DIR, file=HARVEST_RATIO_SCALING_VALUES)
+	FGAdata	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FISHING_ACTIVITY_PARAMETERS)
+	FGPdata	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FISHING_POWER_PARAMETERS)
+	FGDdata	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FISHING_DISCARD_PARAMETERS)
+	FGSdata	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FISHING_DISTRIBUTION_PARAMETERS)
+	FGOdata	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FISHING_FLEET_PARAMETERS)
+	FGGdata	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FISHING_PROCESSING_PARAMETERS)
+	FGMdata <- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FISHING_ACTIVITY_SCALING_VALUES)
+	FGHdata <- get.model.file(model.path, PARAMETERS_DIR, file.pattern=HARVEST_RATIO_SCALING_VALUES)
 
         gear_mult       <- as.vector(FGMdata[,3])
 	HRscale_vector_multiplier<-as.vector(FGHdata[,2])
-
-
-	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Subroutine to configure the fishing fleet model
-# set the rates and parameters for a set of 12 fishing gears
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 #JUST FOR TESTING...
@@ -73,7 +40,6 @@ configure_fishing_fleet_model <- function(model.path, physical.parms) {
 #CZratemult<-1
 #KPratemult<-1
 #nyears<-3
-
 
 gear_labels <- FGAdata[,1]
 gear_codes <- FGAdata[,2]
@@ -210,47 +176,25 @@ gear_ploughing_rate<-FGAdata[,4]
 plough_thickness <- FGOdata[9,1]  # Assumes that all sediment types are ploughed to a depth by fishing gears
                                   # except fo rthe kelp forst habitat which is solid rock
 
-plough_depth_s0<-0
-plough_depth_d0<-0
+	plough_depth_s0<-0	# set properly at model build
+	plough_depth_s1<-0
+	plough_depth_s2<-0
+	plough_depth_s3<-0
+	plough_depth_d0<-0
+	plough_depth_d1<-0
+	plough_depth_d2<-0
+	plough_depth_d3<-0
 
-if(x_depth_s1>0){
-  plough_depth_s1<-plough_thickness/x_depth_s1 
-} else {
-  plough_depth_s1<-0
-}
-
-if(x_depth_s2>0){
-plough_depth_s2<-plough_thickness/x_depth_s2 
-} else {
-  plough_depth_s2<-0
-}
-
-if(x_depth_s3>0){
-plough_depth_s3<-plough_thickness/x_depth_s3 
-} else {
-  plough_depth_s3<-0
-}
-
-if(x_depth_d1>0){
-plough_depth_d1<-plough_thickness/x_depth_d1 
-} else {
-  plough_depth_d1<-0
-}
-
-if(x_depth_d2>0){
-plough_depth_d2<-plough_thickness/x_depth_d2 
-} else {
-  plough_depth_d2<-0
-}
-
-if(x_depth_d3>0){
-plough_depth_d3<-plough_thickness/x_depth_d3 
-} else {
-  plough_depth_d3<-0
-}
-
-plough_depth_vector<-c(plough_depth_s0,plough_depth_s1,plough_depth_s2,plough_depth_s3,
-                       plough_depth_d0,plough_depth_d1,plough_depth_d2,plough_depth_d3)
+	plough_depth_vector<-c(
+		plough_depth_s0,
+		plough_depth_s1,
+		plough_depth_s2,
+		plough_depth_s3,
+		plough_depth_d0,
+		plough_depth_d1,
+		plough_depth_d2,
+		plough_depth_d3
+	)
 
 #------------------------------------------------------------------------
 
@@ -411,7 +355,8 @@ activity_distribution_vector<-c(activity_distribution_vector,as.numeric(gear_hab
 		quota_nonquota_parms_vector	= quota_nonquota_parms_vector,
 		DFsize_SWITCH			= DFsize_SWITCH,
 		DFdiscard_SWITCH		= DFdiscard_SWITCH,
-		plough_depth_vector		= plough_depth_vector,
+		plough_thickness		= plough_thickness,
+		plough_depth_vector		= plough_depth_vector,		# placeholder until model fully built
 		BSmort_gear			= BSmort_gear,
 		BCmort_gear			= BCmort_gear
 	)

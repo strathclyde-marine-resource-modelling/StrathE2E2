@@ -19,15 +19,18 @@
 assemble_flow_matrix_from_model_annual_output <- function(model, output, aggregates) {
 
 	# Unpack:
-	model.path	<- elt(model, "path")
 
 	run		<- elt(model, "run")
-	ndays		<- elt(run, "ndays")
-	nyears		<- elt(run, "nyears")
-	identifier	<- elt(run, "identifier")
-	resultsdir	<- elt(run, "resultsdir")
-
+	setup		<- elt(model, "setup")
 	data		<- elt(model, "data")
+
+	ndays		<- elt(run, "ndays")
+
+	nyears		<- elt(setup, "nyears")
+	model.path	<- elt(setup, "model.path")
+	identifier	<- elt(setup, "model.ident")
+	resultsdir	<- elt(setup, "resultsdir")
+
 	physical.parms	<- elt(data, "physical.parameters")
 
 	# extract physical parameters:
@@ -654,7 +657,7 @@ assemble_flow_matrix_from_model_annual_output <- function(model, output, aggrega
 #resultsdir         <- "results/final fitting runs culminating in run 31/"  # not needed if run as part of a model sequence
 #identifier           <- "test_model"                                         # not needed if run as part of a model sequence
 
-	flowmatrix_template <- get.model.file(model.path, PARAMETERS_DIR, file=FOOD_WEB_FLOW_MATRIX)
+	flowmatrix_template <- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FOOD_WEB_FLOW_MATRIX)
 
 #Read in the wholedomain annual flux data file, if not alreday in memory
 #If already in memory the dataframe is called "annual_flux_results"

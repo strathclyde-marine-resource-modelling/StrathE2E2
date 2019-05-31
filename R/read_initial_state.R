@@ -7,27 +7,12 @@
 #' then the ratios of all the other state variables to this value.
 #'
 #' @param model.path path to model files
-#' @param physical.parms model physical parameters
 #'
 #' @return initial state variables
 #'
 #' @export
 #
-read_initial_state <- function(model.path, physical.parms) {
-
-	# Unpack:
-	x_xR_detritus_s1	<- elt(physical.parms, "x_xR_detritus_s1")
-	x_xR_detritus_s2	<- elt(physical.parms, "x_xR_detritus_s2")
-	x_xR_detritus_s3	<- elt(physical.parms, "x_xR_detritus_s3")
-	x_xR_detritus_d1	<- elt(physical.parms, "x_xR_detritus_d1")
-	x_xR_detritus_d2	<- elt(physical.parms, "x_xR_detritus_d2")
-	x_xR_detritus_d3	<- elt(physical.parms, "x_xR_detritus_d3")
-	x_poros_s1		<- elt(physical.parms, "x_poros_s1")
-	x_poros_s2		<- elt(physical.parms, "x_poros_s2")
-	x_poros_s3		<- elt(physical.parms, "x_poros_s3")
-	x_poros_d1		<- elt(physical.parms, "x_poros_d1")
-	x_poros_d2		<- elt(physical.parms, "x_poros_d2")
-	x_poros_d3		<- elt(physical.parms, "x_poros_d3")
+read_initial_state <- function(model.path) {
 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Subroutine to load and set the initial values of the state variable sin the model.
@@ -36,25 +21,25 @@ read_initial_state <- function(model.path, physical.parms) {
 
 	#The file of initial state values is read from the directory /parameters
 
-	IRdata <- get.model.file(model.path, PARAMETERS_DIR, file=INITIAL_STATE, header=FALSE)		# no header!
+	IRdata <- get.model.file(model.path, PARAMETERS_DIR, file.pattern=INITIAL_STATE, header=FALSE)		# no header!
 
 	# Check whether the saved values of xR_detritus match the values from the configuration and if not inject them into the data
 
-	if(x_xR_detritus_s1 < IRdata[9, 2] || x_xR_detritus_s1 > IRdata[9, 2]) {IRdata[9, 2]<-x_xR_detritus_s1}
-	if(x_xR_detritus_s2 < IRdata[10,2] || x_xR_detritus_s2 > IRdata[10,2]) {IRdata[10,2]<-x_xR_detritus_s2}
-	if(x_xR_detritus_s3 < IRdata[11,2] || x_xR_detritus_s3 > IRdata[11,2]) {IRdata[11,2]<-x_xR_detritus_s3}
+	#if(x_xR_detritus_s1 < IRdata[9, 2] || x_xR_detritus_s1 > IRdata[9, 2]) {IRdata[9, 2]<-x_xR_detritus_s1}	# xR_detritus_s1
+	#if(x_xR_detritus_s2 < IRdata[10,2] || x_xR_detritus_s2 > IRdata[10,2]) {IRdata[10,2]<-x_xR_detritus_s2}	# xR_detritus_s2
+	#if(x_xR_detritus_s3 < IRdata[11,2] || x_xR_detritus_s3 > IRdata[11,2]) {IRdata[11,2]<-x_xR_detritus_s3}	# xR_detritus_s3
 
-	if(x_xR_detritus_d1 < IRdata[12,2] || x_xR_detritus_d1 > IRdata[12,2]) {IRdata[12,2]<-x_xR_detritus_d1}
-	if(x_xR_detritus_d2 < IRdata[13,2] || x_xR_detritus_d2 > IRdata[13,2]) {IRdata[13,2]<-x_xR_detritus_d2}
-	if(x_xR_detritus_d3 < IRdata[14,2] || x_xR_detritus_d3 > IRdata[14,2]) {IRdata[14,2]<-x_xR_detritus_d3}
+	#if(x_xR_detritus_d1 < IRdata[12,2] || x_xR_detritus_d1 > IRdata[12,2]) {IRdata[12,2]<-x_xR_detritus_d1}	# xR_detritus_d1
+	#if(x_xR_detritus_d2 < IRdata[13,2] || x_xR_detritus_d2 > IRdata[13,2]) {IRdata[13,2]<-x_xR_detritus_d2}	# xR_detritus_d2
+	#if(x_xR_detritus_d3 < IRdata[14,2] || x_xR_detritus_d3 > IRdata[14,2]) {IRdata[14,2]<-x_xR_detritus_d3}	# xR_detritus_d3
 
-	if(x_poros_s1==0 && IRdata[3,2]>0) {IRdata[3,2]<-0}
-	if(x_poros_s2==0 && IRdata[4,2]>0) {IRdata[4,2]<-0}
-	if(x_poros_s3==0 && IRdata[5,2]>0) {IRdata[5,2]<-0}
+	#if(x_poros_s1==0 && IRdata[3,2]>0) {IRdata[3,2]<-0}	# x_detritus_s1
+	#if(x_poros_s2==0 && IRdata[4,2]>0) {IRdata[4,2]<-0}	# x_detritus_s2
+	#if(x_poros_s3==0 && IRdata[5,2]>0) {IRdata[5,2]<-0}	# x_detritus_s3
 
-	if(x_poros_d1==0 && IRdata[6,2]>0) {IRdata[6,2]<-0}
-	if(x_poros_d2==0 && IRdata[7,2]>0) {IRdata[7,2]<-0}
-	if(x_poros_d3==0 && IRdata[8,2]>0) {IRdata[8,2]<-0}
+	#if(x_poros_d1==0 && IRdata[6,2]>0) {IRdata[6,2]<-0}	# x_detritus_d1
+	#if(x_poros_d2==0 && IRdata[7,2]>0) {IRdata[7,2]<-0}	# x_detritus_d2
+	#if(x_poros_d3==0 && IRdata[8,2]>0) {IRdata[8,2]<-0}	# x_detritus_d3
 
 	initial.state <- list(
 		detritus_so=IRdata[1,2],

@@ -18,12 +18,15 @@ derive_model_target_results <- function(model, output, aggregates, annualtargetd
 
 	# Unpack:
 	run		<- elt(model, "run")
+	setup		<- elt(model, "setup")
+	data		<- elt(model, "data")
+
 	ndays		<- elt(run, "ndays")
 	nyears		<- elt(run, "nyears")
-	identifier	<- elt(run, "identifier")
-	resultsdir	<- elt(run, "resultsdir")
 
-	data		<- elt(model, "data")
+	identifier	<- elt(setup, "model.ident")
+	resultsdir	<- elt(setup, "resultsdir")
+
 	physical.parms	<- elt(data, "physical.parameters")
 
 	# extract physical parameters:

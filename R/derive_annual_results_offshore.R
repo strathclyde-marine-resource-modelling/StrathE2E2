@@ -13,16 +13,18 @@ derive_annual_results_offshore <- function(model, output, aggregates) {
 
 	# Unpack:
 	run		<- elt(model, "run")
-	ndays		<- elt(run, "ndays")
-	nyears		<- elt(run, "nyears")
-	identifier	<- elt(run, "identifier")
-	resultsdir	<- elt(run, "resultsdir")
-
+	setup		<- elt(model, "setup")
 	data		<- elt(model, "data")
 
-	# extract physical parameters:
+	ndays		<- elt(run, "ndays")
+	nyears		<- elt(run, "nyears")
+
+	identifier	<- elt(setup, "model.ident")
+	resultsdir	<- elt(setup, "resultsdir")
+
 	physical.parms  <- elt(data, "physical.parameters")
 
+	# extract physical parameters:
 	so_depth		<- elt(physical.parms, "so_depth")
 	d_depth			<- elt(physical.parms, "d_depth")
 	si_depth		<- elt(physical.parms, "si_depth")

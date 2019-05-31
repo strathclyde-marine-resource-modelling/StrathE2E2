@@ -15,9 +15,10 @@
 extract_timeseries_annual_landings <- function(model, out) {
 
 	run		<- elt(model, "run")
+	setup		<- elt(model, "setup")
 	nyears		<- elt(run, "nyears")
-	identifier	<- elt(run, "identifier")
-	resultsdir	<- elt(run, "resultsdir")
+	identifier	<- elt(setup, "model.ident")
+	resultsdir	<- elt(setup, "resultsdir")
 
 	#Print some of the full time series data to a csv file
 	#-----------------------------------------------------------------

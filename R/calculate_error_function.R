@@ -14,9 +14,9 @@
 #
 calculate_error_function <- function(model, opt_results) {
 
-	run		<- elt(model, "run")
-	identifier	<- elt(run, "identifier")
-	resultsdir	<- elt(run, "resultsdir")
+	setup		<- elt(model, "setup")
+	identifier	<- elt(setup, "model.ident")
+	resultsdir	<- elt(setup, "resultsdir")
 
 	# opt_results: built from copy of annualtargetdata which then overwrites 3,4,5,6 and adds 7,8
 	#

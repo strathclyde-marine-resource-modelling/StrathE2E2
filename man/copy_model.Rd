@@ -2,20 +2,20 @@
 % Please edit documentation in R/copy_model.R
 \name{copy_model}
 \alias{copy_model}
-\title{make a copy of the named model (and all it's variants)}
+\title{make a copy of the named model/variant (or all variants if none specified)}
 \usage{
-copy_model(model.name, dest.path = "Models", user.path = "",
-  overwrite = FALSE)
+copy_model(model.name, model.variant = "", dest.path = "Models",
+  user.path = "")
 }
 \arguments{
 \item{model.name}{name of model to copy}
 
+\item{model.variant}{name of model variant to copy (copies all variants by default)}
+
 \item{dest.path}{destination folder to write copy of model, will be created if necessary, default is "Models" in current folder}
 
 \item{user.path}{path to users top level model folder if copying a user model}
-
-\item{overwrite}{set to TRUE to enable overwrite of existing model folder}
 }
 \description{
-make a copy of the named model (and all it's variants)
+make a copy of the named model/variant (or all variants if none specified)
 }

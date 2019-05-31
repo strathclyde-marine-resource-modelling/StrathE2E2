@@ -1,7 +1,7 @@
 #
 # read_fitted_parameters.R
 #
-#' Load and set parameter values for model
+#' Load fitted parameter values for model
 #'
 #' Parameters which have been established by the simulated annealing scheme are
 #' loaded from a csv file which is made from the last line of the 'accepted parameters'
@@ -18,9 +18,9 @@
 #
 read_fitted_parameters <- function(model.path) {
 
-	preference_matrix_input	<- get.model.file(model.path, PARAMETERS_DIR, file=FITTED_PARAMETERS_PREFERENCE)
-	uptake_mort_input	<- get.model.file(model.path, PARAMETERS_DIR, file=FITTED_PARAMETERS_UPTAKE_MORT)
-	microbiology_input	<- get.model.file(model.path, PARAMETERS_DIR, file=FITTED_PARAMETERS_MICROBIOLOGY)
+	preference_matrix_input	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FITTED_PARAMETERS_PREFERENCE)
+	uptake_mort_input	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FITTED_PARAMETERS_UPTAKE_MORT)
+	microbiology_input	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FITTED_PARAMETERS_MICROBIOLOGY)
 
 	# rownames(preference_matrix_input)
 	#  [1] "ammonia"   "nitrate"   "suspdet"   "seddet"    "corpses"   "discards" 
@@ -29,7 +29,7 @@ read_fitted_parameters <- function(model.path) {
 	# [19] "bird"      "seal"    "ceta"  
 
 	# make a linear list of prefs from the matrices:
-	# ZZ preference_matrix_input["phyt", "nitrate"] should work
+
 	fitted.parameters <- list(
 		# PREFS: 79 pars
 		PREF_NIT_kelp		= preference_matrix_input$kelp[which(rownames(preference_matrix_input)=="nitrate")],
@@ -196,7 +196,7 @@ read_fitted_parameters <- function(model.path) {
 		xdisc_corp		= microbiology_input$Value[15],
 
 		#Proportion of corpse mass converted to detritus per day at the reference temperature
-		xxcorp_det		= microbiology_input$Value[16],		# ZZ orginally xcorp_det - should I revert?
+		xxcorp_det		= microbiology_input$Value[16],		# orginally xcorp_det
 
 		xkelpdebris_det		= microbiology_input$Value[17],
 
@@ -261,5 +261,7 @@ read_fitted_parameters <- function(model.path) {
 		xmax_exploitable_f_SL	= uptake_mort_input$max_exploitable_f[which(uptake_mort_input$consumer=="seal")],
 		xmax_exploitable_f_CT	= uptake_mort_input$max_exploitable_f[which(uptake_mort_input$consumer=="ceta")]
 	)
+
+	fitted.parameters
 }
 

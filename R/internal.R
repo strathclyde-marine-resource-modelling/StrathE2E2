@@ -60,17 +60,12 @@ read.model.setup <- function(model.path) {
 	pkg.env$SETUPFILES <- as.character(levels(setup$V1))		# character vector
 }
 
-# want to read fixed parms, or fitted, or whatever,
-# how to access the pattern 
-# FITTED_PARAMETERS <- "fitted_parameters"
-# ditto
-# in read_fitted_pars() will have call
-# fitted.pars.file <- get.model.file(FITTED_PARAMETERS)
-# pars <- readcsv(fitted.pars.file)
+# fitted.pars <- get.model.file(MODEL_DIR, PARAMETER_DIR, file.pattern=FITTED_PARAMETERS)
+# using the file patterns listed above
 #
-get.model.file <- function(..., file, header=TRUE) {
+get.model.file <- function(..., file.pattern, header=TRUE) {
 
-	matches <- grep(file, pkg.env$SETUPFILES, value=TRUE)
+	matches <- grep(file.pattern, pkg.env$SETUPFILES, value=TRUE)
 
 	if (length(matches) != 1) {
 		if (length(matches) == 0) {
@@ -158,17 +153,13 @@ sourcefile <- function(filename) {
 	source(filename)
 }
 
-# return the full path to the requested model/variant
+# return the full path to the requested model
 # either a system packaged model or a user supplied one
 #
-get.model.path <- function(model.name, model.variant, user.path="") {
+get.model.path <- function(model.name, user.path="") {
 
 	if (!nchar(model.name)) {
 		stop("Error: please supply a model name!")
-	}
-
-	if (!nchar(model.variant)) {
-		stop("Error: please supply a model variant!")
 	}
 
 	# get path to model:
@@ -191,12 +182,25 @@ get.model.path <- function(model.name, model.variant, user.path="") {
 		}
 	}
 
+	model.path
+}
+
+# return the full path to the requested model and variant
+#
+get.variant.path <- function(model.name, model.variant, user.path="") {
+
+	model.path <- get.model.path(model.name, user.path)
+
+	if (!nchar(model.variant)) {
+		stop("Error: please supply a model variant!")
+	}
+
 	# get path to model variant:
 	full.path <- paste0(model.path, "/", model.variant)
 	if (! dir.exists(full.path)) {
 		cat("Cannot find model variant: '", model.variant, "' !\n", sep="")
 		cat("Looking in model path: '", model.path, "'\n", sep="")
-		stop("Error: cannot find model/variant, stopping")
+		stop("Error: cannot find requested variant, stopping")
 	}
 
 	full.path
@@ -217,26 +221,6 @@ create.folder <- function(folder) {
 			stop("Error: could not create folder '", folder, "'\n", sep="")
 		}
 	}
-}
-
-el.ZZ <- function(data, element, default="NOTSET") {
-	if (element %in% names(data)) {
-		ret <- data[[element]]
-	} else if (default != "NOTSET") {
-		ret <- default
-	} else {
-		cat("Error: unknown list/data.frame element '", element, "'\n", sep="")
-		cat("Trace:")
-		# print call list:
-		calls <- sys.calls()
-		for (c in 1:length(calls)) {
-			cat("\t", c, ": ", sep="")
-			print(calls[[c]])
-		}
-		ret <- NULL
-	}
-
-	ret
 }
 
 # given a set of list/data.frame element names, extract the value if present
@@ -287,11 +271,18 @@ showall <- function(title, v) {
 	options(digits=20)
 	options(max.print=999999)
 	cat(title, ":\n")
+	if (is.list(v)) cat("Length=",length(v), "\n", sep="")
+	cat("Class: ", class(v), "\n")
 	show(v)
 
 	# restore original settings:
 	options(max.print=max$max.print)
 	options(digits=dig$digits)
+}
+
+
+showallsort <-function(title, v) {
+	showall(title, v[order(names(v))])
 }
 
 # print out elements of a dataframe or list suitable for printing:
@@ -389,5 +380,15 @@ tsplot3 <- function(tsptitle,tspvar1,tspvar2,tspvar3){
 	axis(side=2,las=1,cex.axis=0.9)
 	mtext("Year",cex=0.7,side=1,line=2)
 	mtext(tsptitle,cex=0.7,side=2,line=2.8)
+}
+
+StrathE2E.load <- function() {
+	dyn.path <- system.file("libs", "StrathE2E2.so", package="StrathE2E2")
+	dyn.load(dyn.path)
+}
+
+StrathE2E.unload <- function() {
+	dyn.path <- system.file("libs", "StrathE2E2.so", package="StrathE2E2")
+	dyn.unload(dyn.path)
 }
 

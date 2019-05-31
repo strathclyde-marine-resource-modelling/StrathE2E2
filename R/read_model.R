@@ -19,18 +19,27 @@
 #
 read_model <- function(model.name, model.variant, model.ident="base", model.subdir="", user.path="", nyears=20) {
 
-	read.only <- (user.path == "")					# read only unless user path is specified - i.e. it's not just based on write permissions!
+	read.only	<- (user.path == "")							# read only unless user path is specified
 
-	# full path to either the system model or the user specified one:
-	model.path <- get.model.path(model.name, model.variant, user.path)
+	model.path	<- get.variant.path(model.name, model.variant, user.path)		# full path to either the system model or the user specified one:
+	resultsdir	<- makepath(MODEL_RESULTS_DIR, model.name, model.variant, model.subdir)	# results/<model>/<variant>/<subdir>
+
+	run <- build_model_run(nyears)
+
+	setup <- list(
+		read.only	= read.only,
+		nyears		= nyears,
+		model.name	= model.name,		# "NorthSea"
+		model.variant	= model.variant,	# "2000-2013"
+		model.ident	= model.ident,		# "speculative"
+		model.subdir	= model.subdir,		# "test"
+		model.path	= model.path,		# "../Models/NorthSea/2000-2013"
+		resultsdir	= resultsdir		# "results/NorthSea/2000-2013/test" ...
+	)
 
 	cat(" Loading model   : ", model.path, "\n", sep="")
 
-	# read the setup file containing all the filenames:
-	read.model.setup(model.path)				# Models/Model/Variant/MODEL_SETUP.csv
-
-	# run slot:
-	run <- set_default_run(model.name, model.variant, model.subdir, model.ident, nyears)
+	read.model.setup(model.path)			# Models/Model/Variant/MODEL_SETUP.csv
 
 	# read model inputs:
 	physical.parameters	<- read_physical_parameters(model.path)
@@ -38,18 +47,9 @@ read_model <- function(model.name, model.variant, model.ident="base", model.subd
 	physics.drivers		<- read_physics_drivers(model.path)
 	chemistry.drivers	<- read_chemistry_drivers(model.path)
 	biological.events	<- read_biological_event_timings(model.path)
-
-	drivers			<- build_annual_drivers(run, fixed.parameters, physical.parameters, physics.drivers, chemistry.drivers, biological.events)
-
-	forcings		<- interpolate_drivers(run, drivers)
-
-	initial.state		<- read_initial_state(model.path, physical.parameters)	# ZZ combines read_initial_state() and build_initial_state()
-											# ZZ maybe rebuild_model() requires this separation?
 	fitted.parameters	<- read_fitted_parameters(model.path)
-
-	fleet.model		<- configure_fishing_fleet_model(model.path, physical.parameters)
-
-	uptakes			<- calculate_uptakes(fitted.parameters)	# ZZ nope! must be re-calculated in annealing loop!
+	initial.state		<- read_initial_state(model.path)
+	fleet.model		<- read_fishing_fleet_model(model.path)
 
 	# data slot:
 	data <- list(
@@ -60,19 +60,13 @@ read_model <- function(model.name, model.variant, model.ident="base", model.subd
 		physics.drivers		= physics.drivers,
 		chemistry.drivers	= chemistry.drivers,
 		biological.events	= biological.events,
-
-		# built:
-		initial.state		= initial.state,
-		drivers			= drivers,
-		forcings		= forcings,
 		fleet.model		= fleet.model,
-		uptakes			= uptakes
+		initial.state		= initial.state
 	)
 
 	model <- list(
-		read.only	= read.only,
-		path		= model.path,
-		run		= run,
+		run		= run,		# will get re-calculated during StrathE2E()
+		setup		= setup,
 		data		= data
 	)
 

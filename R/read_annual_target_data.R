@@ -13,7 +13,7 @@
 #
 read_annual_target_data <- function(model.path) {
 
-	annualtargetdata <- get.model.file(model.path, TARGET_DATA_DIR, file=ANNUAL_TARGET_DATA)
+	annualtargetdata <- get.model.file(model.path, TARGET_DATA_DIR, file.pattern=ANNUAL_TARGET_DATA)
 
 	#Column 1 = Target value
 	#Column 2 = sd of target value

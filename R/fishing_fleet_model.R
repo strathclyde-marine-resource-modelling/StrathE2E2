@@ -36,8 +36,7 @@ fishing_fleet_model <- function(model) {
 	plough_depth_vector		<- elt(fleet.model, "plough_depth_vector")
 	BSmort_gear			<- elt(fleet.model, "BSmort_gear")
 	BCmort_gear			<- elt(fleet.model, "BCmort_gear")
-
-	offal_prop_live_weight		<- elt(fleet.model, "offal_prop_live_weight")	# ZZ where this from?
+	offal_prop_live_weight		<- elt(fleet.model, "offal_prop_live_weight")
 
         physical.parameters		<- elt(data, "physical.parameters")
 	habitat_areas			<- elt(physical.parameters, "habitat_areas")

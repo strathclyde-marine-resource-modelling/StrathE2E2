@@ -21,30 +21,28 @@
 #
 build_annual_drivers <- function(run, fixed.parms, physical.parms, physics.drivers, chemistry.drivers, biological.events) {
 
-	# unpack various lists:
-	# use internal elt() function!
 	# run:
-	nyears <- elt(run, "nyears")
-	ndays <- elt(run, "ndays")
-	drndays <- elt(run, "drndays")
-	drtimes <- elt(run, "drtimes")
-	sprectimes <- elt(run, "sprectimes")
+	nyears		<- elt(run, "nyears")
+	ndays		<- elt(run, "ndays")
+	drndays		<- elt(run, "drndays")
+	drtimes		<- elt(run, "drtimes")
+	sprectimes	<- elt(run, "sprectimes")
 
 	# physical.parms:
-	P_an_fec <- elt(fixed.parms, "P_an_fec")
-	D_an_fec <- elt(fixed.parms, "D_an_fec")
-	BC_an_fec <- elt(fixed.parms, "BC_an_fec")
-	BS_an_fec <- elt(fixed.parms, "BS_an_fec")
+	P_an_fec	<- elt(fixed.parms, "P_an_fec")
+	D_an_fec	<- elt(fixed.parms, "D_an_fec")
+	BC_an_fec	<- elt(fixed.parms, "BC_an_fec")
+	BS_an_fec	<- elt(fixed.parms, "BS_an_fec")
 
 	# physical.parms:
-	so_depth <- elt(physical.parms, "so_depth")
-	si_depth <- elt(physical.parms, "si_depth")
-	d_depth <- elt(physical.parms, "d_depth")
-	x_shallowprop <- elt(physical.parms, "x_shallowprop")
+	so_depth	<- elt(physical.parms, "so_depth")
+	si_depth	<- elt(physical.parms, "si_depth")
+	d_depth		<- elt(physical.parms, "d_depth")
+	x_shallowprop	<- elt(physical.parms, "x_shallowprop")
 
-	physics <- physics.drivers
-	boundconc <- chemistry.drivers
-	BETdata <- biological.events
+	physics		<- physics.drivers
+	boundconc	<- chemistry.drivers
+	BETdata		<- biological.events
 
 	#Annual fecundities need to have alreday been read in from the fixed parameter file
 

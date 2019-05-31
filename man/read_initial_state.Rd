@@ -4,12 +4,10 @@
 \alias{read_initial_state}
 \title{read and set the initial values of the state variables used in the model}
 \usage{
-read_initial_state(model.path, physical.parms)
+read_initial_state(model.path)
 }
 \arguments{
 \item{model.path}{path to model files}
-
-\item{physical.parms}{model physical parameters}
 }
 \value{
 initial state variables

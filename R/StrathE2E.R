@@ -9,7 +9,7 @@
 #'
 #' @return model output
 #'
-#' @seealso \code{\link{list_models}}, \code{\link{read_model}}, \code{\link{copy_model}}, \code{\link{rebuild_model}}
+#' @seealso \code{\link{list_models}}, \code{\link{read_model}}, \code{\link{copy_model}}
 #'
 #' @importFrom deSolve ode
 #'
@@ -30,22 +30,24 @@
 #
 StrathE2E <- function(model) {
 
-	model.path		<- elt(model, "path")
+	model <- build_model(model)
 
+	setup			<- elt(model, "setup")
+	data			<- elt(model, "data")
 	run			<- elt(model, "run")
+
+	model.path		<- elt(setup, "model.path")
+
 	times			<- elt(run, "times")
 
-	data			<- elt(model, "data")
 	initial.state		<- elt(data, "initial.state")
-	fitted.parameters	<- elt(data, "fitted.parameters")
 	forcings		<- elt(data, "forcings")
 
-	fleet.output		<- fishing_fleet_model(model)
+	fleet.output		<- fishing_fleet_model(model)			# run the fishing fleet model
+	model.parameters	<- build_model_parameters(model, fleet.output)	# all parameters going through to C model
 
-	model$data$uptakes	<- calculate_uptakes(fitted.parameters)
-
-	model.parameters	<- build_model_parameters(model, fleet.output)
-
+	StrathE2E.load()
+	cat("Running model...\n")
 	output <- as.data.frame(
 		ode(
 			y		= unlist(initial.state),		# flatten list to vector, names used for output if present
@@ -60,6 +62,7 @@ StrathE2E <- function(model) {
 			method		= "lsoda"
 		)
 	)
+	StrathE2E.unload()
 
 	# main processed output:
 	aggregates			<- aggregate_model_output(model, output)

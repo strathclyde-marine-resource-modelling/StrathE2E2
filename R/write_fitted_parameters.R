@@ -14,9 +14,9 @@ write_fitted_parameters <- function(model.path, parhistory) {
 
 	#Now read in the externally stored ecology model parameters to act as templates for the fitted parameter file data structures
 
-	preference_matrix_input	<- get.model.file(model.path, PARAMETERS_DIR, file=FITTED_PARAMETERS_PREFERENCE)
-	uptake_mort_input	<- get.model.file(model.path, PARAMETERS_DIR, file=FITTED_PARAMETERS_UPTAKE_MORT)
-	microbiology_input	<- get.model.file(model.path, PARAMETERS_DIR, file=FITTED_PARAMETERS_MICROBIOLOGY)
+	preference_matrix_input	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FITTED_PARAMETERS_PREFERENCE)
+	uptake_mort_input	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FITTED_PARAMETERS_UPTAKE_MORT)
+	microbiology_input	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FITTED_PARAMETERS_MICROBIOLOGY)
 
 	#Copy the original parameter input structures to act as a template for the new data
 	preference_matrix_input_NEW<-preference_matrix_input
@@ -26,10 +26,10 @@ write_fitted_parameters <- function(model.path, parhistory) {
 	ROW_TO_USE <- nrow(parhistory)
 
 	#ZZ use: preference_matrix_input["nitrate", "phyt"]
-	#ZZ pars <- tail(parhistory,1) gets last row from DF
-	#ZZ becomes
-	#ZZ	preference_matrix_input_NEW["nitrate", "phyt"] <- pars$PREF_NIT_phyt
-	#ZZ also ditch _NEW copies - not needed in function
+	# pars <- tail(parhistory,1) gets last row from DF
+	# becomes
+	#	preference_matrix_input_NEW["nitrate", "phyt"] <- pars$PREF_NIT_phyt
+	# also ditch _NEW copies - not needed in function
 
 preference_matrix_input_NEW$kelp[which(rownames(preference_matrix_input_NEW)=="nitrate")] <- parhistory$PREF_NIT_kelp[ROW_TO_USE]
 preference_matrix_input_NEW$kelp[which(rownames(preference_matrix_input_NEW)=="ammonia")] <- parhistory$PREF_AMM_kelp[ROW_TO_USE]

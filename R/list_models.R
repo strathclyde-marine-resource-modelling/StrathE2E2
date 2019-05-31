@@ -9,41 +9,55 @@
 #
 list_models <- function(model.path="") {
 
-	# ZZ if you supply a path it just uses it without checking they are really model folders...
-	# ZZ should really generate list of models/variants then look for MODEL_SETUP.R files to check
 	if (model.path == "") {
 		# get path to internal model folder
 		full.path <- system.file("extdata/Models", package="StrathE2E2")
-		cat("List of models in system folder")
 	}
 	else {
 		full.path <- model.path
-		cat("List of models in user folder")
 	}
 
-	cat(", with helpful commands to load them:\n\n")
-
-	models <- list.files(full.path)
-
-	if (length(models) > 0) {
-		for (model in models) {
-			cat(" Model: \"", model, "\"\n", sep="")
-			variant.path <- makepath(full.path, model)
-			variants <- list.files(variant.path)
-			for (variant in variants) {
-				cat ("  Variant: \"", variant, "\"", sep="")
-				setup.file <- makepath(variant.path, variant, MODEL_SETUP_SCRIPT)
-				if (file.exists(setup.file)) {
-					cat("\tmodel <- read_model(\"", model, "\", \"", variant, "\")", sep="")
-				} else {
-					cat("  ** NOT A VALID MODEL/VARIANT !!")
+	# build up list of models:
+	models <- list()
+	for (model.dir in list.files(full.path)) {
+		model.path <- makepath(full.path, model.dir)					# path to model dir
+		if (dir.exists(model.path)) {
+			variants <- list()
+			for (variant.dir in list.files(model.path)) {
+				variant.path <- makepath(model.path, variant.dir)	# path to variant dir
+				if (dir.exists(variant.path)) {
+					# exists, but check for model setup file:
+					setup.file <- makepath(variant.path, MODEL_SETUP)
+					if (file.exists(setup.file)) {
+						# model/variant/setup.csv exist, so treat this as a model
+						variants <- c(variants, variant.dir)
+					}
 				}
-				cat("\n")
+			}
+			if (length(variants)) {
+				models[[model.dir]] <- variants
+			}
+		}
+	}
+
+	if (length(models)) {
+		if (model.path == "") {
+			cat("List of models in system folder")
+		} else {
+			cat("List of models in user folder")
+		}
+		cat(", with helpful commands to load them:\n\n")
+		for (model in names(models)) {
+			cat(" Model: \"", model, "\"\n", sep="")
+			for (variant in models[[model]]) {
+				cat ("  Variant: \"", variant, "\"", sep="")
+				cat("\tmodel <- read_model(\"", model, "\", \"", variant, "\")\n", sep="")
 			}
 			cat("\n")
 		}
-	} else {
-		cat("  no models found!\n")
+	}
+	else {
+		cat("Error: could not find any models in path '", full.path, "' !\n", sep="")
 	}
 }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_fitted_parameters.R
 \name{read_fitted_parameters}
 \alias{read_fitted_parameters}
-\title{Load and set parameter values for model}
+\title{Load fitted parameter values for model}
 \usage{
 read_fitted_parameters(model.path)
 }
