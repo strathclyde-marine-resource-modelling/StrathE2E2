@@ -272,7 +272,7 @@ aggregate_model_output <- function(model, output) {
 	aggregates$netpprod <- out$netpprod_o + out$netpprod_i
 
 
-	aggregates$fluxwcamm_phyt <- out$fluxwcamm_phyt_o  +  out$fluxwcamm_phyt_i	# ZZ elt() these
+	aggregates$fluxwcamm_phyt <- out$fluxwcamm_phyt_o  +  out$fluxwcamm_phyt_i
 
 	aggregates$fluxwcnit_phyt <- out$fluxwcnit_phyt_o  +  out$fluxwcnit_phyt_i
 
@@ -407,13 +407,6 @@ aggregate_model_output <- function(model, output) {
 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	# IT bung these in "aggregates" as well... ZZ are these even used? Perhaps in plots?
-	# x_poros
-	# x_depth
-	# x_poros_o
-	# x_poros_i
-	# x_depth_o
-	# x_depth_i
 	aggregates$x_poros<- ((x_poros_s1*x_area_s1) +
 		(x_poros_s2*x_area_s2) +
 		(x_poros_s3*x_area_s3) +

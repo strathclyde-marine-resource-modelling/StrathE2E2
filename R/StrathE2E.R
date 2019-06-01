@@ -87,7 +87,7 @@ StrathE2E <- function(model) {
 		aggregates		= aggregates,
 		fleet.output		= fleet.output,
 		total.annual.catch	= total.annual.catch,
-		annual.catch.by.gear	= annual.catch.by.gear,	# ZZ mix n match var_names and var.names?
+		annual.catch.by.gear	= annual.catch.by.gear,
 		final.year.outputs	= list(
 			# catch/landings/discards:
 			inshore_catchmat		= elt(catch.land.disc, "inshore_catchmat"),

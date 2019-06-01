@@ -12,8 +12,6 @@
 #
 build_model_parameters <- function(model, fleet.model.output) {
 
-	# ZZ can you just add fitted.parms/fixed.parms/uptakes vectors to model parms vector build? i.e. just concat them?
-	# ZZ you would have to reorder the definitions to allow use of physical.parms directly (and some name changes?), and there would be some unused stuff going through to C model
 	# Unpack:
 	data		<- elt(model, "data")
 	fixed.parms	<- elt(data, "fixed.parameters")
@@ -37,15 +35,6 @@ build_model_parameters <- function(model, fleet.model.output) {
 	fitted.parms	<- elt(data, "fitted.parameters")
 	uptakes		<- elt(data, "uptakes")
 
-	#model.parameters <- c(
-		#physical.parms,
-		#fleet.vector,
-		#fixed.parms,
-		#fitted.parms,
-		#uptakes
-	#)
-
-	#cat("Concat parms, length=",length(model.parameters),"\n") ZZ
 	#--------------------------------------------------------------------------
 	#Load all the parameter values into a single vector which will be passed to the model function.
 	model.parameters <- c(
@@ -520,7 +509,6 @@ build_model_parameters <- function(model, fleet.model.output) {
 		CZ_inedible_biomass_o		= CZ_inedible * (1-x_shallowprop),		# residual inedible biomass of carnzoo offshore
 		CZ_inedible_biomass_i		= CZ_inedible * (x_shallowprop)			# residual inedible biomass of carnzoo inshore
 	)
-	#cat("Built parms, length=",length(model.parameters),"\n")
 
 	model.parameters
 } 

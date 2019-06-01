@@ -21,7 +21,7 @@ calculate_uptakes <- function(fitted.parms) {
 	PREF_benthclar_herb	= elt(fitted.parms, "PREF_benthclar_herb")
 	PREF_herb_carn		= elt(fitted.parms, "PREF_herb_carn")
 	PREF_benthslar_carn	= elt(fitted.parms, "PREF_benthslar_carn")
-	PREF_benthclar_carn	= elt(fitted.parms, "PREF_benthclar_carn")	# ZZ meh - are these not supposed to be the perturbed ones?
+	PREF_benthclar_carn	= elt(fitted.parms, "PREF_benthclar_carn")
 	PREF_fishplar_carn	= elt(fitted.parms, "PREF_fishplar_carn")
 	PREF_fishdlar_carn	= elt(fitted.parms, "PREF_fishdlar_carn")
 	PREF_herb_fishplar	= elt(fitted.parms, "PREF_herb_fishplar")

@@ -89,12 +89,6 @@ store_fleet_model_output <- function(fleet_model_output, years_to_fill) {
 		inshore_gear_group_props[2:years_to_fill,2:((2*(ngears*ngroups))+1) ]<-inshore_gear_group_props[1,2:((2*(ngears*ngroups))+1)]
 	}
 
-	#If this is a repeat use of the function then it is assumed that the global matrix gear_group_proportions alreday exists
-	#if(RSETS>0){		# ZZ is this used?
-		#offshore_gear_group_props <- rbind(data.frame(gear_group_proportions[1]), offshore_gear_group_props)
-		#inshore_gear_group_props <- rbind(data.frame(gear_group_proportions[2]), inshore_gear_group_props)
-	#}
-
 	gear_groups <- list(
 		offshore_gear_group_props	= offshore_gear_group_props,
 		inshore_gear_group_props	= inshore_gear_group_props

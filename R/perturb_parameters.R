@@ -611,7 +611,7 @@ u_benthc<-max(0,rnorm(1,u_benthc,u_benthc*u_sd))
 		u_ceta<-max(0,rnorm(1,u_ceta,u_ceta*u_sd))
 	}
 
-#u_phyt<-max(0,rnorm(1,u_phyt,u_phyt*ressd))	ZZ are these meant to be commented out in both locked/non-locked versions?
+#u_phyt<-max(0,rnorm(1,u_phyt,u_phyt*ressd))
 #u_herb<-max(0,rnorm(1,u_herb,u_herb*ressd))
 #u_carn<-max(0,rnorm(1,u_carn,u_carn*ressd))
 #u_fishplar<-max(0,rnorm(1,u_fishplar,u_fishplar*ressd))

@@ -35,7 +35,6 @@ build_model <- function(model) {
 	fleet.model		<- build_fishing_fleet_model(fleet.model, physical.parameters)
 	uptakes			<- calculate_uptakes(fitted.parameters)
 
-	# model$build <- list( ZZ maybe eventually )
 	model$run		<- run
 	model$data$initial.state<- initial.state
 	model$data$drivers	<- drivers
