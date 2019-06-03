@@ -5,7 +5,7 @@
 \title{read designated model}
 \usage{
 read_model(model.name, model.variant, model.ident = "base",
-  model.subdir = "", user.path = "", nyears = 20)
+  model.subdir = "", user.path = "")
 }
 \arguments{
 \item{model.name}{name of model to read}
@@ -17,13 +17,11 @@ read_model(model.name, model.variant, model.ident = "base",
 \item{model.subdir}{store results in this sub directory of the main results folder}
 
 \item{user.path}{path to users top level model folder}
-
-\item{nyears}{number of years that model will run}
 }
 \value{
 model object
 }
 \description{
-loads the named model and returns a model object with run and data slots. By default, the model is loaded from the list of package supplied models.
+loads the named model and returns a model object with model setup and data slots. By default, the model is loaded from the list of package supplied models.
 If user.path is set then the model is loaded from this location instead.
 }

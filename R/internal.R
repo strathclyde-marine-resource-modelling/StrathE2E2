@@ -18,9 +18,12 @@ MODEL_RESULTS_DIR		<- "results"		# located in the current directory
 PARAMETERS_DIR			<- "Parameters"		# sub-directories of the Model/Version/ directory
 DRIVING_DATA_DIR		<- "Driving_data"
 TARGET_DATA_DIR			<- "Target_data"
+
 SD_CONTROL_DIR			<- "Parameters/Parameter_SD_control"
 SD_CONTROL_FILE_ECOLOGY		<- "annealing_SD_ecology.csv"
 SD_CONTROL_FILE_FISHING		<- "annealing_SD_fishing.csv"
+SD_CONTROL_FILE_CREDINT		<- "CredIntSim_SD.csv"
+SD_CONTROL_FILE_SENSITIVITY	<- "OATsensitivity_SD.csv"
 
 PHYSICAL_PARAMETERS		<- "physical_parameters"				# look for csv file containing these string patterns
 PHYSICS_DRIVERS			<- "physics_drivers"
@@ -60,8 +63,8 @@ isdefined <- function(var, val) {
 # reads the setup csv which specifies the names for all the model input and output files
 #
 read.model.setup <- function(model.path) {
-	setup <- readcsv(model.path, MODEL_SETUP, header=FALSE)	# raw DF
-	pkg.env$SETUPFILES <- as.character(levels(setup$V1))		# character vector
+	setup <- readcsv(model.path, MODEL_SETUP, header=TRUE)	# raw DF
+	pkg.env$SETUPFILES <- as.character(levels(setup[[1]]))		# character vector
 }
 
 # fitted.pars <- get.model.file(MODEL_DIR, PARAMETER_DIR, file.pattern=FITTED_PARAMETERS)
@@ -85,8 +88,10 @@ get.model.file <- function(..., file.pattern, header=TRUE) {
 		stop("Cannot find requested model filename!")
 	}
 
+	filename <- matches[[1]]
+
 	# found it:
-	readcsv(..., matches[[1]], header=header)
+	readcsv(..., filename, header=header)
 }
 
 # read CSV data from the path units

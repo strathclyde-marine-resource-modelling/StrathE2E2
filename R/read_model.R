@@ -3,7 +3,7 @@
 #
 #' read designated model
 #'
-#' loads the named model and returns a model object with run and data slots. By default, the model is loaded from the list of package supplied models.
+#' loads the named model and returns a model object with model setup and data slots. By default, the model is loaded from the list of package supplied models.
 #' If user.path is set then the model is loaded from this location instead. 
 #'
 #' @param model.name name of model to read
@@ -11,24 +11,20 @@
 #' @param model.ident appended to output files (e.g. OFFSHORE_model_annualresults-TAG.csv instead of just OFFSHORE_model_annualresults.csv)
 #' @param model.subdir store results in this sub directory of the main results folder
 #' @param user.path path to users top level model folder
-#' @param nyears number of years that model will run
 #'
 #' @return model object
 #'
 #' @export
 #
-read_model <- function(model.name, model.variant, model.ident="base", model.subdir="", user.path="", nyears=20) {
+read_model <- function(model.name, model.variant, model.ident="base", model.subdir="", user.path="") {
 
 	read.only	<- (user.path == "")							# read only unless user path is specified
 
 	model.path	<- get.variant.path(model.name, model.variant, user.path)		# full path to either the system model or the user specified one:
 	resultsdir	<- makepath(MODEL_RESULTS_DIR, model.name, model.variant, model.subdir)	# results/<model>/<variant>/<subdir>
 
-	run <- build_model_run(nyears)
-
 	setup <- list(
 		read.only	= read.only,
-		nyears		= nyears,
 		model.name	= model.name,		# "NorthSea"
 		model.variant	= model.variant,	# "2000-2013"
 		model.ident	= model.ident,		# "speculative"
@@ -65,7 +61,6 @@ read_model <- function(model.name, model.variant, model.ident="base", model.subd
 	)
 
 	model <- list(
-		run		= run,		# will get re-calculated during StrathE2E()
 		setup		= setup,
 		data		= data
 	)

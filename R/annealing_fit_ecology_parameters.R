@@ -68,13 +68,15 @@
 
 annealing_fit_ecology_parameters <- function(model) {
 
+	run				<- elt(model, "run")
 	setup				<- elt(model, "setup")
 	data				<- elt(model, "data")
 
 	fitted.parameters		<- elt(data, "fitted.parameters")
 	HRscale_vector_multiplier	<- elt(data, "fleet.model", "HRscale_vector_multiplier")
 
-	nyears				<- elt(setup, "nyears")			# Number of years to run each simulation
+	nyears				<- elt(run, "nyears")			# Number of years to run each simulation
+
 	model.path			<- elt(setup, "model.path")
         resultsdir			<- elt(setup, "resultsdir")
 	identifier			<- elt(setup, "model.ident")

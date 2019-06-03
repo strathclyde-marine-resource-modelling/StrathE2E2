@@ -6,6 +6,7 @@
 #' perform a single run of the StrathE2E model
 #'
 #' @param model current model configuration
+#' @param nyears number of years to run model
 #'
 #' @return model output
 #'
@@ -28,9 +29,9 @@
 #'
 #' plot_full_length_timeseries(results)
 #
-StrathE2E <- function(model) {
+StrathE2E <- function(model, nyears=20) {
 
-	model <- build_model(model)
+	model			<- build_model(model, nyears)
 
 	setup			<- elt(model, "setup")
 	data			<- elt(model, "data")
@@ -46,11 +47,8 @@ StrathE2E <- function(model) {
 	fleet.output		<- fishing_fleet_model(model)			# run the fishing fleet model
 	model.parameters	<- build_model_parameters(model, fleet.output)	# all parameters going through to C model
 
-	showall("is", initial.state)
-	showall("unlist(is)", unlist(initial.state))
-
 	StrathE2E.load()
-	cat("Running model...\n")
+	cat("Running model for", nyears, "years\n")
 	output <- as.data.frame(
 		ode(
 			y		= unlist(initial.state),		# flatten list to vector, names used for output if present

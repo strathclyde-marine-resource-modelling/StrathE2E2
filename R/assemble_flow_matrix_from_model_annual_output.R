@@ -24,9 +24,9 @@ assemble_flow_matrix_from_model_annual_output <- function(model, output, aggrega
 	setup		<- elt(model, "setup")
 	data		<- elt(model, "data")
 
+	nyears		<- elt(run, "nyears")
 	ndays		<- elt(run, "ndays")
 
-	nyears		<- elt(setup, "nyears")
 	model.path	<- elt(setup, "model.path")
 	identifier	<- elt(setup, "model.ident")
 	resultsdir	<- elt(setup, "resultsdir")

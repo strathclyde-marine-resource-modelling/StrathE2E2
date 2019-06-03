@@ -11,12 +11,10 @@
 #'
 #' @export
 #
-build_model <- function(model) {
+build_model <- function(model, nyears) {
 
 	setup			<- elt(model, "setup")
 	data			<- elt(model, "data")
-
-	nyears			<- elt(setup, "nyears")
 
 	physical.parameters	<- elt(data, "physical.parameters")
 	fixed.parameters	<- elt(data, "fixed.parameters")

@@ -4,10 +4,12 @@
 \alias{StrathE2E}
 \title{run the StrathE2E model}
 \usage{
-StrathE2E(model)
+StrathE2E(model, nyears = 20)
 }
 \arguments{
 \item{model}{current model configuration}
+
+\item{nyears}{number of years to run model}
 }
 \value{
 model output

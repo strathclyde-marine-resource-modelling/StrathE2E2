@@ -4,7 +4,7 @@
 \alias{build_model}
 \title{build model for invocation of StrathE2E}
 \usage{
-build_model(model)
+build_model(model, nyears)
 }
 \arguments{
 \item{model}{model object}

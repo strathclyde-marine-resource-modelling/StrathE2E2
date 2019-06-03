@@ -13,10 +13,12 @@
 #
 monthly_averages_of_final_year <- function(model, output, aggregates) {
 
+	run		<- elt(model, "run")
 	setup		<- elt(model, "setup")
 	data		<- elt(model, "data")
 
-	nyears		<- elt(setup, "nyears")
+	nyears		<- elt(run, "nyears")
+
 	identifier	<- elt(setup, "model.ident")
 	resultsdir	<- elt(setup, "resultsdir")
 
