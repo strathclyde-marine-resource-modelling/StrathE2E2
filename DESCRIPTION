@@ -2,7 +2,7 @@ Package: StrathE2E2
 Type: Package
 Title: End-to-end marine food web model
 Version: 2.0.0
-Date: 2019-05-31
+Date: 2019-06-03
 Author: Mike Heath [aut],
     Ian Thurlbeck [ctb]
 Maintainer: Mike Heath <m.heath@strath.ac.uk>

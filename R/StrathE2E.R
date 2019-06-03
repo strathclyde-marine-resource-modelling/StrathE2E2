@@ -46,6 +46,9 @@ StrathE2E <- function(model) {
 	fleet.output		<- fishing_fleet_model(model)			# run the fishing fleet model
 	model.parameters	<- build_model_parameters(model, fleet.output)	# all parameters going through to C model
 
+	showall("is", initial.state)
+	showall("unlist(is)", unlist(initial.state))
+
 	StrathE2E.load()
 	cat("Running model...\n")
 	output <- as.data.frame(

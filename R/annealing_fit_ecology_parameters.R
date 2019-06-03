@@ -118,7 +118,7 @@ annealing_fit_ecology_parameters <- function(model) {
 		#FIRST RUN THROUGH THE MODEL WITH THE CALIBRATION PERIOD HARVEST RATES.....
 		#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-		annealing.parms <- read_SD_control_ecology(model.path)	# read every loop so control is available during a run
+		annealing.parms <- read_SD_control_ecology(model.path, "annealing_SD_ecology.csv")	# read every loop so control is available during a run
                 if (kkk==1) annealing.parms[] <- 0.0
 
 		# Jiggle the parameter values and load them into the vector which is passed to the model function

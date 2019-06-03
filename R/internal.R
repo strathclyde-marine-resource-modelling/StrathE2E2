@@ -10,6 +10,8 @@
 #' @export showall
 #
 
+PACKAGE_NAME			<- "StrathE2E2"
+
 MODEL_SETUP			<- "MODEL_SETUP.csv"	# located in the Model/Version/ directory
 MODEL_RESULTS_DIR		<- "results"		# located in the current directory
 
@@ -17,6 +19,8 @@ PARAMETERS_DIR			<- "Parameters"		# sub-directories of the Model/Version/ direct
 DRIVING_DATA_DIR		<- "Driving_data"
 TARGET_DATA_DIR			<- "Target_data"
 SD_CONTROL_DIR			<- "Parameters/Parameter_SD_control"
+SD_CONTROL_FILE_ECOLOGY		<- "annealing_SD_ecology.csv"
+SD_CONTROL_FILE_FISHING		<- "annealing_SD_fishing.csv"
 
 PHYSICAL_PARAMETERS		<- "physical_parameters"				# look for csv file containing these string patterns
 PHYSICS_DRIVERS			<- "physics_drivers"
@@ -382,13 +386,22 @@ tsplot3 <- function(tsptitle,tspvar1,tspvar2,tspvar3){
 	mtext(tsptitle,cex=0.7,side=2,line=2.8)
 }
 
+get.dyn.path <- function() {
+	# relative path from top of install tree:				# Windows			Linux
+	dyn.dir <- paste0("libs", .Platform$file.sep, .Platform$r_arch)		# libs/x64			libs	(r_arch is "" !)
+	dyn.name <- paste0(PACKAGE_NAME, .Platform$dynlib.ext)			# StrathE2E2.dll		StrathE2E2.so
+	dyn.path <- system.file(dyn.dir, dyn.name, package=PACKAGE_NAME)	# libs/x64/StrathE2E2.dll	libs/StrathE2E2.so
+
+	dyn.path
+}
+
 StrathE2E.load <- function() {
-	dyn.path <- system.file("libs", "StrathE2E2.so", package="StrathE2E2")
+	dyn.path <- get.dyn.path()
 	dyn.load(dyn.path)
 }
 
 StrathE2E.unload <- function() {
-	dyn.path <- system.file("libs", "StrathE2E2.so", package="StrathE2E2")
+	dyn.path <- get.dyn.path()
 	dyn.unload(dyn.path)
 }
 

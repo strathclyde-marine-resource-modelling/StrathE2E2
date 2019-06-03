@@ -9,9 +9,9 @@
 #'
 #' @export
 #
-read_SD_control_ecology <- function(model.path) {
+read_SD_control_ecology <- function(model.path, control.file) {
 
-	annealing_control_data <- readcsv(model.path, SD_CONTROL_DIR, "annealing_SD_ecology.csv")	# ZZ should be set in MODEL_SETUP_SCRIPT.R?
+	annealing_control_data <- readcsv(model.path, SD_CONTROL_DIR, control.file)
 
 	#Set the axis min and max for the display plot
 	axmin		<- annealing_control_data[1,1]
