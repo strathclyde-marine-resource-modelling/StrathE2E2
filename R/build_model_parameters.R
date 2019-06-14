@@ -4,13 +4,14 @@
 #' Build entire set of model parameters combining fixed, physical, fleet model output, plus some biomass thresholds
 #'
 #' @param model model object
+#' @param build model build object
 #' @param fleet.model.output fleet model output
 #'
 #' @return model parameter vector
 #'
 #' @export
 #
-build_model_parameters <- function(model, fleet.model.output) {
+build_model_parameters <- function(model, build, fleet.model.output) {
 
 	# Unpack:
 	data		<- elt(model, "data")
@@ -33,7 +34,7 @@ build_model_parameters <- function(model, fleet.model.output) {
 	fleet.vector	<- elt(fleet.model.output, "fleet_vector")
 
 	fitted.parms	<- elt(data, "fitted.parameters")
-	uptakes		<- elt(data, "uptakes")
+	uptakes		<- elt(build, "uptakes")
 
 	#--------------------------------------------------------------------------
 	#Load all the parameter values into a single vector which will be passed to the model function.

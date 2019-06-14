@@ -4,6 +4,7 @@
 #' return list of annealing paramters
 #'
 #' @param model.path model path
+#' @param control.file ecology control filename
 #'
 #' @return list of annealing parameters for fitting ecology model
 #'

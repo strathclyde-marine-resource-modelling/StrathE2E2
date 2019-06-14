@@ -4,14 +4,12 @@
 \alias{box_and_whisker_annual_plots}
 \title{plot observed and modelled distributions of the annual ecosystem flux data}
 \usage{
-box_and_whisker_annual_plots(model, annual.target.data, opt_results)
+box_and_whisker_annual_plots(model, results)
 }
 \arguments{
 \item{model}{model object}
 
-\item{annual.target.data}{annual target data}
-
-\item{opt_results}{model target results}
+\item{results}{model results object}
 }
 \description{
 plot observed and modelled distributions of the annual ecosystem flux data

@@ -4,10 +4,12 @@
 \alias{read_fishing_fleet_model}
 \title{read fishing fleet model configuration}
 \usage{
-read_fishing_fleet_model(model.path)
+read_fishing_fleet_model(model.path, physical.parameters)
 }
 \arguments{
 \item{model.path}{path to users model folder, otherwise read package model}
+
+\item{physical.parameters}{physical model parameters}
 }
 \value{
 model object

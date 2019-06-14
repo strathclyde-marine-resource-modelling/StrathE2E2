@@ -4,10 +4,12 @@
 \alias{extract_timeseries_annual_landings}
 \title{read designated model}
 \usage{
-extract_timeseries_annual_landings(model, out)
+extract_timeseries_annual_landings(model, build, out)
 }
 \arguments{
 \item{model}{current model}
+
+\item{build}{model build object}
 
 \item{out}{model output}
 }

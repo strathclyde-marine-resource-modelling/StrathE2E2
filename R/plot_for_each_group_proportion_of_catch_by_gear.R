@@ -10,19 +10,21 @@
 #'
 #' @export
 #
-plot_for_each_group_proportion_of_catch_by_gear <- function(model, catch.land.disc) {
+plot_for_each_group_proportion_of_catch_by_gear <- function(model, results) {
 
-	path			<- elt(model, "path")
+	setup			<- elt(model, "setup")
+	model.path		<- elt(setup, "model.path")
 
-        offshore_catchmat       <- elt(catch.land.disc, "offshore_catchmat")
-        offshore_discmat        <- elt(catch.land.disc, "offshore_discmat")
-        offshore_landmat        <- elt(catch.land.disc, "offshore_landmat")
+	final.year.outputs	<- elt(results, "final.year.outputs")
+        offshore_catchmat       <- elt(final.year.outputs, "offshore_catchmat")
+        offshore_discmat        <- elt(final.year.outputs, "offshore_discmat")
+        offshore_landmat        <- elt(final.year.outputs, "offshore_landmat")
 
-        inshore_catchmat        <- elt(catch.land.disc, "inshore_catchmat")
-        inshore_discmat         <- elt(catch.land.disc, "inshore_discmat")
-        inshore_landmat         <- elt(catch.land.disc, "inshore_landmat")
+        inshore_catchmat        <- elt(final.year.outputs, "inshore_catchmat")
+        inshore_discmat         <- elt(final.year.outputs, "inshore_discmat")
+        inshore_landmat         <- elt(final.year.outputs, "inshore_landmat")
 
-	catchproptarget <- readcsv(path, "Target_data/disc_and_land_as_prop_of_group_catch_per_gear.csv")	# ZZ should be a filevar
+	catchproptarget <- readcsv(model.path, "Target_data/disc_and_land_as_prop_of_group_catch_per_gear.csv")	# ZZ should be a filevar - and it is missing!
 
 	targetdiscpropcatch<-t(catchproptarget[,3:9])
 	targetlandpropcatch<-t(catchproptarget[,10:16])

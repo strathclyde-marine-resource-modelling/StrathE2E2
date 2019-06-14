@@ -4,10 +4,12 @@
 \alias{monthly_averages_of_final_year}
 \title{Summarise the final year for nitrate ammonia and chl}
 \usage{
-monthly_averages_of_final_year(model, output, aggregates)
+monthly_averages_of_final_year(model, build, output, aggregates)
 }
 \arguments{
 \item{model}{model object}
+
+\item{build}{model build object}
 
 \item{output}{model output}
 

@@ -8,6 +8,8 @@ build_model(model, nyears)
 }
 \arguments{
 \item{model}{model object}
+
+\item{nyears}{number of years the model will run}
 }
 \value{
 build object

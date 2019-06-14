@@ -6,19 +6,21 @@
 #' returns a model object with run and data slots
 #'
 #' @param model current model
+#' @param build model build object
 #' @param out model output
 #'
 #' @return inshore/offshore annual landings
 #'
 #' @export
 #
-extract_timeseries_annual_landings <- function(model, out) {
+extract_timeseries_annual_landings <- function(model, build, out) {
 
-	run		<- elt(model, "run")
 	setup		<- elt(model, "setup")
-	nyears		<- elt(run, "nyears")
 	identifier	<- elt(setup, "model.ident")
 	resultsdir	<- elt(setup, "resultsdir")
+
+	run		<- elt(build, "run")
+	nyears		<- elt(run, "nyears")
 
 	#Print some of the full time series data to a csv file
 	#-----------------------------------------------------------------

@@ -4,10 +4,12 @@
 \alias{fishing_fleet_model}
 \title{defines the fishing fleet model}
 \usage{
-fishing_fleet_model(model)
+fishing_fleet_model(model, build)
 }
 \arguments{
 \item{model}{model object}
+
+\item{build}{model build object}
 }
 \value{
 fishing fleet model

@@ -4,6 +4,7 @@
 #' Summarise the final year for nitrate ammonia and chl
 #'
 #' @param model model object
+#' @param build model build object
 #' @param output model output
 #' @param aggregates aggregated model output
 #'
@@ -11,16 +12,17 @@
 #'
 #' @export
 #
-monthly_averages_of_final_year <- function(model, output, aggregates) {
+monthly_averages_of_final_year <- function(model, build, output, aggregates) {
 
-	run		<- elt(model, "run")
 	setup		<- elt(model, "setup")
-	data		<- elt(model, "data")
-
-	nyears		<- elt(run, "nyears")
-
 	identifier	<- elt(setup, "model.ident")
 	resultsdir	<- elt(setup, "resultsdir")
+
+	data		<- elt(model, "data")
+
+	run		<- elt(build, "run")
+	nyears		<- elt(run, "nyears")
+
 
 	physical.parms	<- elt(data, "physical.parameters")
 	si_depth	<- elt(physical.parms, "si_depth")

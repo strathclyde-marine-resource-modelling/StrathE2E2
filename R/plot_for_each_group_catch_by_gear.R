@@ -4,25 +4,26 @@
 #' plot results as lineplots by group
 #'
 #' @param model model object
-#' @param catch.land.disc catch, landings and discards
+#' @param results model results object
 #'
 #' @importFrom graphics barplot
 #'
 #' @export
 #
-plot_for_each_group_catch_by_gear <- function(model, catch.land.disc) {
+plot_for_each_group_catch_by_gear <- function(model, results) {
 
 	data			<- elt(model, "data")
 	fleet.model		<- elt(data, "fleet.model")
 	gear_codes		<- elt(fleet.model, "gear_codes")
 	
-	offshore_catchmat	<- elt(catch.land.disc, "offshore_catchmat")
-	offshore_discmat	<- elt(catch.land.disc, "offshore_discmat")
-	offshore_landmat	<- elt(catch.land.disc, "offshore_landmat")
+	final.year.outputs	<- elt(results, "final.year.outputs")
+	offshore_catchmat	<- elt(final.year.outputs, "offshore_catchmat")
+	offshore_discmat	<- elt(final.year.outputs, "offshore_discmat")
+	offshore_landmat	<- elt(final.year.outputs, "offshore_landmat")
 
-	inshore_catchmat	<- elt(catch.land.disc, "inshore_catchmat")
-	inshore_discmat		<- elt(catch.land.disc, "inshore_discmat")
-	inshore_landmat		<- elt(catch.land.disc, "inshore_landmat")
+	inshore_catchmat	<- elt(final.year.outputs, "inshore_catchmat")
+	inshore_discmat		<- elt(final.year.outputs, "inshore_discmat")
+	inshore_landmat		<- elt(final.year.outputs, "inshore_landmat")
 
 	ngroups <- 10
 

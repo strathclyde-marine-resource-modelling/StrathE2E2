@@ -4,10 +4,13 @@
 \alias{derive_model_target_results}
 \title{derive annual target results and write to file}
 \usage{
-derive_model_target_results(model, output, aggregates, annualtargetdata)
+derive_model_target_results(model, build, output, aggregates,
+  annualtargetdata)
 }
 \arguments{
 \item{model}{model object}
+
+\item{build}{model build object}
 
 \item{output}{model output}
 

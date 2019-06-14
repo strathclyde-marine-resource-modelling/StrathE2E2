@@ -22,7 +22,7 @@ perform a single run of the StrathE2E model
 #
 #	str(NorthSea)
 #
-NorthSea <- read_model("NorthSea", "version1")
+NorthSea <- read_model("North_Sea", "2003-2013")
 
 results <- StrathE2E(NorthSea)
 

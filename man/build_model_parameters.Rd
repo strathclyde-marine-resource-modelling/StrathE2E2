@@ -4,10 +4,12 @@
 \alias{build_model_parameters}
 \title{Build entire set of model parameters combining fixed, physical, fleet model output, plus some biomass thresholds}
 \usage{
-build_model_parameters(model, fleet.model.output)
+build_model_parameters(model, build, fleet.model.output)
 }
 \arguments{
 \item{model}{model object}
+
+\item{build}{model build object}
 
 \item{fleet.model.output}{fleet model output}
 }

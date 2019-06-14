@@ -4,12 +4,13 @@
 #' read fishing fleet model configuration
 #'
 #' @param model.path path to users model folder, otherwise read package model
+#' @param physical.parameters physical model parameters
 #'
 #' @return model object
 #'
 #' @export
 #
-read_fishing_fleet_model <- function(model.path) {
+read_fishing_fleet_model <- function(model.path, physical.parameters) {
 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	# Subroutine to configure the fishing fleet model
@@ -176,16 +177,24 @@ gear_ploughing_rate<-FGAdata[,4]
 plough_thickness <- FGOdata[9,1]  # Assumes that all sediment types are ploughed to a depth by fishing gears
                                   # except fo rthe kelp forst habitat which is solid rock
 
-	plough_depth_s0<-0	# set properly at model build
-	plough_depth_s1<-0
-	plough_depth_s2<-0
-	plough_depth_s3<-0
-	plough_depth_d0<-0
-	plough_depth_d1<-0
-	plough_depth_d2<-0
-	plough_depth_d3<-0
+	x_depth_s1 <- elt(physical.parameters, "x_depth_s1")
+	x_depth_s2 <- elt(physical.parameters, "x_depth_s2")
+	x_depth_s3 <- elt(physical.parameters, "x_depth_s3")
+	x_depth_d1 <- elt(physical.parameters, "x_depth_d1")
+	x_depth_d2 <- elt(physical.parameters, "x_depth_d2")
+	x_depth_d3 <- elt(physical.parameters, "x_depth_d3")
 
-	plough_depth_vector<-c(
+	plough_depth_s0 <- 0
+	plough_depth_s1 <- ifelse(x_depth_s1>0, plough_thickness/x_depth_s1, 0)
+	plough_depth_s2 <- ifelse(x_depth_s2>0, plough_thickness/x_depth_s2, 0)
+	plough_depth_s3 <- ifelse(x_depth_s3>0, plough_thickness/x_depth_s3, 0)
+
+	plough_depth_d0 <- 0
+	plough_depth_d1 <- ifelse(x_depth_d1>0, plough_thickness/x_depth_d1, 0)
+	plough_depth_d2 <- ifelse(x_depth_d2>0, plough_thickness/x_depth_d2, 0)
+	plough_depth_d3 <- ifelse(x_depth_d3>0, plough_thickness/x_depth_d3, 0)
+
+	plough_depth_vector <- c(
 		plough_depth_s0,
 		plough_depth_s1,
 		plough_depth_s2,
@@ -356,7 +365,7 @@ activity_distribution_vector<-c(activity_distribution_vector,as.numeric(gear_hab
 		DFsize_SWITCH			= DFsize_SWITCH,
 		DFdiscard_SWITCH		= DFdiscard_SWITCH,
 		plough_thickness		= plough_thickness,
-		plough_depth_vector		= plough_depth_vector,		# placeholder until model fully built
+		plough_depth_vector		= plough_depth_vector,
 		BSmort_gear			= BSmort_gear,
 		BCmort_gear			= BCmort_gear
 	)

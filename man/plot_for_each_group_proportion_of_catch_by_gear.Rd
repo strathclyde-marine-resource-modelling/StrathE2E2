@@ -5,7 +5,7 @@
 \alias{plot_for_each_group_proportion_of_catch_by_gear}
 \title{plot results as bargraphs by group along with observed data}
 \usage{
-plot_for_each_group_proportion_of_catch_by_gear(model, catch.land.disc)
+plot_for_each_group_proportion_of_catch_by_gear(model, results)
 }
 \arguments{
 \item{model}{model object}

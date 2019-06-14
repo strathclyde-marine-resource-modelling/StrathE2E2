@@ -8,6 +8,8 @@ read_SD_control_ecology(model.path, control.file)
 }
 \arguments{
 \item{model.path}{model path}
+
+\item{control.file}{ecology control filename}
 }
 \value{
 list of annealing parameters for fitting ecology model

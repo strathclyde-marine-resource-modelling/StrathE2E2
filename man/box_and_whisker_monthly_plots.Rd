@@ -2,13 +2,13 @@
 % Please edit documentation in R/box_and_whisker_monthly_plots.R
 \name{box_and_whisker_monthly_plots}
 \alias{box_and_whisker_monthly_plots}
-\title{plot some monthly results}
+\title{plot some monthly result sumamries}
 \usage{
-box_and_whisker_monthly_plots(model)
+box_and_whisker_monthly_plots(results)
 }
 \arguments{
-\item{model}{model object}
+\item{results}{model results object}
 }
 \description{
-plot some monthly results
+plot some monthly result sumamries
 }

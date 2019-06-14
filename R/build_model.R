@@ -6,6 +6,7 @@
 #' calculates derived variables such as annual drivers, forcings, fleet model, uptakes, etc.
 #'
 #' @param model model object
+#' @param nyears number of years the model will run
 #'
 #' @return build object
 #'
@@ -23,23 +24,22 @@ build_model <- function(model, nyears) {
 	chemistry.drivers	<- elt(data, "chemistry.drivers")
 	biological.events	<- elt(data, "biological.events")
 	initial.state		<- elt(data, "initial.state")
-	fleet.model		<- elt(data, "fleet.model")
 
 	# generate or make adjustments to any variables down the line:
 	run			<- build_model_run(nyears)
 	initial.state		<- build_initial_state(initial.state, physical.parameters)
 	drivers			<- build_annual_drivers(run, fixed.parameters, physical.parameters, physics.drivers, chemistry.drivers, biological.events)
 	forcings		<- interpolate_drivers(run, drivers)
-	fleet.model		<- build_fishing_fleet_model(fleet.model, physical.parameters)
 	uptakes			<- calculate_uptakes(fitted.parameters)
 
-	model$run		<- run
-	model$data$initial.state<- initial.state
-	model$data$drivers	<- drivers
-	model$data$forcings	<- forcings
-	model$data$fleet.model	<- fleet.model
-	model$data$uptakes	<- uptakes
+	build <- list(
+		run		= run,
+		initial.state	= initial.state,
+		drivers		= drivers,
+		forcings	= forcings,
+		uptakes		= uptakes
+	)
 
-	model
+	build
 }
 

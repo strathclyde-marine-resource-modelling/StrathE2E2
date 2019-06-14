@@ -2,7 +2,7 @@
 # Internal functions - not for export
 #
 #' @importFrom graphics axis legend lines mtext par plot points boxplot
-#' @importFrom utils read.csv write.csv
+#' @importFrom utils read.csv write.table
 #' @importFrom methods show
 #'
 #' @keywords internal
@@ -63,7 +63,7 @@ isdefined <- function(var, val) {
 # reads the setup csv which specifies the names for all the model input and output files
 #
 read.model.setup <- function(model.path) {
-	setup <- readcsv(model.path, MODEL_SETUP, header=TRUE)	# raw DF
+	setup <- readcsv(model.path, MODEL_SETUP, header=TRUE)		# DF
 	pkg.env$SETUPFILES <- as.character(levels(setup[[1]]))		# character vector
 }
 
@@ -88,44 +88,82 @@ get.model.file <- function(..., file.pattern, header=TRUE) {
 		stop("Cannot find requested model filename!")
 	}
 
-	filename <- matches[[1]]
-
 	# found it:
+	filename <- matches[[1]]
 	readcsv(..., filename, header=header)
 }
 
 # read CSV data from the path units
-# by default first line of file is treated as a header line
-#	readcsv(MODELPATH, PARAMETERS_DIR, "fitted_parameters.csv")
+# by default first line of file is treated as a header line (header=TRUE)
+#	readcsv(model.path, PARAMETERS_DIR, "fitted_parameters.csv")
+# R read.csv() will interpret first column as row names if the 1st line of the file has 1 less column than the rest!
+# We now standardise on completely regular CSV files (same number of columns in every row including header, if present)
+# If we want the 1st column to be treated as row names, then we must explicity request it:
+#	readcsv(model.path, PARAMETERS_DIR, "fitted_parameters_prefs.csv", row.names=1)
+# of course header is TRUE by default.
 #
-readcsv <- function(..., header=TRUE) {
+readcsv <- function(..., header=TRUE, row.names=NULL) {
 
-	#units <- list(...)
-	#last <- units[[length(units)]]
 	filepath <- makepath(...)
 
 	check.exists(filepath)
 
 	file <- basename(filepath)
 	cat(" Reading CSV file: ", file, "\n", sep="")
-	data <- read.csv(filepath, header=header)
+	data <- read.csv(filepath, header=header, row.names=row.names)
 
 	data
 }
 
-# write data to CSV file
+# writecsv(): write data to CSV file
 # the dir is created if it doesn't already exist
 # file will be overwritten if it already exists
+# we use write.table() instead of write.csv() for more flexibility
+# defaults are same as write.table(), col.names(header)=TRUE, row.names=TRUE
+# assume a CSV file:
+#	"names,"kelp","phyt"
+#	"ammonia","0.11","0.22"
+#	"nitrate","0.33","0.44"
+# read it:
+#	csv <- read.csv("test1.csv", row.names=1)
+# To re-write this use:
+#	writecsv(csv, "test1.csv")
+# To omit the header, header=FALSE:
+#	"ammonia","0.11","0.22"
+#	"nitrate","0.33","0.44"
+# To omit the row.names as well, header=FALSE, row.names=FALSE:
+#	0.11, 0.22
+#	0.33, 0.44
+# Just the headers, row.names=FALSE:
+#	"kelp","phyt"
+#	0.11,0.22
+#	0.33,0.44
 #
-writecsv <- function(data, filepath, row.names=TRUE) {
+writecsv <- function(data, filepath, header=TRUE, row.names=TRUE) {
 
 	dir <- dirname(filepath)
 	file <- basename(filepath)
 
 	create.folder(dir)
 
+	# compatibility with write.table:
+	col.names <- header
+	if ((row.names == TRUE) && (col.names == TRUE)) {
+		# writes an element into the header line for the row.names:
+		col.names = NA
+	}
+
 	cat(" Writing CVS file: ", filepath, "\n", sep="")
-	write.csv(data, file=filepath, row.names=row.names)
+	#cat(" row.names=",row.names, " col.names=",col.names,"\n")
+	write.table(data, file=filepath, row.names=row.names, col.names=col.names, sep=",")
+}
+
+# simple wrapper around writecsv() to save a list with the element names as row names in 1st column, data in 2nd, with no header:
+# 	"el1",33
+#	"el2",44
+#
+writecsv.list <- function(data, filepath) {
+	writecsv(data, filepath, row.names=TRUE, header=FALSE)
 }
 
 # create a csv filename:
@@ -237,9 +275,11 @@ create.folder <- function(folder) {
 # set in which case return that
 # In R if you access a non existant list element:
 #	x <- list$notpresent
-# then x will be NULL and you get no warning (this could just be a typo)
+# then x will be NULL and you get no warning!
+# Using this elt() function will generate warnings (and hence pick up typos, etc.)
 #	x <- elt(list, "notpresent")			looks for list$notpresent, print warning and trace
-#	x <- elt(list, "notpresent", default=0.0)	looks for list$notpresent, uses default to return 0.0
+#	x <- elt(list, "notpresent", default=10.0)	looks for list$notpresent, uses default to return 10.0
+#	x <- elt(list, "exists")			looks for list$exists and returns it
 #	x <- elt(list, "exists1", "exists2")		looks for list$exists1$exists2 and returns it
 # 
 elt <- function(data, ..., default="NOTSET") {
@@ -247,13 +287,12 @@ elt <- function(data, ..., default="NOTSET") {
 	ret <- data
 	for (element in elements) {
 		if (element %in% names(ret)) {
-			ret <- ret[[element]]
+			ret <- ret[[element]]		# element exists
 		} else if (default != "NOTSET") {
-			ret <- default
+			ret <- default			# element does not exist, but caller has set a default
 			break
 		} else {
 			cat("Error: unknown list/data.frame element '", element, "'\n", sep="")
-			cat("Element list: ", paste(elements, collapse="$"), "\n")
 			cat("Trace:")
 			# print call list:
 			calls <- sys.calls()
@@ -351,7 +390,7 @@ fyplot3 <- function(tspmain,axtitle,tsptitle1,tsptitle2,tsptitle3,tspvar1,tspvar
 
 #Plot full time series of output
 
-tsplot1 <- function(tsptitle,tspvar1){
+tsplot1 <- function(tsptitle, tspvar1) {
 	par(mar=c(3,3.8,0.5,0.4))
 	tsyears<-length(tspvar1)
 	tseq<-seq(0,(tsyears-1)/360,by=1/360)
@@ -362,7 +401,7 @@ tsplot1 <- function(tsptitle,tspvar1){
 	mtext(tsptitle,cex=0.7,side=2,line=2.8)
 }
 
-tsplot2 <- function(tsptitle,tspvar1,tspvar2){
+tsplot2 <- function(tsptitle,tspvar1,tspvar2) {
 	par(mar=c(3,3.8,0.5,0.4))
 	tsyears<-length(tspvar1)
 	tseq<-seq(0,(tsyears-1)/360,by=1/360)
@@ -376,7 +415,7 @@ tsplot2 <- function(tsptitle,tspvar1,tspvar2){
 	mtext(tsptitle,cex=0.7,side=2,line=2.8)
 }
 
-tsplot3 <- function(tsptitle,tspvar1,tspvar2,tspvar3){
+tsplot3 <- function(tsptitle,tspvar1,tspvar2,tspvar3) {
 	par(mar=c(3,3.8,0.5,0.4))
 	tsyears<-length(tspvar1)
 	tseq<-seq(0,(tsyears-1)/360,by=1/360)
@@ -389,6 +428,88 @@ tsplot3 <- function(tsptitle,tspvar1,tspvar2,tspvar3){
 	axis(side=2,las=1,cex.axis=0.9)
 	mtext("Year",cex=0.7,side=1,line=2)
 	mtext(tsptitle,cex=0.7,side=2,line=2.8)
+}
+
+tsplot11 <- function(tspmain,axtitle,tspvar1) {
+	par(mar=c(3,3.8,2.5,0.4))
+	tsyears<-length(tspvar1)
+	tseq<-seq(0,360,by=1)
+	plmax<-1.5*max(max(tspvar1))
+	plmin<-0
+	plot(tseq,tspvar1,type="l",yaxt="n",xlim=c(0,360),ylim=c(plmin,plmax),xaxt="n",ann=FALSE,main=tspmain)
+	axis(side=1,at=c(0,60,120,180,240,300,360),las=1,cex.axis=0.9)
+	axis(side=2,las=1,cex.axis=0.9)
+	mtext("Days",cex=0.7,side=1,line=2)
+	mtext(axtitle,cex=0.7,side=2,line=2.8)
+	mtext(tspmain,cex=0.7,side=3,line=0.5)
+}
+
+tsplot22 <- function(tspmain,axtitle,tsptitle1,tsptitle2,tspvar1,tspvar2) {
+	par(mar=c(3,3.8,2.5,0.4))
+	tsyears<-length(tspvar1)
+	tseq<-seq(0,360,by=1)
+	plmax<-max(max(tspvar1),max(tspvar2))
+	plmin<-0
+	plot(tseq,tspvar1,type="l",yaxt="n",xlim=c(0,360),ylim=c(plmin,plmax),xaxt="n",ann=FALSE)
+	lines(tseq,tspvar2,type="l",lty="dashed")
+	axis(side=1,at=c(0,60,120,180,240,300,360),las=1,cex.axis=0.9)
+	axis(side=2,las=1,cex.axis=0.9)
+	mtext("Days",cex=0.7,side=1,line=2)
+	mtext(axtitle,cex=0.7,side=2,line=2.8)
+	mtext(tspmain,cex=0.7,side=3,line=0.5)
+	legend(5,plmax,c(tsptitle1,tsptitle2),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1))
+}
+
+tsplot33 <- function(tspmain,axtitle,tsptitle1,tsptitle2,tsptitle3,tspvar1,tspvar2,tspvar3) {
+	par(mar=c(3,3.8,2.5,0.4))
+	tsyears<-length(tspvar1)
+	tseq<-seq(0,360,by=1)
+	plmax<-max(max(tspvar1),max(tspvar2),max(tspvar3))
+	plmin<-0
+	plot(tseq,tspvar1,type="l",col="black",yaxt="n",xlim=c(0,360),ylim=c(plmin,plmax),xaxt="n",ann=FALSE)
+	lines(tseq,tspvar2,type="l",col="black",lty="dashed")
+	lines(tseq,tspvar3,type="l",col="red",lty="dashed")
+	axis(side=1,at=c(0,60,120,180,240,300,360),las=1,cex.axis=0.9)
+	axis(side=2,las=1,cex.axis=0.9)
+	mtext("Days",cex=0.7,side=1,line=2)
+	mtext(axtitle,cex=0.7,side=2,line=2.8)
+	mtext(tspmain,cex=0.7,side=3,line=0.5)
+	legend(5,plmax,c(tsptitle1,tsptitle2,tsptitle3),col=c("black","black","red"),lty=c(1,2,2),pt.cex=c(1,1,1))
+}
+
+tsplot44 <- function(tspmain,axtitle,tsptitle1,tsptitle2,tsptitle3,tsptitle4,tspvar1,tspvar2,tspvar3,tspvar4) {
+	par(mar=c(3,3.8,2.5,0.4))
+	tsyears<-length(tspvar1)
+	tseq<-seq(0,360,by=1)
+	plmax<-max(max(tspvar1),max(tspvar2),max(tspvar3),max(tspvar4))
+	plmin<-0
+	plot(tseq,tspvar1,type="l",col="black",yaxt="n",xlim=c(0,360),ylim=c(plmin,plmax),xaxt="n",ann=FALSE)
+	lines(tseq,tspvar2,type="l",col="black",lty="dashed")
+	lines(tseq,tspvar3,type="l",col="red")
+	lines(tseq,tspvar4,type="l",col="red",lty="dashed")
+	axis(side=1,at=c(0,60,120,180,240,300,360),las=1,cex.axis=0.9)
+	axis(side=2,las=1,cex.axis=0.9)
+	mtext("Days",cex=0.7,side=1,line=2)
+	mtext(axtitle,cex=0.7,side=2,line=2.8)
+	mtext(tspmain,cex=0.7,side=3,line=0.5)
+	legend(5,plmax,c(tsptitle1,tsptitle2,tsptitle3,tsptitle4),col=c("black","black","red","red"),lty=c(1,2,1,2),pt.cex=c(1,1,1,1))
+}
+
+tsplot3_hab <- function(tspmain,axtitle,tsptitle1,tsptitle2,tsptitle3,tspvar1,tspvar2,tspvar3,plmax) {
+	par(mar=c(3,3.8,1.3,0.4))
+	tsyears<-length(tspvar1)
+	tseq<-seq(0,360,by=1)
+	#plmax<-max(max(tspvar1),max(tspvar2),max(tspvar3))
+	plmin<-0
+	plot(tseq,tspvar1,type="l",col="red",yaxt="n",xlim=c(0,360),ylim=c(plmin,plmax),xaxt="n",ann=FALSE)
+	lines(tseq,tspvar2,type="l",col="red",lty="dashed")
+	lines(tseq,tspvar3,type="l",col="black",lty="dashed")
+	axis(side=1,at=c(0,60,120,180,240,300,360),las=1,cex.axis=0.9)
+	axis(side=2,las=1,cex.axis=0.9)
+	mtext("Days",cex=0.7,side=1,line=2)
+	mtext(axtitle,cex=0.7,side=2,line=2.8)
+	mtext(tspmain,cex=0.7,side=3,line=0.2)
+	legend(5,plmax,c(tsptitle1,tsptitle2,tsptitle3),col=c("red","red","black"),lty=c(1,2,2),pt.cex=c(1,1,1))
 }
 
 get.dyn.path <- function() {

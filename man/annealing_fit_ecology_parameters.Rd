@@ -4,10 +4,12 @@
 \alias{annealing_fit_ecology_parameters}
 \title{Finds the best-fit values of the ecology model parameters using an annealing process}
 \usage{
-annealing_fit_ecology_parameters(model)
+annealing_fit_ecology_parameters(model, nyears = 40)
 }
 \arguments{
 \item{model}{current model configuration}
+
+\item{nyears}{length of annealing run}
 }
 \value{
 fitted parameter set

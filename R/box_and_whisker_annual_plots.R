@@ -4,24 +4,22 @@
 #' plot observed and modelled distributions of the annual ecosystem flux data
 #'
 #' @param model model object
-#' @param annual.target.data annual target data
-#' @param opt_results model target results
+#' @param results model results object
 #'
 #' @export
 #
-box_and_whisker_annual_plots <- function(model, annual.target.data, opt_results) {
+box_and_whisker_annual_plots <- function(model, results) {
 
-	run		<- elt(model, "run")
-	resultsdir	<- elt(run, "resultsdir")
+	setup		<- elt(model, "setup")
+	resultsdir	<- elt(setup, "resultsdir")
+
+	opt_results	<- elt(results, "final.year.outputs", "opt_results")
 
 #Requires the dataframe opt_results produced by the programme which calculates the model outputs corresponding to each observed variable
 
 #Column 1 is the observed value, column 2 is the sd, column 3 is the fitted model value
 
 #Column 4 is a flag to say whether the observed value was used in the fitting 1=yes, 0=no
-
-
-
 
 sim_targetdata<-opt_results[,1:3]
 names(sim_targetdata)<-c("observed","observed_sd","model")

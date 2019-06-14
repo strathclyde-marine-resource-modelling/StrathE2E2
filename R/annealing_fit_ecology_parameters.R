@@ -4,8 +4,11 @@
 #' Finds the best-fit values of the ecology model parameters using an annealing process
 #'
 #' @param model current model configuration
+#' @param nyears length of annealing run
 #'
 #' @return fitted parameter set
+#'
+#' @importFrom stats runif
 #'
 #' @export
 #'
@@ -59,23 +62,15 @@
 # | Author: Mike Heath, University of Strathclyde, Glasgow            |
 # | Date of this version: 4 March 2019                                |
 # |                                                                   |
-# | To run this script, from a Windows or linux R-commander launch,   |
-# | use File/Change_dir.. to set the home directory to the folder     |
-# | holding this file, and then copy and paste the following into the |
-# | R command line..                                                  |
-# |               source("script_name.R")                             |
 # ---------------------------------------------------------------------
 
-annealing_fit_ecology_parameters <- function(model) {
+annealing_fit_ecology_parameters <- function(model, nyears=40) {
 
-	run				<- elt(model, "run")
 	setup				<- elt(model, "setup")
 	data				<- elt(model, "data")
 
 	fitted.parameters		<- elt(data, "fitted.parameters")
 	HRscale_vector_multiplier	<- elt(data, "fleet.model", "HRscale_vector_multiplier")
-
-	nyears				<- elt(run, "nyears")			# Number of years to run each simulation
 
 	model.path			<- elt(setup, "model.path")
         resultsdir			<- elt(setup, "resultsdir")
@@ -83,8 +78,7 @@ annealing_fit_ecology_parameters <- function(model) {
 
 	print(date())
 
-	# LOCK THE BIRD SEAL AND CETACEAN UPTAKE PARAMETERES OR NOT.....
-	toppredlock <- TRUE
+	toppredlock <- TRUE		# LOCK THE BIRD SEAL AND CETACEAN UPTAKE PARAMETERES OR NOT.....
 
 	# Set the annealing parameters:
 	n_iter		<- 1000		# Maximum number of iterations of the parameter randomisation process
@@ -101,9 +95,12 @@ annealing_fit_ecology_parameters <- function(model) {
 		fitted.parameters,
         	annual_obj = 1e-60
 	)
+	showall("data", datastore)
+	dput(datastore)
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	parhistory	<- as.data.frame(datastore)		# these are all data frames
+	showall("parh", parhistory)
 	proposalhistory	<- parhistory
 	proposalstore	<- proposalhistory
 
@@ -127,7 +124,7 @@ annealing_fit_ecology_parameters <- function(model) {
 		perturbed <- perturb_parameters(datastore, annealing.parms, toppredlock)
 		model$data$fitted.parameters <- perturbed				# perturbed parameters built into model.parameters for run
 
-		results <- StrathE2E(model)
+		results <- StrathE2E(model, nyears)
 
 		err <- elt(results, "final.year.outputs", "annual_obj")
 		perturbed$annual_obj <- err
@@ -187,7 +184,7 @@ annealing_fit_ecology_parameters <- function(model) {
 		axmax <- elt(annealing.parms, "axmax")
 		plot(seq(1,nrow(proposalhistory)),proposalhistory$annual_obj,ylim=c(axmin,axmax),xlim=c(1,kkk+1),xlab="Iterations",ylab="Likelihood",type="l",col="grey")
 		points(seq(1,nrow(parhistory)),parhistory$annual_obj,type="l",col="black",lwd=3)
-		if (kkk==10) stop("kkk==2")
+		if (kkk==3) stop("kkk==3")
 	}
 
 	#At the conclusion of the whole process, extract the final row of the parhistory into the format of model fitted parameter files and save to disc

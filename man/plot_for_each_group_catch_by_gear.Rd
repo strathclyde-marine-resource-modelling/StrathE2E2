@@ -4,12 +4,12 @@
 \alias{plot_for_each_group_catch_by_gear}
 \title{plot results as lineplots by group}
 \usage{
-plot_for_each_group_catch_by_gear(model, catch.land.disc)
+plot_for_each_group_catch_by_gear(model, results)
 }
 \arguments{
 \item{model}{model object}
 
-\item{catch.land.disc}{catch, landings and discards}
+\item{results}{model results object}
 }
 \description{
 plot results as lineplots by group

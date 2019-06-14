@@ -18,10 +18,12 @@
 #
 read_fitted_parameters <- function(model.path) {
 
-	preference_matrix_input	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FITTED_PARAMETERS_PREFERENCE)
+	preference_matrix_input	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FITTED_PARAMETERS_PREFERENCE, row.names=1)	# special
 	uptake_mort_input	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FITTED_PARAMETERS_UPTAKE_MORT)
 	microbiology_input	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FITTED_PARAMETERS_MICROBIOLOGY)
 
+#showall("preference_matrix_input",preference_matrix_input)
+#showall("PREF_NIT_kelp", preference_matrix_input$kelp[which(rownames(preference_matrix_input)=="nitrate")])
 	# rownames(preference_matrix_input)
 	#  [1] "ammonia"   "nitrate"   "suspdet"   "seddet"    "corpses"   "discards" 
 	#  [7] "phyt"      "omnivzoo"  "carnzoo"   "fishplar"  "fishdlar"  "fishp"    

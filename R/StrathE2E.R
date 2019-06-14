@@ -23,7 +23,7 @@
 #' #
 #' #	str(NorthSea)
 #' #
-#' NorthSea <- read_model("NorthSea", "version1")
+#' NorthSea <- read_model("North_Sea", "2003-2013")
 #'
 #' results <- StrathE2E(NorthSea)
 #'
@@ -31,21 +31,20 @@
 #
 StrathE2E <- function(model, nyears=20) {
 
-	model			<- build_model(model, nyears)
+	build			<- build_model(model, nyears)
 
 	setup			<- elt(model, "setup")
-	data			<- elt(model, "data")
-	run			<- elt(model, "run")
-
 	model.path		<- elt(setup, "model.path")
 
+	#data			<- elt(model, "data")	# ZZ delete
+
+	run			<- elt(build, "run")
+	initial.state		<- elt(build, "initial.state")
+	forcings		<- elt(build, "forcings")
 	times			<- elt(run, "times")
 
-	initial.state		<- elt(data, "initial.state")
-	forcings		<- elt(data, "forcings")
-
-	fleet.output		<- fishing_fleet_model(model)			# run the fishing fleet model
-	model.parameters	<- build_model_parameters(model, fleet.output)	# all parameters going through to C model
+	fleet.output		<- fishing_fleet_model(model, build)			# run the fishing fleet model
+	model.parameters	<- build_model_parameters(model, build, fleet.output)	# all parameters going through to C model
 
 	StrathE2E.load()
 	cat("Running model for", nyears, "years\n")
@@ -67,23 +66,30 @@ StrathE2E <- function(model, nyears=20) {
 
 	# main processed output:
 	aggregates			<- aggregate_model_output(model, output)
-	total.annual.catch		<- extract_timeseries_annual_landings(model, output)
+	total.annual.catch		<- extract_timeseries_annual_landings(model, build, output)
 	annual.catch.by.gear		<- disaggregate_landings_discards_by_gear(fleet.output, total.annual.catch)
 	catch.land.disc			<- extract_simulated_catch_land_disc_by_gear_for_given_year(model, annual.catch.by.gear)
 
 	# additional processed output:
-	monthly.averages		<- monthly_averages_of_final_year(model, output, aggregates)
-	annual.results.wholedomain	<- derive_annual_results_wholedomain(model, output, aggregates)
-	annual.results.offshore		<- derive_annual_results_offshore(model, output, aggregates)
-	annual.results.inshore		<- derive_annual_results_inshore(model, output, aggregates)
-	flow.matrices			<- assemble_flow_matrix_from_model_annual_output(model, output, aggregates)
+	monthly.averages		<- monthly_averages_of_final_year(model, build, output, aggregates)
+	annual.results.wholedomain	<- derive_annual_results_wholedomain(model, build, output, aggregates)
+	annual.results.offshore		<- derive_annual_results_offshore(model, build, output, aggregates)
+	annual.results.inshore		<- derive_annual_results_inshore(model, build, output, aggregates)
+	flow.matrices			<- assemble_flow_matrix_from_model_annual_output(model, build, output, aggregates)
 
 	annual.target.data		<- read_annual_target_data(model.path)
-	model.target.results		<- derive_model_target_results(model, output, aggregates, annual.target.data)
+	monthly.target.data		<- read_monthly_target_data(model.path)
+
+	model.target.results		<- derive_model_target_results(model, build, output, aggregates, annual.target.data)
 	fit.to.target.data		<- calculate_error_function(model, model.target.results)
 
 	results <- list(
-		model.parameters	= model.parameters,
+		build			= list(
+			model.parameters		= model.parameters,
+			run				= elt(build, "run"),
+			drivers				= elt(build, "drivers"),
+			forcings			= elt(build, "forcings")
+		),
 		output			= output,
 		aggregates		= aggregates,
 		fleet.output		= fleet.output,
@@ -121,6 +127,7 @@ StrathE2E <- function(model, nyears=20) {
 			NetworkIndexResults		= elt(flow.matrices, "NetworkIndexResults"),
 
 			annual.target.data		= annual.target.data,
+			monthly.target.data		= monthly.target.data,
 
 			# error function/likelihoods:
 			annual_obj			= elt(fit.to.target.data, "annual_obj"),

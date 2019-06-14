@@ -6,21 +6,22 @@
 #' returns fishing fleet model
 #'
 #' @param model model object
+#' @param build model build object
 #'
 #' @return fishing fleet model
 #'
 #' @export
 #
-fishing_fleet_model <- function(model) {
+fishing_fleet_model <- function(model, build) {
 
 	# Unpack:
-	run				<- elt(model, "run")
-	nyears				<- elt(run, "nyears")
-
 	data				<- elt(model, "data")
 	initial.state			<- elt(data, "initial.state")
+	fleet.model			<- elt(data, "fleet.model")
+	physical.parameters		<- elt(data, "physical.parameters")
 
-        fleet.model			<- elt(data, "fleet.model")
+	habitat_areas			<- elt(physical.parameters, "habitat_areas")
+
 	gear_activity			<- elt(fleet.model, "gear_activity")
 	gear_group_rel_power		<- elt(fleet.model, "gear_group_rel_power")
 	gear_group_discard		<- elt(fleet.model, "gear_group_discard")
@@ -38,8 +39,8 @@ fishing_fleet_model <- function(model) {
 	BCmort_gear			<- elt(fleet.model, "BCmort_gear")
 	offal_prop_live_weight		<- elt(fleet.model, "offal_prop_live_weight")
 
-        physical.parameters		<- elt(data, "physical.parameters")
-	habitat_areas			<- elt(physical.parameters, "habitat_areas")
+	run				<- elt(build, "run")
+	nyears				<- elt(run, "nyears")
 
 	Last_January			<- 0
 	RESETS				<- 0

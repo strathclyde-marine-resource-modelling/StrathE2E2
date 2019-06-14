@@ -45,7 +45,7 @@ read_model <- function(model.name, model.variant, model.ident="base", model.subd
 	biological.events	<- read_biological_event_timings(model.path)
 	fitted.parameters	<- read_fitted_parameters(model.path)
 	initial.state		<- read_initial_state(model.path)
-	fleet.model		<- read_fishing_fleet_model(model.path)
+	fleet.model		<- read_fishing_fleet_model(model.path, physical.parameters)
 
 	# data slot:
 	data <- list(

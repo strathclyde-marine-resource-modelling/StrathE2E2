@@ -10,6 +10,8 @@
 #'
 #' @return list of default model run settings
 #'
+#' @importFrom stats runif 
+#'
 #' @export
 #
 sensitivity_analysis <- function(model) {
