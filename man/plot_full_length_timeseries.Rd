@@ -2,13 +2,15 @@
 % Please edit documentation in R/plot_full_length_timeseries.R
 \name{plot_full_length_timeseries}
 \alias{plot_full_length_timeseries}
-\title{Plot full time series of out}
+\title{Plot full time series of output}
 \usage{
-plot_full_length_timeseries(results)
+plot_full_length_timeseries(model, results)
 }
 \arguments{
+\item{model}{model object}
+
 \item{results}{full model results}
 }
 \description{
-Plot set of time series from model out
+Plot full time series of output
 }

@@ -1,74 +1,103 @@
 #
 # plot_full_length_timeseries.R
 #
-#' Plot full time series of out
+#' Plot full time series of output
 #'
-#' Plot set of time series from model out
-#'
+#' @param model model object
 #' @param results full model results
 #'
 #' @export
 #
 # most fixed/fitted parms etc are in the results$out from the ode
 #
-plot_full_length_timeseries <- function(results) {
+plot_full_length_timeseries <- function(model, results) {
 
-	out <- elt(results, "output")
-	agg <- elt(results, "aggregates")
+	output		<- elt(results, "output")
+	detritus_d	<- elt(output, "detritus_d")
+	nitrate_d	<- elt(output, "nitrate_d")
+	ammonia_d	<- elt(output, "ammonia_d")
+	phyt_d		<- elt(output, "phyt_d")
 
-	# move all the elt(out, "name") stuff up here
+	aggregates	<- elt(results, "aggregates")
+	totalN		<- elt(aggregates, "totalN")
+	s_detritus	<- elt(aggregates, "s_detritus")
+	x_detritus	<- elt(aggregates, "x_detritus")
+	s_nitrate	<- elt(aggregates, "s_nitrate")
+	x_nitrate	<- elt(aggregates, "x_nitrate")
+	s_ammonia	<- elt(aggregates, "s_ammonia")
+	x_ammonia	<- elt(aggregates, "x_ammonia")
+	s_phyt		<- elt(aggregates, "s_phyt")
+	herb		<- elt(aggregates, "herb")
+	carn		<- elt(aggregates, "carn")
+	benths		<- elt(aggregates, "benths")
+	benthslar	<- elt(aggregates, "benthslar")
+	benthc		<- elt(aggregates, "benthc")
+	benthclar	<- elt(aggregates, "benthclar")
+	fishp		<- elt(aggregates, "fishp")
+	fishplar	<- elt(aggregates, "fishplar")
+	fishm		<- elt(aggregates, "fishm")
+	fishd		<- elt(aggregates, "fishd")
+	fishdlar	<- elt(aggregates, "fishdlar")
+	bird		<- elt(aggregates, "bird")
+	seal		<- elt(aggregates, "seal")
+	ceta		<- elt(aggregates, "ceta")
+
+	#Plot full time series of output
 
 	par(mfrow=c(4,4))
 
-	tsplot1("Total nitrogen",elt(agg, "totalN"))
+	tsplot1("Total nitrogen",totalN)
 
-	tsplot2("Susp. detritus",elt(agg, "s_detritus"),elt(out, "detritus_d"))
-	legend(x=((length(elt(agg, "s_detritus"))-1)/360)/2,y=max(max(elt(agg, "s_detritus")),max(elt(out, "detritus_d"))),legend=c("Surface","Deep"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=0.8)
+	tsplot2("Susp. detritus",s_detritus,detritus_d)
+	legend(x=((length(s_detritus)-1)/360)/2,y=max(max(s_detritus),max(detritus_d)),legend=c("Surface","Deep"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=0.8)
 
-	tsplot1("Sediment detritus",elt(agg, "x_detritus"))
 
-	tsplot2("Nitrate",elt(agg, "s_nitrate"),elt(out, "nitrate_d"))
-	legend(((length(elt(agg, "s_nitrate"))-1)/360)/2,plmax<-max(max(elt(agg, "s_nitrate")),max(elt(out, "nitrate_d"))),c("Surface","Deep"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=c(0.8))
+	tsplot1("Sediment detritus",x_detritus)
 
-	tsplot1("Pore_w nitrate",elt(agg, "x_nitrate"))
+	tsplot2("Nitrate",s_nitrate,nitrate_d)
+	legend(((length(s_nitrate)-1)/360)/2,plmax<-max(max(s_nitrate),max(nitrate_d)),c("Surface","Deep"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=c(0.8))
 
-	tsplot2("Ammonia",elt(agg, "s_ammonia"),elt(out, "ammonia_d"))
-	legend(((length(elt(agg, "s_ammonia"))-1)/360)/2,plmax<-max(max(elt(agg, "s_ammonia")),max(elt(out, "ammonia_d"))),c("Surface","Deep"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=c(0.8))
 
-	tsplot1("Pore_w ammonia",elt(agg, "x_ammonia"))
+	tsplot1("Pore_w nitrate",x_nitrate)
 
-	tsplot2("Phytoplankton",elt(agg, "s_phyt"),elt(out, "phyt_d"))
-	legend(((length(elt(agg, "s_phyt"))-1)/360)/2,plmax<-max(max(elt(agg, "s_phyt")),max(elt(out, "phyt_d"))),c("Surface","Deep"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=c(0.8))
+	tsplot2("Ammonia",s_ammonia,ammonia_d)
+	legend(((length(s_ammonia)-1)/360)/2,plmax<-max(max(s_ammonia),max(ammonia_d)),c("Surface","Deep"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=c(0.8))
 
-	tsplot1("Omniv. zoop",elt(agg, "herb"))
-	tsplot1("Carniv. zoo",elt(agg, "carn"))
+	tsplot1("Pore_w ammonia",x_ammonia)
 
-	#tsplot1("Susp/dep. benthos",elt(agg, "benths"))
-	#tsplot1("Carniv. benthos",elt(agg, "benthc"))
+	tsplot2("Phytoplankton",s_phyt,phyt_d)
+	legend(((length(s_phyt)-1)/360)/2,plmax<-max(max(s_phyt),max(phyt_d)),c("Surface","Deep"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=c(0.8))
 
-	tsplot2("Susp/dep. benthos",elt(agg, "benths"),elt(agg, "benthslar"))
-	legend(((length(elt(agg, "benths"))-1)/360)/2,plmax<-max(max(elt(agg, "benths")),max(elt(agg, "benthslar"))),c("Adults","Larvae"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=c(0.8))
+	tsplot1("Omniv. zoop",herb)
+	tsplot1("Carniv. zoo",carn)
 
-	tsplot2("Carniv. benthos",elt(agg, "benthc"),elt(agg, "benthclar"))
-	legend(((length(elt(agg, "benthc"))-1)/360)/2,plmax<-max(max(elt(agg, "benthc")),max(elt(agg, "benthclar"))),c("Adults","Larvae"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=c(0.8))
+	#tsplot1("Susp/dep. benthos",benths)
+	#tsplot1("Carniv. benthos",benthc)
 
-	#tsplot3("Pelagic fish",elt(agg, "fishp"),elt(agg, "fishplar"),elt(agg, "fishm"))
-	tsplot2("Pelagic fish",elt(agg, "fishp"),elt(agg, "fishplar"))
-	#tsplot1("Pel. fish adults",elt(agg, "fishp"))
-	legend(((length(elt(agg, "fishp"))-1)/360)/2,plmax<-max(max(elt(agg, "fishp")),max(elt(agg, "fishplar"))),c("Adults","Larvae"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=c(0.8))
+	tsplot2("Susp/dep. benthos",benths,benthslar)
+	legend(((length(benths)-1)/360)/2,plmax<-max(max(benths),max(benthslar)),c("Adults","Larvae"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=c(0.8))
 
-	tsplot1("Migratory fish",elt(agg, "fishm"))
+	tsplot2("Carniv. benthos",benthc,benthclar)
+	legend(((length(benthc)-1)/360)/2,plmax<-max(max(benthc),max(benthclar)),c("Adults","Larvae"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=c(0.8))
 
-	tsplot2("Demersal fish",elt(agg, "fishd"),elt(agg, "fishdlar"))
-	#tsplot1("Dem. fish adults",elt(agg, "fishd"))
-	legend(((length(elt(agg, "fishd"))-1)/360)/2,plmax<-max(max(elt(agg, "fishd")),max(elt(agg, "fishdlar"))),c("Adults","Larvae"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=c(0.8))
+	#tsplot3("Pelagic fish",fishp,fishplar,fishm)
+	tsplot2("Pelagic fish",fishp,fishplar)
+	#tsplot1("Pel. fish adults",fishp)
+	legend(((length(fishp)-1)/360)/2,plmax<-max(max(fishp),max(fishplar)),c("Adults","Larvae"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=c(0.8))
 
-	#tsplot1("Birds/mammals (*10^-2)",elt(agg, "bird")*1e2)
-	#tsplot2("Birds/mammals (*10^-2)",elt(agg, "bird")*1e2,rep(0,nrow(out)))
-	tsplot3("Birds/mammals (*10^-2)",elt(agg, "bird")*1e2,elt(agg, "seal")*1e2,elt(agg, "ceta")*1e2)
-	legend(((length(elt(agg, "bird"))-1)/360)/2,plmax<-max(max(elt(agg, "bird")*1e2),max(elt(agg, "seal")*1e2),max(elt(agg, "ceta")*1e2)),c("Birds","Pinnipeds","Cetaceans"),col=c("black","black","red"),lty=c(1,2,2),pt.cex=c(1,1,1),cex=c(0.7))
+	tsplot1("Migratory fish",fishm)
+
+	tsplot2("Demersal fish",fishd,fishdlar)
+	#tsplot1("Dem. fish adults",fishd)
+	legend(((length(fishd)-1)/360)/2,plmax<-max(max(fishd),max(fishdlar)),c("Adults","Larvae"),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1),cex=c(0.8))
+
+	#tsplot1("Birds/mammals (*10^-2)",bird*1e2)
+	#tsplot2("Birds/mammals (*10^-2)",bird*1e2,rep(0,nrow(out)))
+	tsplot3("Birds/mammals (*10^-2)",bird*1e2,seal*1e2,ceta*1e2)
+	legend(((length(bird)-1)/360)/2,plmax<-max(max(bird*1e2),max(seal*1e2),max(ceta*1e2)),c("Birds","Pinnipeds","Cetaceans"),col=c("black","black","red"),lty=c(1,2,2),pt.cex=c(1,1,1),cex=c(0.7))
 
 	#print("Black = birds, dashed = seals, red = cetaceans")
+
 }
 
 

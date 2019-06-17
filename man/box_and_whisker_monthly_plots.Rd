@@ -4,9 +4,11 @@
 \alias{box_and_whisker_monthly_plots}
 \title{plot some monthly result sumamries}
 \usage{
-box_and_whisker_monthly_plots(results)
+box_and_whisker_monthly_plots(model, results)
 }
 \arguments{
+\item{model}{model object}
+
 \item{results}{model results object}
 }
 \description{

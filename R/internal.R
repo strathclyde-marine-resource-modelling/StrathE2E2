@@ -75,6 +75,8 @@ get.model.file <- function(..., file.pattern, header=TRUE) {
 	matches <- grep(file.pattern, pkg.env$SETUPFILES, value=TRUE)
 
 	if (length(matches) != 1) {
+		cat("Matches=",length(matches), "\n")
+		showall("setupfiles",pkg.env$SETUPFILES)
 		if (length(matches) == 0) {
 			# no match!
 			cat("Error: could not find model file using pattern '", file.pattern, "' !\n", sep="")
@@ -341,51 +343,72 @@ genshowall <- function(v, prefix="") {
 	}
 }
 
-fyplot1 <- function(tspmain,axtitle,tspvar1) {
-	par(mar=c(3,3.8,2.5,0.4))
-	tsyears<-length(tspvar1)
-	tseq<-seq(0,360,by=1)
-	plmax<-1.5*max(max(tspvar1))
-	plmin<-0
-	plot(tseq,tspvar1,type="l",yaxt="n",xlim=c(0,360),ylim=c(plmin,plmax),xaxt="n",ann=FALSE,main=tspmain)
-	axis(side=1,at=c(0,60,120,180,240,300,360),las=1,cex.axis=0.9)
-	axis(side=2,las=1,cex.axis=0.9)
-	mtext("Days",cex=0.7,side=1,line=2)
-	mtext(axtitle,cex=0.7,side=2,line=2.8)
-	mtext(tspmain,cex=0.7,side=3,line=0.5)
+
+#Plot the final year of output
+
+fyplot1<-function(tspmain,axtitle,tspvar1){
+par(mar=c(3,3.8,2.5,0.4))
+tsyears<-length(tspvar1)
+tseq<-seq(0,360,by=1)
+plmax<-1.5*max(max(tspvar1))
+plmin<-0
+plot(tseq,tspvar1,type="l",yaxt="n",xlim=c(0,360),ylim=c(plmin,plmax),xaxt="n",ann=FALSE,main=tspmain)
+axis(side=1,at=c(0,60,120,180,240,300,360),las=1,cex.axis=0.9)
+axis(side=2,las=1,cex.axis=0.9)
+mtext("Days",cex=0.7,side=1,line=2)
+mtext(axtitle,cex=0.7,side=2,line=2.8)
+mtext(tspmain,cex=0.7,side=3,line=0.5)
 }
 
-fyplot2 <- function(tspmain,axtitle,tsptitle1,tsptitle2,tspvar1,tspvar2) {
-	par(mar=c(3,3.8,2.5,0.4))
-	tsyears<-length(tspvar1)
-	tseq<-seq(0,360,by=1)
-	plmax<-max(max(tspvar1),max(tspvar2))
-	plmin<-0
-	plot(tseq,tspvar1,type="l",yaxt="n",xlim=c(0,360),ylim=c(plmin,plmax),xaxt="n",ann=FALSE)
-	lines(tseq,tspvar2,type="l",lty="dashed")
-	axis(side=1,at=c(0,60,120,180,240,300,360),las=1,cex.axis=0.9)
-	axis(side=2,las=1,cex.axis=0.9)
-	mtext("Days",cex=0.7,side=1,line=2)
-	mtext(axtitle,cex=0.7,side=2,line=2.8)
-	mtext(tspmain,cex=0.7,side=3,line=0.5)
-	legend(5,plmax,c(tsptitle1,tsptitle2),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1))
+fyplot2<-function(tspmain,axtitle,tsptitle1,tsptitle2,tspvar1,tspvar2){
+par(mar=c(3,3.8,2.5,0.4))
+tsyears<-length(tspvar1)
+tseq<-seq(0,360,by=1)
+plmax<-max(max(tspvar1),max(tspvar2))
+plmin<-0
+plot(tseq,tspvar1,type="l",yaxt="n",xlim=c(0,360),ylim=c(plmin,plmax),xaxt="n",ann=FALSE)
+lines(tseq,tspvar2,type="l",lty="dashed")
+axis(side=1,at=c(0,60,120,180,240,300,360),las=1,cex.axis=0.9)
+axis(side=2,las=1,cex.axis=0.9)
+mtext("Days",cex=0.7,side=1,line=2)
+mtext(axtitle,cex=0.7,side=2,line=2.8)
+mtext(tspmain,cex=0.7,side=3,line=0.5)
+legend(5,plmax,c(tsptitle1,tsptitle2),col=c("black","black"),lty=c(1,2),pt.cex=c(1,1))
 }
 
-fyplot3 <- function(tspmain,axtitle,tsptitle1,tsptitle2,tsptitle3,tspvar1,tspvar2,tspvar3) {
-	par(mar=c(3,3.8,2.5,0.4))
-	tsyears<-length(tspvar1)
-	tseq<-seq(0,360,by=1)
-	plmax<-max(max(tspvar1),max(tspvar2),max(tspvar3))
-	plmin<-0
-	plot(tseq,tspvar1,type="l",col="red",yaxt="n",xlim=c(0,360),ylim=c(plmin,plmax),xaxt="n",ann=FALSE)
-	lines(tseq,tspvar2,type="l",col="red",lty="dashed")
-	lines(tseq,tspvar3,type="l",col="black",lty="dashed")
-	axis(side=1,at=c(0,60,120,180,240,300,360),las=1,cex.axis=0.9)
-	axis(side=2,las=1,cex.axis=0.9)
-	mtext("Days",cex=0.7,side=1,line=2)
-	mtext(axtitle,cex=0.7,side=2,line=2.8)
-	mtext(tspmain,cex=0.7,side=3,line=0.5)
-	legend(5,plmax,c(tsptitle1,tsptitle2,tsptitle3),col=c("red","red","black"),lty=c(1,2,2),pt.cex=c(1,1,1))
+fyplot3<-function(tspmain,axtitle,tsptitle1,tsptitle2,tsptitle3,tspvar1,tspvar2,tspvar3){
+par(mar=c(3,3.8,2.5,0.4))
+tsyears<-length(tspvar1)
+tseq<-seq(0,360,by=1)
+plmax<-max(max(tspvar1),max(tspvar2),max(tspvar3))
+plmin<-0
+plot(tseq,tspvar1,type="l",col="black",yaxt="n",xlim=c(0,360),ylim=c(plmin,plmax),xaxt="n",ann=FALSE)
+lines(tseq,tspvar2,type="l",col="black",lty="dashed")
+lines(tseq,tspvar3,type="l",col="red",lty="dashed")
+axis(side=1,at=c(0,60,120,180,240,300,360),las=1,cex.axis=0.9)
+axis(side=2,las=1,cex.axis=0.9)
+mtext("Days",cex=0.7,side=1,line=2)
+mtext(axtitle,cex=0.7,side=2,line=2.8)
+mtext(tspmain,cex=0.7,side=3,line=0.5)
+legend(5,plmax,c(tsptitle1,tsptitle2,tsptitle3),col=c("black","black","red"),lty=c(1,2,2),pt.cex=c(1,1,1))
+}
+
+fyplot4<-function(tspmain,axtitle,tsptitle1,tsptitle2,tsptitle3,tsptitle4,tspvar1,tspvar2,tspvar3,tspvar4){
+par(mar=c(3,3.8,2.5,0.4))
+tsyears<-length(tspvar1)
+tseq<-seq(0,360,by=1)
+plmax<-max(max(tspvar1),max(tspvar2),max(tspvar3),max(tspvar4))
+plmin<-0
+plot(tseq,tspvar1,type="l",col="black",yaxt="n",xlim=c(0,360),ylim=c(plmin,plmax),xaxt="n",ann=FALSE)
+lines(tseq,tspvar2,type="l",col="black",lty="dashed")
+lines(tseq,tspvar3,type="l",col="red")
+lines(tseq,tspvar4,type="l",col="red",lty="dashed")
+axis(side=1,at=c(0,60,120,180,240,300,360),las=1,cex.axis=0.9)
+axis(side=2,las=1,cex.axis=0.9)
+mtext("Days",cex=0.7,side=1,line=2)
+mtext(axtitle,cex=0.7,side=2,line=2.8)
+mtext(tspmain,cex=0.7,side=3,line=0.5)
+legend(5,plmax,c(tsptitle1,tsptitle2,tsptitle3,tsptitle4),col=c("black","black","red","red"),lty=c(1,2,1,2),pt.cex=c(1,1,1,1))
 }
 
 #Plot full time series of output

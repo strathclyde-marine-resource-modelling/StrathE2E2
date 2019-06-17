@@ -67,14 +67,14 @@
 annealing_fit_ecology_parameters <- function(model, nyears=40) {
 
 	setup				<- elt(model, "setup")
-	data				<- elt(model, "data")
-
-	fitted.parameters		<- elt(data, "fitted.parameters")
-	HRscale_vector_multiplier	<- elt(data, "fleet.model", "HRscale_vector_multiplier")
-
 	model.path			<- elt(setup, "model.path")
         resultsdir			<- elt(setup, "resultsdir")
 	identifier			<- elt(setup, "model.ident")
+
+	data				<- elt(model, "data")
+	fitted.parameters		<- elt(data, "fitted.parameters")
+	HRscale_vector_multiplier	<- elt(data, "fleet.model", "HRscale_vector_multiplier")
+
 
 	print(date())
 
@@ -95,23 +95,14 @@ annealing_fit_ecology_parameters <- function(model, nyears=40) {
 		fitted.parameters,
         	annual_obj = 1e-60
 	)
-	showall("data", datastore)
-	dput(datastore)
-        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	parhistory	<- as.data.frame(datastore)		# these are all data frames
-	showall("parh", parhistory)
 	proposalhistory	<- parhistory
-	proposalstore	<- proposalhistory
-
-	#-------------------------------------------------------------------------------------------------------
 
 	n_acceptances<-0   # Counter for the number of parameter acceptances which have occurred
 
-	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 	#ITERATE THE ANNEALING PROCESS.....
-
+	#
 	for (kkk in 1:n_iter){
 
 		#FIRST RUN THROUGH THE MODEL WITH THE CALIBRATION PERIOD HARVEST RATES.....
@@ -122,69 +113,49 @@ annealing_fit_ecology_parameters <- function(model, nyears=40) {
 
 		# Jiggle the parameter values and load them into the vector which is passed to the model function
 		perturbed <- perturb_parameters(datastore, annealing.parms, toppredlock)
-		model$data$fitted.parameters <- perturbed				# perturbed parameters built into model.parameters for run
 
+		# perturbed parameters will be built into model.parameters for run:
+		model$data$fitted.parameters <- perturbed
 		results <- StrathE2E(model, nyears)
 
 		err <- elt(results, "final.year.outputs", "annual_obj")
 		perturbed$annual_obj <- err
 
-		for(ijk in 1:ncol(proposalstore)){	# ZZ can this be done without a loop?
-			proposalstore[1,ijk]<-perturbed[ijk]
-		}
-
 		temperature<-temperature*cooling
 
-		if (kkk==1){
-			lastbest <- err
-		}
+		if (kkk==1) lastbest <- err
 
-		#-------------------------------------------------------------------
 		#Now the Metropolis algorithm.....
-
+		#
 		lik_ratio<-exp(((log(err)) - log(lastbest))/temperature)
-
 		rand<-runif(1,0,1)
-
-		#--------------------------------
-
 		new_accepted<-" Accepted: NO"
-
 		if(lik_ratio>rand){
 			n_acceptances<-n_acceptances+1
 			datastore <- perturbed
-
 			lastbest <- err
-
 			new_accepted <- " Accepted: YES"
 		}
 
 		#--------------------------------
 
-		proposalhistory<-rbind(proposalhistory,proposalstore)
+		proposalhistory<-rbind(proposalhistory, perturbed)
 		filename <- csvname(resultsdir, "annealing_par-proposalhistory", identifier)
 		writecsv(proposalhistory, filename, row.names=FALSE)
 
-		parhistory<-rbind(parhistory,datastore)
+		parhistory<-rbind(parhistory, datastore)
 		filename <- csvname(resultsdir, "annealing_par-acceptedhistory", identifier)
 		writecsv(parhistory, filename, row.names=FALSE)
 
-		#-------------------------------------------------------------------
-
-		#print(paste("Itn:",kkk+1," ",lastbest,"   ",new_accepted,sep=""))
 		print(paste("Itn: ",kkk+1," ","Proposal: ", err,"   ",new_accepted,sep=""))
-
-		#-------------------------------------------------------------------
 
 		#Plot or update the time series of proposal and acepted likelihoods so far....
 		par(mfrow=c(1,1))
-
-		#Plot the basemodel results 
 		axmin <- elt(annealing.parms, "axmin")
 		axmax <- elt(annealing.parms, "axmax")
 		plot(seq(1,nrow(proposalhistory)),proposalhistory$annual_obj,ylim=c(axmin,axmax),xlim=c(1,kkk+1),xlab="Iterations",ylab="Likelihood",type="l",col="grey")
 		points(seq(1,nrow(parhistory)),parhistory$annual_obj,type="l",col="black",lwd=3)
-		if (kkk==3) stop("kkk==3")
+		if (kkk==5) stop("kkk==5")
 	}
 
 	#At the conclusion of the whole process, extract the final row of the parhistory into the format of model fitted parameter files and save to disc

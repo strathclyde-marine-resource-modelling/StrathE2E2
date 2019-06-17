@@ -36,8 +36,6 @@ StrathE2E <- function(model, nyears=20) {
 	setup			<- elt(model, "setup")
 	model.path		<- elt(setup, "model.path")
 
-	#data			<- elt(model, "data")	# ZZ delete
-
 	run			<- elt(build, "run")
 	initial.state		<- elt(build, "initial.state")
 	forcings		<- elt(build, "forcings")

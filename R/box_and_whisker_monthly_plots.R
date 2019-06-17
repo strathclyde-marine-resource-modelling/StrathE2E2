@@ -3,11 +3,12 @@
 #
 #' plot some monthly result sumamries
 #'
+#' @param model model object
 #' @param results model results object
 #'
 #' @export
 #
-box_and_whisker_monthly_plots <- function(results) {
+box_and_whisker_monthly_plots <- function(model, results) {
 
 	final.year.outputs	<- elt(results, "final.year.outputs")
 	modelmonthly		<- elt(final.year.outputs, "monthly.averages")
