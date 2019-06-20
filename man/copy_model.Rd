@@ -2,20 +2,20 @@
 % Please edit documentation in R/copy_model.R
 \name{copy_model}
 \alias{copy_model}
-\title{make a copy of the named model/variant (or all variants if none specified)}
+\title{make a copy of the named model/variant}
 \usage{
-copy_model(model.name, model.variant = "", dest.path = "Models",
+copy_model(model.name, model.variant, dest.path = "Models",
   user.path = "")
 }
 \arguments{
 \item{model.name}{name of model to copy}
 
-\item{model.variant}{name of model variant to copy (copies all variants by default)}
+\item{model.variant}{name of model variant to copy}
 
 \item{dest.path}{destination folder to write copy of model, will be created if necessary, default is "Models" in current folder}
 
 \item{user.path}{path to users top level model folder if copying a user model}
 }
 \description{
-make a copy of the named model/variant (or all variants if none specified)
+make a copy of the named model/variant
 }

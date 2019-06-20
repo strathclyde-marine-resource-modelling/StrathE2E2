@@ -9,8 +9,6 @@
 #' @return model output
 #'
 #' @importFrom deSolve ode
-#'
-#' @export
 #
 interpolate_drivers <- function(run, drivers) {
 

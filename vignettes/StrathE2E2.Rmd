@@ -12,7 +12,7 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = ">"
 )
 ```
 
@@ -63,9 +63,9 @@ Let's try using the StrathE2E2 package:
 
 ```{r, fig.show='hold'}
 library(StrathE2E2)
-model <- read_model("MERP_NorthSea_Bias_corrected_KELP", "VER11-12_1970-99_Bestfit")
-results <- StrathE2E(model)
-plot_full_length_timeseries(results)
+model <- read_model("North_Sea", "2003-2013")
+results <- StrathE2E(model, nyears=5)
+plot_full_length_timeseries(model, results)
 ```
 
 How was that then?

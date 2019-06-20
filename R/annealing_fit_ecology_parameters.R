@@ -82,6 +82,7 @@ annealing_fit_ecology_parameters <- function(model, nyears=40) {
 
 	# Set the annealing parameters:
 	n_iter		<- 1000		# Maximum number of iterations of the parameter randomisation process
+n_iter=5 # ZZ temp
 	temperature	<- 0.00005	# values 0.00005 to 5. Higher values make the annealing process accept more bad jumps in th early stages 
 	cooling		<- 0.975	# values < 1. Suggest do not change this
 
@@ -155,12 +156,9 @@ annealing_fit_ecology_parameters <- function(model, nyears=40) {
 		axmax <- elt(annealing.parms, "axmax")
 		plot(seq(1,nrow(proposalhistory)),proposalhistory$annual_obj,ylim=c(axmin,axmax),xlim=c(1,kkk+1),xlab="Iterations",ylab="Likelihood",type="l",col="grey")
 		points(seq(1,nrow(parhistory)),parhistory$annual_obj,type="l",col="black",lwd=3)
-		if (kkk==5) stop("kkk==5")
 	}
 
 	#At the conclusion of the whole process, extract the final row of the parhistory into the format of model fitted parameter files and save to disc
-
-	#source(paste("library/tools/extract_from_datastore_format_back_into_fitted_parameter_files_tp_kelp.R",sep=""))	# ZZ needs sorting
-
+	write_fitted_parameters(model, parhistory)
 }
 

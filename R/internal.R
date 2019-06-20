@@ -185,7 +185,7 @@ csvname <- function(dir, file, identifier)
 
 	name <- paste0(name, file)
 
-	if (identifier != "") {
+	if (nchar(identifier)) {
 		# add "-ident" if set:
 		name <- paste0(name, "-", identifier)
 	}
@@ -517,6 +517,7 @@ tsplot44 <- function(tspmain,axtitle,tsptitle1,tsptitle2,tsptitle3,tsptitle4,tsp
 	mtext(tspmain,cex=0.7,side=3,line=0.5)
 	legend(5,plmax,c(tsptitle1,tsptitle2,tsptitle3,tsptitle4),col=c("black","black","red","red"),lty=c(1,2,1,2),pt.cex=c(1,1,1,1))
 }
+
 
 tsplot3_hab <- function(tspmain,axtitle,tsptitle1,tsptitle2,tsptitle3,tspvar1,tspvar2,tspvar3,plmax) {
 	par(mar=c(3,3.8,1.3,0.4))

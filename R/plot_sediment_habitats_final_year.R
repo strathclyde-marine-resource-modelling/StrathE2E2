@@ -1,5 +1,5 @@
 #
-# plot_final_year_sediment_habitats.R
+# plot_sediment_habitats_final_year.R
 #
 #' Plot full time series of out
 #'
@@ -12,7 +12,7 @@
 #
 # most fixed/fitted parms etc are in the results$out from the ode
 #
-plot_final_year_sediment_habitats <- function(model, results) {
+plot_sediment_habitats_final_year <- function(model, results) {
 
 	data			<- elt(model, "data")
 	physical.parameters	<- elt(data, "physical.parameters")
@@ -108,8 +108,8 @@ plot_final_year_sediment_habitats <- function(model, results) {
 	}
 
 	#This converts the sediment ammonia into units of N /m3 in the pore water)
-	#tsplot3_hab("Shallow ammonia","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,50)
-	tsplot3_hab("Shallow ammonia","Nitrogen/m3","Area_s1 porewater","Area_s2 porewater","Area_s3 porewater",l1,l2,l3,150)
+	#tsplot3_hab("Inshore ammonia","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,50)
+	tsplot3_hab("Inshore ammonia","Nitrogen/m3","Area_s1 porewater","Area_s2 porewater","Area_s3 porewater",l1,l2,l3,150)
 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -134,8 +134,8 @@ plot_final_year_sediment_habitats <- function(model, results) {
 	}
 
 	#This converts the sediment ammonia into units of N /m3 in the pore water)
-	#tsplot3_hab("Deep ammonia","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,50)
-	tsplot3_hab("Deep ammonia","Nitrogen/m3","Area_d1 porewater","Area_d2 porewater","Area_d3 porewater",l1,l2,l3,150)
+	#tsplot3_hab("Offshore ammonia","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,50)
+	tsplot3_hab("Offshore ammonia","Nitrogen/m3","Area_d1 porewater","Area_d2 porewater","Area_d3 porewater",l1,l2,l3,150)
 
 	#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -160,8 +160,8 @@ l3<-rep(NA,361)
 }
 
 #This converts the sediment nitrate into units of N /m3 in the pore water)
-#tsplot3_hab("Shallow nitrate","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,15)
-tsplot3_hab("Shallow nitrate","Nitrogen/m3","Area_s1 porewater","Area_s2 porewater","Area_s3 porewater",l1,l2,l3,15)
+#tsplot3_hab("Inshore nitrate","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,15)
+tsplot3_hab("Inshore nitrate","Nitrogen/m3","Area_s1 porewater","Area_s2 porewater","Area_s3 porewater",l1,l2,l3,15)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -186,8 +186,8 @@ l3<-rep(NA,361)
 }
 
 #This converts the sediment nitrate into units of N /m3 in the pore water)
-#tsplot3_hab("Deep nitrate","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,15)
-tsplot3_hab("Deep nitrate","Nitrogen/m3","Area_d1 porewater","Area_d2 porewater","Area_d3 porewater",l1,l2,l3,15)
+#tsplot3_hab("Offshore nitrate","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,15)
+tsplot3_hab("Offshore nitrate","Nitrogen/m3","Area_d1 porewater","Area_d2 porewater","Area_d3 porewater",l1,l2,l3,15)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -222,8 +222,8 @@ l2<-l2a+l2b
 l3<-l3a+l3b
 #This converts the sediment detritus into units of %N by dry wt (100*gN/g-drysediment) (density of dry solid matter = 2.65g/cm3)
 #Then scale by 1000 to get on same axes as water detritus mMN/m3 water
-#tsplot3_hab("Shallow detritus","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,1.5)
-tsplot3_hab("Shallow detritus","Nitrogen/DW (g/g %)","Area_s1 sediment","Area_s2 sediment","Area_s3 sediment",l1,l2,l3,0.25)
+#tsplot3_hab("Inshore detritus","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,1.5)
+tsplot3_hab("Inshore detritus","Nitrogen/DW (g/g %)","Area_s1 sediment","Area_s2 sediment","Area_s3 sediment",l1,l2,l3,0.25)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -260,8 +260,8 @@ l2<-l2a+l2b
 l3<-l3a+l3b
 #This converts the sediment detritus into units of %N by dry wt (100*gN/g-drysediment) (density of dry solid matter = 2.65g/cm3)
 #Then scale by 1000 to get on same axes as water detritus mMN/m3 water
-#tsplot3_hab("Deep detritus","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,1.5)
-tsplot3_hab("Deep detritus","Nitrogen/DW (g/g %)","Area_d1 sediment","Area_d2 sediment","Area_d3 sediment",l1,l2,l3,0.25)
+#tsplot3_hab("Offshore detritus","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,1.5)
+tsplot3_hab("Offshore detritus","Nitrogen/DW (g/g %)","Area_d1 sediment","Area_d2 sediment","Area_d3 sediment",l1,l2,l3,0.25)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -286,8 +286,8 @@ l3<-rep(NA,361)
 }
 
 #This converts the sediment corpse mass into units of N /m2 of sediment surface)
-#tsplot3_hab("Shallow nitrate","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,15)
-tsplot3_hab("Shallow corpses","Nitrogen/m2","Area_s1","Area_s2","Area_s3",l1,l2,l3,30)
+#tsplot3_hab("Inshore corpses","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,15)
+tsplot3_hab("Inshore corpses","Nitrogen/m2","Area_s1","Area_s2","Area_s3",l1,l2,l3,30)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -312,8 +312,8 @@ l3<-rep(NA,361)
 }
 
 #This converts the sediment corpse mass into units of N /m2 of sediment surface)
-#tsplot3_hab("Deep nitrate","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,15)
-tsplot3_hab("Deep corpses","Nitrogen/m2","Area_d1","Area_d2","Area_d3",l1,l2,l3,30)
+#tsplot3_hab("Offshore corpses","Nitrogen/m3","Water","Muddy porewater","Coarse porewater",l1,l2,l3,15)
+tsplot3_hab("Offshore corpses","Nitrogen/m2","Area_d1","Area_d2","Area_d3",l1,l2,l3,30)
 
 
 #-------------------------------------------------------------------------------------------------------

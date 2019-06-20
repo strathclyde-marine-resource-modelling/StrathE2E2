@@ -10,11 +10,22 @@
 #'
 #' @export
 #
-write_fitted_parameters <- function(model.path, parhistory) {
+write_fitted_parameters <- function(model, parhistory) {
+
+	setup		<- elt(model, "setup")
+	read.only	<- elt(setup, "read.only")
+	model.path	<- elt(setup, "model.path")
+	identifier	<- elt(setup, "identifier")
+
+	if (read.only) {
+		cat("Warning: cannot write fitted parameters back to the model input folders - model is read-only\n")
+		cat("Warning: to fix this, make a copy of the model using copy_model() into your own workspace.\n")
+		stop("Model is not writable!")
+	}
 
 	#Now read in the externally stored ecology model parameters to act as templates for the fitted parameter file data structures
 
-	preference_matrix_input	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FITTED_PARAMETERS_PREFERENCE)
+	preference_matrix_input	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FITTED_PARAMETERS_PREFERENCE, row.names=1)	# special
 	uptake_mort_input	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FITTED_PARAMETERS_UPTAKE_MORT)
 	microbiology_input	<- get.model.file(model.path, PARAMETERS_DIR, file.pattern=FITTED_PARAMETERS_MICROBIOLOGY)
 
@@ -255,7 +266,7 @@ microbiology_input_NEW$Value[14] <- parhistory$xdsens[ROW_TO_USE]
 microbiology_input_NEW$Value[15] <- parhistory$xdisc_corp[ROW_TO_USE]
 
 #Proportion of corpse mass converted to detritus per day at the reference temperature
-microbiology_input_NEW$Value[16] <- parhistory$xcorp_det[ROW_TO_USE]
+microbiology_input_NEW$Value[16] <- parhistory$xxcorp_det[ROW_TO_USE]
 
 
 #Proportion of kelpdebric mass converted to detritus per day at the reference temperature
@@ -278,6 +289,7 @@ microbiology_input_NEW$Value[22] <- parhistory$xdfdp[ROW_TO_USE]
 	#----------------------------------------------------------------------------
 
 	#Save the new parameter files...
+	parameterpath <- makepath(model.path, PARAMETERS_DIR)
 
 	filename = csvname(parameterpath, "fitted_parameters_preference_matrix", identifier)
 	writecsv(preference_matrix_input_NEW, filename, row.names=TRUE)

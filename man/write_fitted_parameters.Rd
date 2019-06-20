@@ -4,12 +4,12 @@
 \alias{write_fitted_parameters}
 \title{Save current set of fitted parameters to file}
 \usage{
-write_fitted_parameters(model.path, parhistory)
+write_fitted_parameters(model, parhistory)
 }
 \arguments{
-\item{model.path}{path to model}
-
 \item{parhistory}{parameter set history}
+
+\item{model.path}{path to model}
 }
 \value{
 list of fitted model parameters
